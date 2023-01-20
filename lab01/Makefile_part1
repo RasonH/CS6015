@@ -1,0 +1,26 @@
+#all - build everything and run executable at the same time as the lab required to
+#program - link all object files together for generating an executable
+#*.o - create seperate .o files, reduce compilation to only those changed files
+#clean - deletes compiled link and executable files
+
+all: program
+	./program
+
+program: main.o Caps.o Clothing.o Pants.o
+	c++ main.o Caps.o Clothing.o Pants.o -o program
+	
+main.o: main.cpp
+	c++ -std=gnu++11 -c main.cpp
+
+Caps.o: Caps.cpp Caps.h
+	c++ -std=gnu++11 -c Caps.cpp
+
+Clothing.o: Clothing.cpp Clothing.h
+	c++ -std=gnu++11 -c Clothing.cpp
+
+Pants.o: Pants.cpp Pants.h
+	c++ -std=gnu++11 -c Pants.cpp
+
+.PHONY:clean
+clean:
+	rm -rf *.o *.out program
