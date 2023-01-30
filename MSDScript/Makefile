@@ -1,13 +1,13 @@
 #all - build everything and run executable at the same time as the lab required to
 #program - link all object files together for generating an executable
-#*.o - create seperate .o files, reduce compilation to only those changed files
+#*.o - create separate .o files, reduce compilation to only those changed files
 #clean - deletes compiled link and executable files
 
 CXX = c++
 CFLAGS = -std=gnu++11
-OBJS = main.o cmdline.o expr.o
-CXXSOURCE = main.cpp cmdline.cpp expr.cpp
-HEADERS = cmdline.h catch.h expr.h
+OBJS = main.o cmdline.o expr.o test.o
+CXXSOURCE = main.cpp cmdline.cpp expr.cpp test.cpp
+HEADERS = cmdline.h catch.h expr.h test.h
 
 msdscript: $(OBJS)
 	$(CXX) $(OBJS) -o msdscript
@@ -22,6 +22,9 @@ cmdline.o: cmdline.cpp cmdline.h catch.h
 
 expr.o: expr.cpp expr.h catch.h
 	$(CXX) $(CFLAGS) -c expr.cpp
+
+test.o: test.cpp test.h expr.h
+	$(CXX) $(CFLAGS) -c test.cpp
 
 .PHONY:clean
 clean:

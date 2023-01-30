@@ -9,6 +9,7 @@
 #include <iostream>
 #include "cmdline.h"
 #include "expr.h"
+#include "test.h"
 
 int main(int argc, const char * argv[]) {
     use_arguments(argc, argv);

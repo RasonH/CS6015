@@ -5,9 +5,13 @@
 //  Created by Rason Hung on 1/22/23.
 //
 
-#pragma include once
+#include <stdexcept>
 #include "expr.h"
-#include "catch.h"
+
+
+/*
+ Number class
+ */
 
 Num::Num(int val){
     this->val = val;
@@ -21,6 +25,23 @@ bool Num::equals(Expr *e){
         return this->val == n->val;
     }
 }
+
+int Num::interp(){
+    return this->val;
+}
+
+bool Num::has_variable(){
+    return false;
+}
+
+Expr* Num::subst(std::string string, Expr* e){
+    return this;
+}
+
+
+/*
+ Add class
+ */
 
 Add::Add(Expr *lhs, Expr *rhs) {
     this->lhs = lhs;
@@ -36,6 +57,24 @@ bool Add::equals(Expr *e){
     }
 }
 
+int Add::interp(){
+    return this->lhs->interp() + this->rhs->interp();
+}
+
+bool Add::has_variable(){
+    return this->lhs->has_variable() || this->rhs->has_variable();
+}
+
+Expr* Add::subst(std::string string, Expr* e){
+    return new Add(this->lhs->subst(string, e),
+                    this->rhs->subst(string, e));
+}
+
+
+/*
+ Multiplication class
+ */
+
 Mult::Mult(Expr *lhs, Expr *rhs) {
     this->lhs = lhs;
     this->rhs = rhs;
@@ -50,6 +89,24 @@ bool Mult::equals(Expr *e){
     }
 }
 
+int Mult::interp(){
+    return this->lhs->interp() * this->rhs->interp();
+}
+
+bool Mult::has_variable(){
+    return this->lhs->has_variable() || this->rhs->has_variable();
+}
+
+Expr* Mult::subst(std::string string, Expr* e){
+    return new Mult(this->lhs->subst(string, e),
+                    this->rhs->subst(string, e));
+}
+
+
+/*
+ Variable class
+ */
+
 Variable::Variable(std::string varName){
     this->name = varName;
 }
@@ -63,74 +120,20 @@ bool Variable::equals(Expr *e){
     }
 }
 
-
-TEST_CASE("Num_equals","[num]"){
-    SECTION("Normal_cases"){
-        REQUIRE((new Num(1))->equals(new Num(1)) == true);
-        REQUIRE((new Num(1))->equals(new Num(2)) == false);
-        REQUIRE((new Num(1))->equals(new Num(-1)) == false);
-        REQUIRE((new Num(1))->equals(new Num(0)) == false);
-    }
-    SECTION("Edge_cases"){ //from diffenrt classes
-        REQUIRE((new Num(1))->equals(new Add(new Num(1), new Num(1))) == false);
-        REQUIRE((new Num(1))->equals(new Mult(new Num(1), new Num(1))) == false);
-        REQUIRE((new Num(1))->equals(new Variable("x")) == false);
-    }
+int Variable::interp(){
+    throw std::runtime_error("no value for variable");
 }
 
-TEST_CASE("Add_equals","[add]"){
-    SECTION("Normal_cases"){
-        REQUIRE((new Add(new Num(1), new Num(2)))->equals(new Add(new Num(1), new Num(2))) == true);
-        REQUIRE((new Add(new Num(1), new Num(2)))->equals(new Add(new Num(2), new Num(2))) == false);
-        REQUIRE((new Add(new Num(1), new Num(2)))->equals(new Add(new Num(1), new Num(3))) == false);
-        REQUIRE((new Add(new Num(1), new Num(2)))->equals(new Add(new Num(2), new Num(1))) == false);
-        REQUIRE((new Add(new Num(1), (new Add(new Num(2), new Num(3)))))->equals(new Add(new Num(1), (new Add(new Num(2), new Num(3))))) == true);
-    }
-    SECTION("Edge_cases"){ //from diffenrt classes
-        REQUIRE((new Add(new Num(1), new Num(2)))->equals(new Num(2)) == false);
-        REQUIRE((new Add(new Num(1), new Num(2)))->equals(new Mult(new Num(1), new Num(2))) == false);
-        REQUIRE((new Add(new Num(1), new Num(2)))->equals(new Variable("x")) == false);
-    }
+bool Variable::has_variable(){
+    return true;
 }
 
-TEST_CASE("Mult_equals","[mult]"){
-    SECTION("Normal_cases"){
-        REQUIRE((new Mult(new Num(1), new Num(2)))->equals(new Mult(new Num(1), new Num(2))) == true);
-        REQUIRE((new Mult(new Num(1), new Num(2)))->equals(new Mult(new Num(2), new Num(2))) == false);
-        REQUIRE((new Mult(new Num(1), new Num(2)))->equals(new Mult(new Num(1), new Num(3))) == false);
-        REQUIRE((new Mult(new Num(1), new Num(2)))->equals(new Mult(new Num(2), new Num(1))) == false);
-        REQUIRE((new Mult(new Num(1), (new Mult(new Num(2), new Num(3)))))->equals(new Mult(new Num(1), (new Mult(new Num(2), new Num(3))))) == true);
+Expr* Variable::subst(std::string string, Expr* e){
+    if(this->name == string){ // TODO: what if the string is ""
+        return e;
     }
-    SECTION("Edge_cases"){ //from diffenrt classes
-        REQUIRE((new Mult(new Num(1), new Num(2)))->equals(new Num(2)) == false);
-        REQUIRE((new Mult(new Num(1), new Num(2)))->equals(new Add(new Num(1), new Num(2))) == false);
-        REQUIRE((new Mult(new Num(1), new Num(2)))->equals(new Variable("x")) == false);
-    }
+    return this;
 }
 
-TEST_CASE("Variable_equals","[var]"){
-    SECTION("Normal_cases"){
-        REQUIRE((new Variable("x"))->equals(new Variable("x")) == true);
-        REQUIRE((new Variable("x"))->equals(new Variable("X")) == false);
-        REQUIRE((new Variable("x"))->equals(new Variable("y")) == false);
-        REQUIRE((new Variable("x"))->equals(new Variable("xa")) == false);
-    }
-    SECTION("Edge_cases"){ //from diffenrt classes
-        REQUIRE((new Variable("x"))->equals(new Num(1)) == false);
-        REQUIRE((new Variable("x"))->equals(new Add(new Num(1), new Num(2))) == false);
-        REQUIRE((new Variable("x"))->equals(new Mult(new Num(1), new Num(2))) == false);
-    }
-}
 
-TEST_CASE("Mixed_equals","[mix]"){
-    REQUIRE((new Add(new Mult(new Num(1), new Num(2)), new Variable("x")))->equals(new Add(new Mult(new Num(1), new Num(2)), new Variable("x"))) == true);
-    REQUIRE((new Add(new Mult(new Num(1), new Num(2)), new Variable("x")))->equals(new Add(new Variable("x"), new Mult(new Num(1), new Num(2)))) == false);
-    
-    //changed some of the components but not order
-    REQUIRE((new Add(new Mult(new Num(1), new Num(2)), new Variable("x")))->equals(new Add(new Mult(new Num(1), new Num(2)), new Variable("y"))) == false);
-    REQUIRE((new Add(new Mult(new Num(1), new Num(2)), new Variable("x")))->equals(new Add(new Mult(new Num(2), new Num(2)), new Variable("x"))) == false);
-    REQUIRE((new Add(new Mult(new Num(1), new Num(2)), new Variable("x")))->equals(new Mult(new Add(new Num(1), new Num(2)), new Variable("x"))) == false);
-    
-    //changed expression order
-    REQUIRE((new Mult(new Add(new Num(1), new Num(2)), new Variable("x")))->equals(new Mult(new Add(new Num(1), new Num(2)), new Variable("x"))) == true);
-}
+
