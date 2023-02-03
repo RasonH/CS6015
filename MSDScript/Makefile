@@ -30,5 +30,5 @@ test.o: test.cpp test.h expr.h
 clean:
 	rm -rf *.o *.out msdscript
 	
-test: ../MSDScript/msdscript
-	../MSDScript/msdscript --test
+test: msdscript
+	./msdscript --test
