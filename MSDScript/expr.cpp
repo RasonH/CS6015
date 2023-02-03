@@ -6,6 +6,7 @@
 //
 
 #include <stdexcept>
+#include <utility>
 #include "expr.h"
 
 
@@ -19,7 +20,7 @@ Num::Num(int val){
 
 bool Num::equals(Expr *e){
     Num *n = dynamic_cast<Num*>(e);
-    if(n == NULL){
+    if(n == nullptr){
         return false;
     }else{
         return this->val == n->val;
@@ -50,7 +51,7 @@ Add::Add(Expr *lhs, Expr *rhs) {
 
 bool Add::equals(Expr *e){
     Add *a = dynamic_cast<Add*>(e);
-    if(a == NULL){
+    if(a == nullptr){
         return false;
     }else{
         return (this->lhs->equals(a->lhs) && this->rhs->equals(a->rhs));
@@ -82,7 +83,7 @@ Mult::Mult(Expr *lhs, Expr *rhs) {
 
 bool Mult::equals(Expr *e){
     Mult *m = dynamic_cast<Mult*>(e);
-    if(m == NULL){
+    if(m == nullptr){
         return false;
     }else{
         return (this->lhs->equals(m->lhs) && this->rhs->equals(m->rhs));
@@ -108,12 +109,12 @@ Expr* Mult::subst(std::string string, Expr* e){
  */
 
 Variable::Variable(std::string varName){
-    this->name = varName;
+    this->name = std::move(varName);
 }
 
 bool Variable::equals(Expr *e){
     Variable *m = dynamic_cast<Variable*>(e);
-    if(m == NULL){
+    if(m == nullptr){
         return false;
     }else{
         return (this->name == m->name);
