@@ -2,6 +2,8 @@
 // Created by Rason Hung on 1/29/23.
 //
 
+#pragma include once
+#include "expr.h"
 #include "test.h"
 
 TEST_CASE("Equals"){
@@ -75,6 +77,13 @@ TEST_CASE("Equals"){
         //changed expression order
         CHECK((new Mult(new Add(new Num(1), new Num(2)), new Variable("x")))->equals(new Mult(new Add(new Num(1), new Num(2)), new Variable("x"))) == true);
     }
+    SECTION("Invalid_argument_equals"){
+        SECTION("Nullptr"){
+            CHECK((new Num(2))->equals(new Add(new Num(1), new Num(2))) == false);
+            CHECK((new Add(new Num(1), new Num(2)))->equals(nullptr) == false);
+            CHECK((new Mult(new Num(1), new Num(2)))->equals(nullptr) == false);
+        }
+    }
 }
 
 TEST_CASE("Interpret"){
@@ -121,7 +130,10 @@ TEST_CASE("Has_variable"){
         CHECK((new Num(1))->has_variable() == false);
         CHECK((new Num(0))->has_variable() == false);
         CHECK((new Add(new Num(1), new Num(2)))->has_variable() == false);
+        CHECK((new Add(new Variable("x"), new Num(2)))->has_variable() == true);
+        CHECK((new Add(new Num(1), new Variable("x")))->has_variable() == true);
         CHECK((new Mult(new Num(1), new Num(2)))->has_variable() == false);
+        CHECK((new Mult(new Num(1), new Variable("x")))->has_variable() == true);
     }
 
     SECTION("Mixed_has_variable"){
@@ -138,7 +150,10 @@ TEST_CASE("Substitute"){
     CHECK((new Variable("x"))
                    ->subst("x", new Add(new Variable("y"),new Num(7)))
                    ->equals(new Add(new Variable("y"),new Num(7))) );
-
+    // x * (y * (x + 1)) => x = -2 => -2 * (y * (-2 + 1))
+    CHECK((new Mult(new Variable("x"), new Mult(new Variable("y"), new Add(new Variable("x"), new Num(1)))))
+                  ->subst("x", new Num(-2))
+                  ->equals(new Mult(new Num(-2), new Mult(new Variable("y"), new Add(new Num(-2), new Num(1))))));
     SECTION("Other_substitute"){
         CHECK(((new Variable("x"))->subst("x",new Num(2)))->interp() == 2);
         CHECK(((new Variable("x"))->subst("x",new Mult(new Num(2), new Variable("y")))->equals(new Mult(new Num(2), new Variable("y")))));

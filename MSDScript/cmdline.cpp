@@ -23,17 +23,18 @@ void use_arguments(int argc, const char *argv[]){
                 exit(0); // as long as "--help" was seen, do not examine the rest arguments
             }else if(ith_arg.compare("--test") == 0){
                 if(!testSeen){
-                    //instead of directly using "Catch:Session().run()" without passing argc/argv, here passed all other arguments except "--test"
-                    const char *newArgv[argc - 1];
-                    for(int j = 0; j < argc - 1; j++){
-                        if(j <= i - 1){
-                            newArgv[j] = argv[j];
-                        }
-                        if(j >= i){
-                            newArgv[j] = argv[j+1];
-                        }
-                    }
-                    int result = Catch::Session().run(argc - 1, newArgv); // TODO: need to modify to deal with duplicates before entering?
+//                    //instead of directly using "Catch:Session().run()" without passing argc/argv, here passed all other arguments except "--test"
+//                    const char *newArgv[argc - 1];
+//                    for(int j = 0; j < argc - 1; j++){
+//                        if(j <= i - 1){
+//                            newArgv[j] = argv[j];
+//                        }
+//                        if(j >= i){
+//                            newArgv[j] = argv[j+1];
+//                        }
+//                    }
+//                    int result = Catch::Session().run(argc - 1, newArgv); // TODO: need to modify to deal with duplicates before entering?
+                    int result = Catch::Session().run(1, argv);
                     if(result != 0){exit(1);}
                     testSeen = true;
                 }else{ // duplicate "--test" detection

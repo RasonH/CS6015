@@ -30,6 +30,7 @@
 *.exe
 *.out
 *.app
+MSDScript/msdscript
 
 # Others
 *.zip
@@ -37,4 +38,6 @@
 .DS_Store
 *.idea
 .idea
-msdscript
+MSDScript/CMakeLists.txt
+MSDScript/cmake-build-debug-coverage/
+MSDScript/cmake-build-debug/

@@ -26,6 +26,9 @@ expr.o: expr.cpp expr.h catch.h
 test.o: test.cpp test.h expr.h
 	$(CXX) $(CFLAGS) -c test.cpp
 
-.PHONY:clean
+.PHONY:clean test
 clean:
 	rm -rf *.o *.out msdscript
+	
+test: msdscript
+	./msdscript --test
