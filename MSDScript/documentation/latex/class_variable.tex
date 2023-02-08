@@ -1,0 +1,156 @@
+\hypertarget{class_variable}{}\doxysection{Variable Class Reference}
+\label{class_variable}\index{Variable@{Variable}}
+
+
+\mbox{\hyperlink{class_variable}{Variable}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing pure variable.  
+
+
+
+
+{\ttfamily \#include $<$expr.\+h$>$}
+
+Inheritance diagram for Variable\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_variable}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_variable_addfa3b9192e7a5e63787859e6f2d45f8}{Variable}} (std\+::string var\+Name)
+\begin{DoxyCompactList}\small\item\em Constructor for \mbox{\hyperlink{class_variable}{Variable}} object. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_variable_aac3d3e951551da0d306005ddbabd92cc}{equals}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$e) override
+\begin{DoxyCompactList}\small\item\em Judge if this \mbox{\hyperlink{class_variable}{Variable}} class object equals to another object, overrides function in superclass. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_variable_a78bd17d17fd39447eb96517ba9dd0804}{interp}} () override
+\begin{DoxyCompactList}\small\item\em Interpret \mbox{\hyperlink{class_variable}{Variable}} object to an integer value. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_variable_a87c1752b9487297e2e64dbf14e70a4c7}{has\+\_\+variable}} () override
+\begin{DoxyCompactList}\small\item\em Judge if the \mbox{\hyperlink{class_variable}{Variable}} object contains any \mbox{\hyperlink{class_variable}{Variable}}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_variable_a7313c927ac9c43b8e667d6243f53bf6f}{subst}} (std\+::string string, \mbox{\hyperlink{class_expr}{Expr}} $\ast$e) override
+\begin{DoxyCompactList}\small\item\em Substitute the \mbox{\hyperlink{class_variable}{Variable}} object with another \mbox{\hyperlink{class_expr}{Expr}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactItemize}
+\item 
+virtual bool \mbox{\hyperlink{class_expr_abf9cdb765fb84304881789d273d7594f}{equals}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$e)=0
+\begin{DoxyCompactList}\small\item\em Judge if this \mbox{\hyperlink{class_expr}{Expr}} class object equals to another object. \end{DoxyCompactList}\item 
+virtual int \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{interp}} ()=0
+\begin{DoxyCompactList}\small\item\em Interpret \mbox{\hyperlink{class_expr}{Expr}} object to an integer value. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{class_expr_a92dc26078993a4b9721ea732274a435c}{has\+\_\+variable}} ()=0
+\begin{DoxyCompactList}\small\item\em Judge if the \mbox{\hyperlink{class_expr}{Expr}} object contains any \mbox{\hyperlink{class_variable}{Variable}}. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_expr_a1801de8f95587658635d6fd749268c88}{subst}} (std\+::string string, \mbox{\hyperlink{class_expr}{Expr}} $\ast$e)=0
+\begin{DoxyCompactList}\small\item\em Substitute the \mbox{\hyperlink{class_variable}{Variable}} inside \mbox{\hyperlink{class_expr}{Expr}} object with another \mbox{\hyperlink{class_expr}{Expr}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_variable_aaf7205662069a5f8f673c158cb31f418}\label{class_variable_aaf7205662069a5f8f673c158cb31f418}} 
+std\+::string {\bfseries name}
+\begin{DoxyCompactList}\small\item\em the string name that makes up the \mbox{\hyperlink{class_variable}{Variable}} object \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{class_variable}{Variable}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing pure variable. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_variable_addfa3b9192e7a5e63787859e6f2d45f8}\label{class_variable_addfa3b9192e7a5e63787859e6f2d45f8}} 
+\index{Variable@{Variable}!Variable@{Variable}}
+\index{Variable@{Variable}!Variable@{Variable}}
+\doxysubsubsection{\texorpdfstring{Variable()}{Variable()}}
+{\footnotesize\ttfamily Variable\+::\+Variable (\begin{DoxyParamCaption}\item[{std\+::string}]{var\+Name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Constructor for \mbox{\hyperlink{class_variable}{Variable}} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em var\+Name} & a string that can be seen as the label of the \mbox{\hyperlink{class_variable}{Variable}} \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_variable_aac3d3e951551da0d306005ddbabd92cc}\label{class_variable_aac3d3e951551da0d306005ddbabd92cc}} 
+\index{Variable@{Variable}!equals@{equals}}
+\index{equals@{equals}!Variable@{Variable}}
+\doxysubsubsection{\texorpdfstring{equals()}{equals()}}
+{\footnotesize\ttfamily bool Variable\+::equals (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Judge if this \mbox{\hyperlink{class_variable}{Variable}} class object equals to another object, overrides function in superclass. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & an \mbox{\hyperlink{class_expr}{Expr}} pointer to \mbox{\hyperlink{class_expr}{Expr}} object waited to be compared \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns a boolean, true if two object equals, otherwise false 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_abf9cdb765fb84304881789d273d7594f}{Expr}}.
+
+\mbox{\Hypertarget{class_variable_a87c1752b9487297e2e64dbf14e70a4c7}\label{class_variable_a87c1752b9487297e2e64dbf14e70a4c7}} 
+\index{Variable@{Variable}!has\_variable@{has\_variable}}
+\index{has\_variable@{has\_variable}!Variable@{Variable}}
+\doxysubsubsection{\texorpdfstring{has\_variable()}{has\_variable()}}
+{\footnotesize\ttfamily bool Variable\+::has\+\_\+variable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Judge if the \mbox{\hyperlink{class_variable}{Variable}} object contains any \mbox{\hyperlink{class_variable}{Variable}}. 
+
+\begin{DoxyReturn}{Returns}
+returns a boolean, always return true 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_a92dc26078993a4b9721ea732274a435c}{Expr}}.
+
+\mbox{\Hypertarget{class_variable_a78bd17d17fd39447eb96517ba9dd0804}\label{class_variable_a78bd17d17fd39447eb96517ba9dd0804}} 
+\index{Variable@{Variable}!interp@{interp}}
+\index{interp@{interp}!Variable@{Variable}}
+\doxysubsubsection{\texorpdfstring{interp()}{interp()}}
+{\footnotesize\ttfamily int Variable\+::interp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Interpret \mbox{\hyperlink{class_variable}{Variable}} object to an integer value. 
+
+\begin{DoxyReturn}{Returns}
+A \mbox{\hyperlink{class_variable}{Variable}} doesn\textquotesingle{}t have specific integer value, throw an exception 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{Expr}}.
+
+\mbox{\Hypertarget{class_variable_a7313c927ac9c43b8e667d6243f53bf6f}\label{class_variable_a7313c927ac9c43b8e667d6243f53bf6f}} 
+\index{Variable@{Variable}!subst@{subst}}
+\index{subst@{subst}!Variable@{Variable}}
+\doxysubsubsection{\texorpdfstring{subst()}{subst()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}} $\ast$ Variable\+::subst (\begin{DoxyParamCaption}\item[{std\+::string}]{string,  }\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Substitute the \mbox{\hyperlink{class_variable}{Variable}} object with another \mbox{\hyperlink{class_expr}{Expr}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em string} & first argument, a target string that is waited to be substituted \\
+\hline
+{\em e} & second argument, an \mbox{\hyperlink{class_expr}{Expr}} pointer to object that is going to substitute the \mbox{\hyperlink{class_variable}{Variable}} inside expression \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns the new \mbox{\hyperlink{class_expr}{Expr}} pointer to object after substitution, return the original object if string \mbox{\hyperlink{class_variable}{Variable}} not found 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_a1801de8f95587658635d6fd749268c88}{Expr}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/rasonhung/\+Study/\+MSD/\+CS6015/\+MSDScript/\mbox{\hyperlink{expr_8h}{expr.\+h}}\item 
+/\+Users/rasonhung/\+Study/\+MSD/\+CS6015/\+MSDScript/expr.\+cpp\end{DoxyCompactItemize}

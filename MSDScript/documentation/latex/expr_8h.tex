@@ -1,0 +1,29 @@
+\hypertarget{expr_8h}{}\doxysection{/\+Users/rasonhung/\+Study/\+MSD/\+CS6015/\+MSDScript/expr.h File Reference}
+\label{expr_8h}\index{/Users/rasonhung/Study/MSD/CS6015/MSDScript/expr.h@{/Users/rasonhung/Study/MSD/CS6015/MSDScript/expr.h}}
+
+
+expression class  
+
+
+{\ttfamily \#include $<$cstdio$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_expr}{Expr}}
+\begin{DoxyCompactList}\small\item\em Abstract expression class~\newline
+(pure abstract class) \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_num}{Num}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_num}{Num}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing pure number. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_add}{Add}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_add}{Add}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing addition for two expressions. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_mult}{Mult}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_mult}{Mult}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing multiplication for two expressions. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_variable}{Variable}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_variable}{Variable}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing pure variable. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+expression class 
+
+Contains the blueprint of the superclass -\/ \mbox{\hyperlink{class_expr}{Expr}}, with its subclass -\/ \mbox{\hyperlink{class_num}{Num}}, \mbox{\hyperlink{class_add}{Add}}, \mbox{\hyperlink{class_mult}{Mult}}, \mbox{\hyperlink{class_variable}{Variable}} 

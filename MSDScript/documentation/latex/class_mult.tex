@@ -1,0 +1,161 @@
+\hypertarget{class_mult}{}\doxysection{Mult Class Reference}
+\label{class_mult}\index{Mult@{Mult}}
+
+
+\mbox{\hyperlink{class_mult}{Mult}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing multiplication for two expressions.  
+
+
+
+
+{\ttfamily \#include $<$expr.\+h$>$}
+
+Inheritance diagram for Mult\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_mult}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_mult_ace9998f1dc023823e04c15bb359ea79c}{Mult}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$\mbox{\hyperlink{class_mult_a9e2acda98ce8c008004b39f1f76e7eab}{lhs}}, \mbox{\hyperlink{class_expr}{Expr}} $\ast$\mbox{\hyperlink{class_mult_abc649b82c60b2531ceeff3a5d7a552b0}{rhs}})
+\begin{DoxyCompactList}\small\item\em Constructor for \mbox{\hyperlink{class_mult}{Mult}} object. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_mult_aa64da9a8fc6b019f8a2db6f813d9a4e6}{equals}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$e) override
+\begin{DoxyCompactList}\small\item\em Judge if this \mbox{\hyperlink{class_mult}{Mult}} class object equals to another object. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_mult_a0ae0098f4a1adaef9686983f263ab35a}{interp}} () override
+\begin{DoxyCompactList}\small\item\em Interpret \mbox{\hyperlink{class_mult}{Mult}} object to an integer value. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_mult_a214c39d71da10d21bdbd7fbc70032357}{has\+\_\+variable}} () override
+\begin{DoxyCompactList}\small\item\em Judge if the \mbox{\hyperlink{class_mult}{Mult}} object contains any \mbox{\hyperlink{class_variable}{Variable}}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_mult_af0b9b03cb3c60000b590d785fa56c236}{subst}} (std\+::string string, \mbox{\hyperlink{class_expr}{Expr}} $\ast$e) override
+\begin{DoxyCompactList}\small\item\em Substitute the \mbox{\hyperlink{class_variable}{Variable}} inside \mbox{\hyperlink{class_mult}{Mult}} object with another \mbox{\hyperlink{class_expr}{Expr}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactItemize}
+\item 
+virtual bool \mbox{\hyperlink{class_expr_abf9cdb765fb84304881789d273d7594f}{equals}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$e)=0
+\begin{DoxyCompactList}\small\item\em Judge if this \mbox{\hyperlink{class_expr}{Expr}} class object equals to another object. \end{DoxyCompactList}\item 
+virtual int \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{interp}} ()=0
+\begin{DoxyCompactList}\small\item\em Interpret \mbox{\hyperlink{class_expr}{Expr}} object to an integer value. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{class_expr_a92dc26078993a4b9721ea732274a435c}{has\+\_\+variable}} ()=0
+\begin{DoxyCompactList}\small\item\em Judge if the \mbox{\hyperlink{class_expr}{Expr}} object contains any \mbox{\hyperlink{class_variable}{Variable}}. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_expr_a1801de8f95587658635d6fd749268c88}{subst}} (std\+::string string, \mbox{\hyperlink{class_expr}{Expr}} $\ast$e)=0
+\begin{DoxyCompactList}\small\item\em Substitute the \mbox{\hyperlink{class_variable}{Variable}} inside \mbox{\hyperlink{class_expr}{Expr}} object with another \mbox{\hyperlink{class_expr}{Expr}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_mult_a9e2acda98ce8c008004b39f1f76e7eab}\label{class_mult_a9e2acda98ce8c008004b39f1f76e7eab}} 
+\mbox{\hyperlink{class_expr}{Expr}} $\ast$ {\bfseries lhs}
+\begin{DoxyCompactList}\small\item\em the \mbox{\hyperlink{class_expr}{Expr}} object that makes up the left hand side of the \mbox{\hyperlink{class_mult}{Mult}} object \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_mult_abc649b82c60b2531ceeff3a5d7a552b0}\label{class_mult_abc649b82c60b2531ceeff3a5d7a552b0}} 
+\mbox{\hyperlink{class_expr}{Expr}} $\ast$ {\bfseries rhs}
+\begin{DoxyCompactList}\small\item\em the \mbox{\hyperlink{class_expr}{Expr}} object that makes up the right hand side of the \mbox{\hyperlink{class_mult}{Mult}} object \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{class_mult}{Mult}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing multiplication for two expressions. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_mult_ace9998f1dc023823e04c15bb359ea79c}\label{class_mult_ace9998f1dc023823e04c15bb359ea79c}} 
+\index{Mult@{Mult}!Mult@{Mult}}
+\index{Mult@{Mult}!Mult@{Mult}}
+\doxysubsubsection{\texorpdfstring{Mult()}{Mult()}}
+{\footnotesize\ttfamily Mult\+::\+Mult (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{lhs,  }\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{rhs }\end{DoxyParamCaption})}
+
+
+
+Constructor for \mbox{\hyperlink{class_mult}{Mult}} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lhs} & an \mbox{\hyperlink{class_expr}{Expr}} object on the left hand side \\
+\hline
+{\em rhs} & an \mbox{\hyperlink{class_expr}{Expr}} object on the right hand side \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_mult_aa64da9a8fc6b019f8a2db6f813d9a4e6}\label{class_mult_aa64da9a8fc6b019f8a2db6f813d9a4e6}} 
+\index{Mult@{Mult}!equals@{equals}}
+\index{equals@{equals}!Mult@{Mult}}
+\doxysubsubsection{\texorpdfstring{equals()}{equals()}}
+{\footnotesize\ttfamily bool Mult\+::equals (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Judge if this \mbox{\hyperlink{class_mult}{Mult}} class object equals to another object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & an \mbox{\hyperlink{class_expr}{Expr}} pointer to \mbox{\hyperlink{class_expr}{Expr}} object waited to be compared \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns a boolean, true if two object equals, otherwise false 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_abf9cdb765fb84304881789d273d7594f}{Expr}}.
+
+\mbox{\Hypertarget{class_mult_a214c39d71da10d21bdbd7fbc70032357}\label{class_mult_a214c39d71da10d21bdbd7fbc70032357}} 
+\index{Mult@{Mult}!has\_variable@{has\_variable}}
+\index{has\_variable@{has\_variable}!Mult@{Mult}}
+\doxysubsubsection{\texorpdfstring{has\_variable()}{has\_variable()}}
+{\footnotesize\ttfamily bool Mult\+::has\+\_\+variable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Judge if the \mbox{\hyperlink{class_mult}{Mult}} object contains any \mbox{\hyperlink{class_variable}{Variable}}. 
+
+\begin{DoxyReturn}{Returns}
+returns a boolean, true if the \mbox{\hyperlink{class_expr}{Expr}} object contains any \mbox{\hyperlink{class_variable}{Variable}}, otherwise false 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_a92dc26078993a4b9721ea732274a435c}{Expr}}.
+
+\mbox{\Hypertarget{class_mult_a0ae0098f4a1adaef9686983f263ab35a}\label{class_mult_a0ae0098f4a1adaef9686983f263ab35a}} 
+\index{Mult@{Mult}!interp@{interp}}
+\index{interp@{interp}!Mult@{Mult}}
+\doxysubsubsection{\texorpdfstring{interp()}{interp()}}
+{\footnotesize\ttfamily int Mult\+::interp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Interpret \mbox{\hyperlink{class_mult}{Mult}} object to an integer value. 
+
+\begin{DoxyReturn}{Returns}
+returns the actual integer value (lhs $\ast$ rhs) of the \mbox{\hyperlink{class_mult}{Mult}}, if it contains \mbox{\hyperlink{class_variable}{Variable}}, throw an exception 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{Expr}}.
+
+\mbox{\Hypertarget{class_mult_af0b9b03cb3c60000b590d785fa56c236}\label{class_mult_af0b9b03cb3c60000b590d785fa56c236}} 
+\index{Mult@{Mult}!subst@{subst}}
+\index{subst@{subst}!Mult@{Mult}}
+\doxysubsubsection{\texorpdfstring{subst()}{subst()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}} $\ast$ Mult\+::subst (\begin{DoxyParamCaption}\item[{std\+::string}]{string,  }\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Substitute the \mbox{\hyperlink{class_variable}{Variable}} inside \mbox{\hyperlink{class_mult}{Mult}} object with another \mbox{\hyperlink{class_expr}{Expr}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em string} & first argument, a target string that is waited to be substituted \\
+\hline
+{\em e} & second argument, an \mbox{\hyperlink{class_expr}{Expr}} pointer to object that is going to substitute the \mbox{\hyperlink{class_variable}{Variable}} inside expression \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns the new \mbox{\hyperlink{class_expr}{Expr}} pointer to object after substitution, return the original object if string \mbox{\hyperlink{class_variable}{Variable}} not found 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_a1801de8f95587658635d6fd749268c88}{Expr}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/rasonhung/\+Study/\+MSD/\+CS6015/\+MSDScript/\mbox{\hyperlink{expr_8h}{expr.\+h}}\item 
+/\+Users/rasonhung/\+Study/\+MSD/\+CS6015/\+MSDScript/expr.\+cpp\end{DoxyCompactItemize}

@@ -29,6 +29,10 @@ test.o: test.cpp test.h expr.h
 .PHONY:clean test
 clean:
 	rm -rf *.o *.out msdscript
-	
+
 test: msdscript
 	./msdscript --test
+
+.PHONY: doc
+doc:
+	cd documentation && doxygen

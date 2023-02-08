@@ -1,16 +1,17 @@
-//
-//  main.cpp
-//  CommandLine
-//
-//  Created by Rason Hung on 1/16/23.
-//
+/**
+ * \mainpage MSDScript
+ * \author Juisheng Hung (Rason)
+ * \date 01-16-2023
+ * \brief passing arguments through command line, execute with --help, --test ...
+ */
 
-//#define CATCH_CONFIG_MAIN
-#include <iostream>
 #include "cmdline.h"
 #include "expr.h"
 #include "test.h"
 
+/*! \brief passing arguments through command line
+ *  --help --test ...
+*/
 int main(int argc, const char * argv[]) {
     use_arguments(argc, argv);
     return 0;

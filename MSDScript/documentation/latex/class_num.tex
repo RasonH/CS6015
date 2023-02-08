@@ -1,0 +1,156 @@
+\hypertarget{class_num}{}\doxysection{Num Class Reference}
+\label{class_num}\index{Num@{Num}}
+
+
+\mbox{\hyperlink{class_num}{Num}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing pure number.  
+
+
+
+
+{\ttfamily \#include $<$expr.\+h$>$}
+
+Inheritance diagram for Num\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_num}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_num_a9fce58e650a99ae50f4140ed9c87ec9f}{Num}} (int \mbox{\hyperlink{class_num_ab0654582066deb3adbbd64cf7190a7b7}{val}})
+\begin{DoxyCompactList}\small\item\em Constructor for \mbox{\hyperlink{class_num}{Num}} object. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_num_a07316c2897aadb9257b8de74dbfdcc03}{equals}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$e) override
+\begin{DoxyCompactList}\small\item\em Judge if this \mbox{\hyperlink{class_num}{Num}} class object equals to another object. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_num_a0c55f8227dd834ec1961f745fce2d75e}{interp}} () override
+\begin{DoxyCompactList}\small\item\em Interpret \mbox{\hyperlink{class_num}{Num}} object to an integer value. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_num_a24a51278e76d4b01b457fb5f521bcc38}{has\+\_\+variable}} () override
+\begin{DoxyCompactList}\small\item\em Judge if the \mbox{\hyperlink{class_num}{Num}} object contains any \mbox{\hyperlink{class_variable}{Variable}}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_num_a2ab1e79272a4269db4f2102d95b69ade}{subst}} (std\+::string string, \mbox{\hyperlink{class_expr}{Expr}} $\ast$e) override
+\begin{DoxyCompactList}\small\item\em Substitute the \mbox{\hyperlink{class_variable}{Variable}} inside \mbox{\hyperlink{class_num}{Num}} object with another \mbox{\hyperlink{class_expr}{Expr}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactItemize}
+\item 
+virtual bool \mbox{\hyperlink{class_expr_abf9cdb765fb84304881789d273d7594f}{equals}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$e)=0
+\begin{DoxyCompactList}\small\item\em Judge if this \mbox{\hyperlink{class_expr}{Expr}} class object equals to another object. \end{DoxyCompactList}\item 
+virtual int \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{interp}} ()=0
+\begin{DoxyCompactList}\small\item\em Interpret \mbox{\hyperlink{class_expr}{Expr}} object to an integer value. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{class_expr_a92dc26078993a4b9721ea732274a435c}{has\+\_\+variable}} ()=0
+\begin{DoxyCompactList}\small\item\em Judge if the \mbox{\hyperlink{class_expr}{Expr}} object contains any \mbox{\hyperlink{class_variable}{Variable}}. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_expr_a1801de8f95587658635d6fd749268c88}{subst}} (std\+::string string, \mbox{\hyperlink{class_expr}{Expr}} $\ast$e)=0
+\begin{DoxyCompactList}\small\item\em Substitute the \mbox{\hyperlink{class_variable}{Variable}} inside \mbox{\hyperlink{class_expr}{Expr}} object with another \mbox{\hyperlink{class_expr}{Expr}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_num_ab0654582066deb3adbbd64cf7190a7b7}\label{class_num_ab0654582066deb3adbbd64cf7190a7b7}} 
+int {\bfseries val}
+\begin{DoxyCompactList}\small\item\em the integer value of the \mbox{\hyperlink{class_num}{Num}} object \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{class_num}{Num}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing pure number. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_num_a9fce58e650a99ae50f4140ed9c87ec9f}\label{class_num_a9fce58e650a99ae50f4140ed9c87ec9f}} 
+\index{Num@{Num}!Num@{Num}}
+\index{Num@{Num}!Num@{Num}}
+\doxysubsubsection{\texorpdfstring{Num()}{Num()}}
+{\footnotesize\ttfamily Num\+::\+Num (\begin{DoxyParamCaption}\item[{int}]{val }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Constructor for \mbox{\hyperlink{class_num}{Num}} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em val} & integer value of \mbox{\hyperlink{class_num}{Num}} \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_num_a07316c2897aadb9257b8de74dbfdcc03}\label{class_num_a07316c2897aadb9257b8de74dbfdcc03}} 
+\index{Num@{Num}!equals@{equals}}
+\index{equals@{equals}!Num@{Num}}
+\doxysubsubsection{\texorpdfstring{equals()}{equals()}}
+{\footnotesize\ttfamily bool Num\+::equals (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Judge if this \mbox{\hyperlink{class_num}{Num}} class object equals to another object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & an \mbox{\hyperlink{class_expr}{Expr}} pointer to \mbox{\hyperlink{class_expr}{Expr}} object waited to be compared \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns a boolean, true if two object equals, otherwise false 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_abf9cdb765fb84304881789d273d7594f}{Expr}}.
+
+\mbox{\Hypertarget{class_num_a24a51278e76d4b01b457fb5f521bcc38}\label{class_num_a24a51278e76d4b01b457fb5f521bcc38}} 
+\index{Num@{Num}!has\_variable@{has\_variable}}
+\index{has\_variable@{has\_variable}!Num@{Num}}
+\doxysubsubsection{\texorpdfstring{has\_variable()}{has\_variable()}}
+{\footnotesize\ttfamily bool Num\+::has\+\_\+variable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Judge if the \mbox{\hyperlink{class_num}{Num}} object contains any \mbox{\hyperlink{class_variable}{Variable}}. 
+
+\begin{DoxyReturn}{Returns}
+returns a boolean, always return false 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_a92dc26078993a4b9721ea732274a435c}{Expr}}.
+
+\mbox{\Hypertarget{class_num_a0c55f8227dd834ec1961f745fce2d75e}\label{class_num_a0c55f8227dd834ec1961f745fce2d75e}} 
+\index{Num@{Num}!interp@{interp}}
+\index{interp@{interp}!Num@{Num}}
+\doxysubsubsection{\texorpdfstring{interp()}{interp()}}
+{\footnotesize\ttfamily int Num\+::interp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Interpret \mbox{\hyperlink{class_num}{Num}} object to an integer value. 
+
+\begin{DoxyReturn}{Returns}
+returns the actual integer value of the \mbox{\hyperlink{class_num}{Num}} 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{Expr}}.
+
+\mbox{\Hypertarget{class_num_a2ab1e79272a4269db4f2102d95b69ade}\label{class_num_a2ab1e79272a4269db4f2102d95b69ade}} 
+\index{Num@{Num}!subst@{subst}}
+\index{subst@{subst}!Num@{Num}}
+\doxysubsubsection{\texorpdfstring{subst()}{subst()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}} $\ast$ Num\+::subst (\begin{DoxyParamCaption}\item[{std\+::string}]{string,  }\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Substitute the \mbox{\hyperlink{class_variable}{Variable}} inside \mbox{\hyperlink{class_num}{Num}} object with another \mbox{\hyperlink{class_expr}{Expr}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em string} & first argument, a target string that is waited to be substituted \\
+\hline
+{\em e} & second argument, an \mbox{\hyperlink{class_expr}{Expr}} pointer to object that is going to substitute the \mbox{\hyperlink{class_variable}{Variable}} inside expression \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns this object, since there is no \mbox{\hyperlink{class_variable}{Variable}} in \mbox{\hyperlink{class_num}{Num}} object 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_a1801de8f95587658635d6fd749268c88}{Expr}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/rasonhung/\+Study/\+MSD/\+CS6015/\+MSDScript/\mbox{\hyperlink{expr_8h}{expr.\+h}}\item 
+/\+Users/rasonhung/\+Study/\+MSD/\+CS6015/\+MSDScript/expr.\+cpp\end{DoxyCompactItemize}
