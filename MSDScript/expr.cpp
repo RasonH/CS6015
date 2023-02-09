@@ -5,14 +5,28 @@
 //  Created by Rason Hung on 1/22/23.
 //
 
-#include <stdexcept>
-#include <utility>
 #include "expr.h"
 
+/*---------------------------------------
+ Expression class
+ ---------------------------------------*/
+std::string Expr::to_string() {
+    std::stringstream st("");
+    this->print(st);
+    return st.str();
+}
 
-/*
+std::string Expr::to_pretty_string() {
+    std::stringstream st("");
+    this->pretty_print(st);
+    return st.str();
+}
+
+
+
+/*---------------------------------------
  Number class
- */
+ ---------------------------------------*/
 
 Num::Num(int val){
     this->val = val;
@@ -39,10 +53,71 @@ Expr* Num::subst(std::string string, Expr* e){
     return this;
 }
 
+void Num::print(std::ostream &ostream){
+    ostream << std::to_string(this->val);
+}
 
-/*
+void Num::pretty_print(std::ostream &ostream) {
+    Num::print(ostream);
+}
+
+precedence_t Num::pretty_print_at(){
+    return prec_none;
+}
+
+
+
+
+/*---------------------------------------
+ Variable class
+ ---------------------------------------*/
+
+Variable::Variable(std::string varName){
+    this->name = std::move(varName);
+}
+
+bool Variable::equals(Expr *e){
+    Variable *v = dynamic_cast<Variable*>(e);
+    if(v == nullptr){
+        return false;
+    }else{
+        return (this->name == v->name);
+    }
+}
+
+int Variable::interp(){
+    throw std::runtime_error("no value for variable");
+}
+
+bool Variable::has_variable(){
+    return true;
+}
+
+Expr* Variable::subst(std::string string, Expr* e){
+    if(this->name == string){ // TODO: what if the string is ""
+        return e;
+    }
+    return this;
+}
+
+void Variable::print(std::ostream &ostream){
+    ostream << this->name;
+}
+
+void Variable::pretty_print(std::ostream &ostream) {
+    Variable::print(ostream);
+}
+
+precedence_t Variable::pretty_print_at(){
+    return prec_none;
+}
+
+
+
+
+/*---------------------------------------
  Add class
- */
+ ---------------------------------------*/
 
 Add::Add(Expr *lhs, Expr *rhs) {
     this->lhs = lhs;
@@ -71,10 +146,31 @@ Expr* Add::subst(std::string string, Expr* e){
                     this->rhs->subst(string, e));
 }
 
+void Add::print(std::ostream &ostream){
+    ostream << "(";
+    this->lhs->print(ostream);
+    ostream << "+";
+    this->rhs->print(ostream);
+    ostream << ")";
+}
 
-/*
+void Add::pretty_print(std::ostream &ostream) {
+    // if add is in the middle, don't need to add any parenthesis on lhs or rhs
+    this->lhs->pretty_print(ostream);
+    ostream << " + ";
+    this->rhs->pretty_print(ostream);
+}
+
+precedence_t Add::pretty_print_at(){
+    return prec_add;
+}
+
+
+
+
+/*---------------------------------------
  Multiplication class
- */
+ ---------------------------------------*/
 
 Mult::Mult(Expr *lhs, Expr *rhs) {
     this->lhs = lhs;
@@ -103,38 +199,43 @@ Expr* Mult::subst(std::string string, Expr* e){
                     this->rhs->subst(string, e));
 }
 
-
-/*
- Variable class
- */
-
-Variable::Variable(std::string varName){
-    this->name = std::move(varName);
+void Mult::print(std::ostream &ostream){
+    ostream << "(";
+    this->lhs->print(ostream);
+    ostream << "*";
+    this->rhs->print(ostream);
+    ostream << ")";
 }
 
-bool Variable::equals(Expr *e){
-    Variable *m = dynamic_cast<Variable*>(e);
-    if(m == nullptr){
-        return false;
+void Mult::pretty_print(std::ostream &ostream) {
+    // if any of lhs or rhs is Add, then put parenthesis to it
+    if(this->lhs->pretty_print_at() == prec_add){
+        ostream << "(";
+        this->lhs->pretty_print(ostream);
+        ostream << ")";
     }else{
-        return (this->name == m->name);
+        this->lhs->pretty_print(ostream);
+    }
+
+    ostream << " * ";
+
+    if(this->rhs->pretty_print_at() == prec_add){
+        ostream << "(";
+        this->rhs->pretty_print(ostream);
+        ostream << ")";
+    }else{
+        this->rhs->pretty_print(ostream);
     }
 }
 
-int Variable::interp(){
-    throw std::runtime_error("no value for variable");
+precedence_t Mult::pretty_print_at(){
+    return prec_mult;
 }
 
-bool Variable::has_variable(){
-    return true;
-}
 
-Expr* Variable::subst(std::string string, Expr* e){
-    if(this->name == string){ // TODO: what if the string is ""
-        return e;
-    }
-    return this;
-}
+
+
+
 
 
 

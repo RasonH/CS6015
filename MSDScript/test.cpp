@@ -160,3 +160,121 @@ TEST_CASE("Substitute"){
         CHECK(((new Variable("x"))->subst("y",new Num(2)))->equals(new Variable("x")));
     }
 }
+
+TEST_CASE("Precedence"){
+    SECTION("Pretty_print_at"){
+        CHECK((new Num(1))->pretty_print_at() == prec_none);
+        CHECK((new Variable("x"))->pretty_print_at() == prec_none);
+        CHECK((new Add(new Num(1), new Variable("x")))->pretty_print_at() == prec_add);
+        CHECK((new Mult(new Num(1), new Variable("x")))->pretty_print_at() == prec_mult);
+
+    }
+}
+
+
+TEST_CASE("To_string"){
+    SECTION("Print"){
+        SECTION("Num_print"){
+            CHECK((new Num(10))->to_string() == "10");
+            CHECK((new Num(-10))->to_string() == "-10");
+        }
+        SECTION("Variable_print"){
+            CHECK((new Variable("x"))->to_string() == "x");
+            CHECK((new Variable("MAX"))->to_string() == "MAX");
+        }
+        SECTION("Add_print"){
+            CHECK((new Add(new Num(10),new Num(12)))->to_string() == "(10+12)");
+            CHECK((new Add(new Num(-10),new Num(-12)))->to_string() == "(-10+-12)");
+            CHECK((new Add(new Num(10),new Variable("x")))->to_string() == "(10+x)");
+        }
+        SECTION("Mult_print"){
+            CHECK((new Mult(new Num(10),new Num(12)))->to_string() == "(10*12)");
+            CHECK((new Mult(new Num(-10),new Num(-12)))->to_string() == "(-10*-12)");
+            CHECK((new Mult(new Num(10),new Variable("x")))->to_string() == "(10*x)");
+        }
+        SECTION("Mixed_print"){
+            CHECK((new Mult(new Num(10),new Add(new Variable("x"), new Num(12))))->to_string() == "(10*(x+12))");
+        }
+
+    }SECTION("Pretty_print"){
+        SECTION("Num_pretty_print"){
+            CHECK((new Num(10))->to_pretty_string() == "10");
+            CHECK((new Num(-10))->to_pretty_string() == "-10");
+        }
+        SECTION("Variable_pretty_print"){
+            CHECK((new Variable("x"))->to_pretty_string() == "x");
+            CHECK((new Variable("MAX"))->to_pretty_string() == "MAX");
+        }
+        SECTION("Add_pretty_print"){
+            CHECK((new Add(new Num(10),new Num(12)))->to_pretty_string() == "10 + 12");
+            CHECK((new Add(new Num(-10),new Num(-12)))->to_pretty_string() == "-10 + -12");
+            CHECK((new Add(new Num(10),new Variable("x")))->to_pretty_string() == "10 + x");
+        }
+        SECTION("Mult_pretty_print"){
+            CHECK((new Mult(new Num(10),new Num(12)))->to_pretty_string() == "10 * 12");
+            CHECK((new Mult(new Num(-10),new Num(-12)))->to_pretty_string() == "-10 * -12");
+            CHECK((new Mult(new Num(10),new Variable("x")))->to_pretty_string() == "10 * x");
+        }
+        SECTION("Mixed_pretty_print"){
+            SECTION("Add_in_between"){
+                SECTION("None_add_none"){
+                    CHECK((new Add(new Num(10),new Num(12)))->to_pretty_string() == "10 + 12");
+                }
+                SECTION("None_add_add"){
+                    CHECK((new Add(new Num(10),new Add(new Num(12), new Variable("x"))))->to_pretty_string() == "10 + 12 + x");
+                }
+                SECTION("None_add_mult"){
+                    CHECK((new Add(new Num(10),new Mult(new Num(12), new Variable("x"))))->to_pretty_string() == "10 + 12 * x");
+                }
+                SECTION("Add_add_none"){
+                    CHECK((new Add(new Add(new Num(12), new Variable("x")), new Num(10)))->to_pretty_string() == "12 + x + 10");
+                }
+                SECTION("Add_add_add"){
+                    CHECK((new Add(new Add(new Num(12), new Variable("x")), new Add(new Num(10), new Num(1))))->to_pretty_string() == "12 + x + 10 + 1");
+                }
+                SECTION("Add_add_mult"){
+                    CHECK((new Add(new Add(new Num(12), new Variable("x")), new Mult(new Num(10), new Num(1))))->to_pretty_string() == "12 + x + 10 * 1");
+                }
+                SECTION("Mult_add_none"){
+                    CHECK((new Add(new Mult(new Num(12), new Variable("x")), new Num(10)))->to_pretty_string() == "12 * x + 10");
+                }
+                SECTION("Mult_add_add"){
+                    CHECK((new Add(new Mult(new Num(12), new Variable("x")), new Add(new Num(10), new Num(1))))->to_pretty_string() == "12 * x + 10 + 1");
+                }
+                SECTION("Mult_add_mult"){
+                    CHECK((new Add(new Mult(new Num(12), new Variable("x")), new Mult(new Num(10), new Num(1))))->to_pretty_string() == "12 * x + 10 * 1");
+                }
+            }
+            SECTION("Mult_in_between"){
+                SECTION("None_mult_none"){
+                    CHECK((new Mult(new Num(10),new Num(12)))->to_pretty_string() == "10 * 12");
+                }
+                SECTION("None_mult_add"){
+                    CHECK((new Mult(new Num(10),new Add(new Num(12), new Variable("x"))))->to_pretty_string() == "10 * (12 + x)");
+                }
+                SECTION("None_mult_mult"){
+                    CHECK((new Mult(new Num(10),new Mult(new Num(12), new Variable("x"))))->to_pretty_string() == "10 * 12 * x");
+                }
+                SECTION("Add_mult_none"){
+                    CHECK((new Mult(new Add(new Num(12), new Variable("x")), new Num(10)))->to_pretty_string() == "(12 + x) * 10");
+                }
+                SECTION("Add_mult_add"){
+                    CHECK((new Mult(new Add(new Num(12), new Variable("x")), new Add(new Num(10), new Num(1))))->to_pretty_string() == "(12 + x) * (10 + 1)");
+                }
+                SECTION("Add_mult_mult"){
+                    CHECK((new Mult(new Add(new Num(12), new Variable("x")), new Mult(new Num(10), new Num(1))))->to_pretty_string() == "(12 + x) * 10 * 1");
+                }
+                SECTION("Mult_mult_none"){
+                    CHECK((new Mult(new Mult(new Num(12), new Variable("x")), new Num(10)))->to_pretty_string() == "12 * x * 10");
+                }
+                SECTION("Mult_mult_add"){
+                    CHECK((new Mult(new Mult(new Num(12), new Variable("x")), new Add(new Num(10), new Num(1))))->to_pretty_string() == "12 * x * (10 + 1)");
+                }
+                SECTION("Mult_mult_mult"){
+                    CHECK((new Mult(new Mult(new Num(12), new Variable("x")), new Mult(new Num(10), new Num(1))))->to_pretty_string() == "12 * x * 10 * 1");
+                }
+            }
+        }
+    }
+
+}
