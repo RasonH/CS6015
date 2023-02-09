@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['val_0',['val',['../class_num.html#ab0654582066deb3adbbd64cf7190a7b7',1,'Num']]],
-  ['variable_1',['Variable',['../class_variable.html',1,'Variable'],['../class_variable.html#addfa3b9192e7a5e63787859e6f2d45f8',1,'Variable::Variable()']]]
+  ['to_5fpretty_5fstring_0',['to_pretty_string',['../class_expr.html#a6ad7c18234f22d96d6917089b5bd7caa',1,'Expr']]],
+  ['to_5fstring_1',['to_string',['../class_expr.html#abe130f37bd185ec13c5113de16fc7bf7',1,'Expr']]]
 ];

@@ -7,6 +7,9 @@ expression class
 
 {\ttfamily \#include $<$cstdio$>$}\newline
 {\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$sstream$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
@@ -15,12 +18,21 @@ class \mbox{\hyperlink{class_expr}{Expr}}
 (pure abstract class) \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{class_num}{Num}}
 \begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_num}{Num}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing pure number. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_variable}{Variable}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_variable}{Variable}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing pure variable. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{class_add}{Add}}
 \begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_add}{Add}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing addition for two expressions. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{class_mult}{Mult}}
-\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_mult}{Mult}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing multiplication for two expressions. \end{DoxyCompactList}\item 
-class \mbox{\hyperlink{class_variable}{Variable}}
-\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_variable}{Variable}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing pure variable. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_mult}{Mult}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing multiplication for two expressions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{expr_8h_a9e5fdf365cd8dc7be4d972daf07f8bdf}\label{expr_8h_a9e5fdf365cd8dc7be4d972daf07f8bdf}} 
+enum {\bfseries precedence\+\_\+t} \{ {\bfseries prec\+\_\+none}
+, {\bfseries prec\+\_\+add}
+, {\bfseries prec\+\_\+mult}
+ \}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}

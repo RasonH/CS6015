@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.2.8)  8 FEB 2023 06:02
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.2.8)  8 FEB 2023 23:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -752,7 +752,40 @@ File: l3backend-pdftex.def 2022-02-07 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count338
 \l__pdf_internal_box=\box121
 )
-(./refman.aux)
+(./refman.aux
+
+LaTeX Warning: Label `class_expr_abe130f37bd185ec13c5113de16fc7bf7' multiply de
+fined.
+
+
+LaTeX Warning: Label `class_expr_a6ad7c18234f22d96d6917089b5bd7caa' multiply de
+fined.
+
+
+LaTeX Warning: Label `class_expr_abe130f37bd185ec13c5113de16fc7bf7' multiply de
+fined.
+
+
+LaTeX Warning: Label `class_expr_a6ad7c18234f22d96d6917089b5bd7caa' multiply de
+fined.
+
+
+LaTeX Warning: Label `class_expr_abe130f37bd185ec13c5113de16fc7bf7' multiply de
+fined.
+
+
+LaTeX Warning: Label `class_expr_a6ad7c18234f22d96d6917089b5bd7caa' multiply de
+fined.
+
+
+LaTeX Warning: Label `class_expr_abe130f37bd185ec13c5113de16fc7bf7' multiply de
+fined.
+
+
+LaTeX Warning: Label `class_expr_a6ad7c18234f22d96d6917089b5bd7caa' multiply de
+fined.
+
+)
 \openout1 = `refman.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 153.
@@ -773,8 +806,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 153.
 LaTeX Font Info:    ... okay on input line 153.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 153.
 LaTeX Font Info:    ... okay on input line 153.
-
-(/usr/local/texlive/2022/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+ (/usr/local/texlive/2022/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count339
 \scratchdimen=\dimen266
@@ -953,7 +985,7 @@ LaTeX Font Info:    Trying to load font information for T1+pcr on input line 10
  (/usr/local/texlive/2022/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 ) <./class_add.pdf>
-<class_add.pdf, id=398, 501.875pt x 872.8309pt>
+<class_add.pdf, id=473, 501.875pt x 872.8309pt>
 File: class_add.pdf Graphic file (type pdf)
 <use class_add.pdf>
 Package pdftex.def Info: class_add.pdf  used on input line 15.
@@ -974,191 +1006,299 @@ LaTeX Font Info:    Font shape `T1/phv/m/it' in size <9> not available
 (Font)              Font shape `T1/phv/m/sl' tried instead on input line 22.
 LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
 (Font)              scaled to size 8.09995pt on input line 22.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <7> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 36.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 6.29996pt on input line 36.
  [9]
 LaTeX Font Info:    Font shape `T1/phv/m/n' will be
-(Font)              scaled to size 7.19995pt on input line 60.
+(Font)              scaled to size 7.19995pt on input line 79.
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <8> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 60.
- [10]
-Underfull \hbox (badness 10000) detected at line 91
-[][][]
- []
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 79.
+
+Overfull \vbox (11.65173pt too high) has occurred while \output is active []
 
 
-Underfull \hbox (badness 10000) detected at line 108
-[][][]
- []
-
-
-Underfull \hbox (badness 10000) detected at line 125
-[][][]
- []
-
-[11]
-Underfull \hbox (badness 10000) detected at line 149
-[][][]
- []
-
-) (./class_expr.tex <./class_expr.pdf>
-<class_expr.pdf, id=524, 501.875pt x 147.61147pt>
-File: class_expr.pdf Graphic file (type pdf)
-<use class_expr.pdf>
-Package pdftex.def Info: class_expr.pdf  used on input line 16.
-(pdftex.def)             Requested size: 193.479pt x 56.9055pt.
- [12]
-Underfull \hbox (badness 10000) detected at line 52
-[][][]
- []
-
-
-Underfull \hbox (badness 10000) detected at line 69
-[][][]
- []
-
-
-Underfull \hbox (badness 10000) detected at line 86
-[][][]
- []
-
-[13]
+[10]
 Underfull \hbox (badness 10000) detected at line 110
 [][][]
  []
 
+
+Underfull \hbox (badness 10000) detected at line 127
+[][][]
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 144
+[][][]
+ []
+
+[11]
+Underfull \hbox (badness 10000) detected at line 180
+[][][]
+ []
+
+
+Overfull \vbox (10.18353pt too high) has occurred while \output is active []
+
+
+[12]
+Underfull \hbox (badness 10000) detected at line 223
+[][][]
+ []
+
+) (./class_expr.tex <./class_expr.pdf>
+<class_expr.pdf, id=626, 501.875pt x 147.61147pt>
+File: class_expr.pdf Graphic file (type pdf)
+<use class_expr.pdf>
+Package pdftex.def Info: class_expr.pdf  used on input line 16.
+(pdftex.def)             Requested size: 193.479pt x 56.9055pt.
+
+pdfTeX warning (ext4): destination with the same identifier (name{class_expr_ab
+e130f37bd185ec13c5113de16fc7bf7}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.36 ...s_expr_abe130f37bd185ec13c5113de16fc7bf7}}
+                                                  
+pdfTeX warning (ext4): destination with the same identifier (name{class_expr_a6
+ad7c18234f22d96d6917089b5bd7caa}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.39 ...s_expr_a6ad7c18234f22d96d6917089b5bd7caa}}
+                                                   [13]
+Underfull \hbox (badness 10000) detected at line 64
+[][][]
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 81
+[][][]
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 98
+[][][]
+ []
+
+[14]
+Underfull \hbox (badness 10000) detected at line 134
+[][][]
+ []
+
+[15] [16]
+Underfull \hbox (badness 10000) detected at line 177
+[][][]
+ []
+
 ) (./class_mult.tex <./class_mult.pdf>
-<class_mult.pdf, id=608, 501.875pt x 872.8309pt>
+<class_mult.pdf, id=745, 501.875pt x 872.8309pt>
 File: class_mult.pdf Graphic file (type pdf)
 <use class_mult.pdf>
 Package pdftex.def Info: class_mult.pdf  used on input line 15.
 (pdftex.def)             Requested size: 32.7149pt x 56.9055pt.
- [14] [15]
-Underfull \hbox (badness 10000) detected at line 91
+ [17]
+pdfTeX warning (ext4): destination with the same identifier (name{class_expr_ab
+e130f37bd185ec13c5113de16fc7bf7}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.54 ...s_expr_abe130f37bd185ec13c5113de16fc7bf7}}
+                                                  
+pdfTeX warning (ext4): destination with the same identifier (name{class_expr_a6
+ad7c18234f22d96d6917089b5bd7caa}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.57 ...s_expr_a6ad7c18234f22d96d6917089b5bd7caa}}
+                                                  
+Overfull \vbox (11.65173pt too high) has occurred while \output is active []
+
+
+[18]
+Underfull \hbox (badness 10000) detected at line 110
 [][][]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 108
+Underfull \hbox (badness 10000) detected at line 127
 [][][]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 125
+Underfull \hbox (badness 10000) detected at line 144
 [][][]
  []
 
-[16]
-Underfull \hbox (badness 10000) detected at line 149
+[19]
+Underfull \hbox (badness 10000) detected at line 180
+[][][]
+ []
+
+
+Overfull \vbox (10.18353pt too high) has occurred while \output is active []
+
+
+[20]
+Underfull \hbox (badness 10000) detected at line 223
 [][][]
  []
 
 ) (./class_num.tex <./class_num.pdf>
-<class_num.pdf, id=726, 501.875pt x 872.8309pt>
+<class_num.pdf, id=879, 501.875pt x 872.8309pt>
 File: class_num.pdf Graphic file (type pdf)
 <use class_num.pdf>
 Package pdftex.def Info: class_num.pdf  used on input line 15.
 (pdftex.def)             Requested size: 32.7149pt x 56.9055pt.
- [17]
-Underfull \hbox (badness 10000) detected at line 86
+ [21]
+pdfTeX warning (ext4): destination with the same identifier (name{class_expr_ab
+e130f37bd185ec13c5113de16fc7bf7}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.54 ...s_expr_abe130f37bd185ec13c5113de16fc7bf7}}
+                                                  
+pdfTeX warning (ext4): destination with the same identifier (name{class_expr_a6
+ad7c18234f22d96d6917089b5bd7caa}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.57 ...s_expr_a6ad7c18234f22d96d6917089b5bd7caa}}
+                                                   [22]
+Underfull \hbox (badness 10000) detected at line 105
 [][][]
  []
 
-[18]
-Underfull \hbox (badness 10000) detected at line 103
+
+Underfull \hbox (badness 10000) detected at line 122
 [][][]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 120
+Underfull \hbox (badness 10000) detected at line 139
+[][][]
+ []
+
+[23]
+Underfull \hbox (badness 10000) detected at line 175
 [][][]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 144
+Overfull \vbox (10.18353pt too high) has occurred while \output is active []
+
+
+[24]
+Underfull \hbox (badness 10000) detected at line 218
 [][][]
  []
 
-) (./class_variable.tex [19] <./class_variable.pdf>
-<class_variable.pdf, id=822, 501.875pt x 590.44589pt>
+) (./class_variable.tex <./class_variable.pdf>
+<class_variable.pdf, id=993, 501.875pt x 590.44589pt>
 File: class_variable.pdf Graphic file (type pdf)
 <use class_variable.pdf>
 Package pdftex.def Info: class_variable.pdf  used on input line 15.
 (pdftex.def)             Requested size: 48.36783pt x 56.9055pt.
+ [25]
+pdfTeX warning (ext4): destination with the same identifier (name{class_expr_ab
+e130f37bd185ec13c5113de16fc7bf7}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.54 ...s_expr_abe130f37bd185ec13c5113de16fc7bf7}}
+                                                  
+pdfTeX warning (ext4): destination with the same identifier (name{class_expr_a6
+ad7c18234f22d96d6917089b5bd7caa}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.57 ...s_expr_a6ad7c18234f22d96d6917089b5bd7caa}}
+                                                  
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <7> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 57.
- [20]
-Underfull \hbox (badness 10000) detected at line 86
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 76.
+ [26]
+Underfull \hbox (badness 10000) detected at line 105
 [][][]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 103
+Underfull \hbox (badness 10000) detected at line 122
 [][][]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 120
+Underfull \hbox (badness 10000) detected at line 139
 [][][]
  []
 
-[21]
-Underfull \hbox (badness 10000) detected at line 144
+[27]
+Underfull \hbox (badness 10000) detected at line 175
 [][][]
  []
 
-) [22]
+
+Overfull \vbox (10.18353pt too high) has occurred while \output is active []
+
+
+[28]
+Underfull \hbox (badness 10000) detected at line 218
+[][][]
+ []
+
+) [29] [30
+
+]
 Chapter 6.
 (./cmdline_8h.tex
 Underfull \hbox (badness 10000) in paragraph at lines 8--10
 
  []
 
-[23
-
-]
+[31]
 Underfull \hbox (badness 10000) detected at line 40
 [][][]
  []
 
 ) (./cmdline_8h_source.tex) (./expr_8h.tex
-Underfull \hbox (badness 10000) in paragraph at lines 8--10
+Underfull \hbox (badness 10000) in paragraph at lines 8--13
 
  []
 
-) (./expr_8h_source.tex [24] [25]) [26] (./refman.ind
+[32]) (./expr_8h_source.tex [33]) [34] (./refman.ind
 Overfull \hbox (20.36427pt too wide) in paragraph at lines 3--5
 []\T1/phv/m/n/10 /Users/rasonhung/Study/MSD/CS6015/MSDScript/cmdline.h,
  []
 
-[27
+[35
 
 
+
+] [36
 
 ]) (./refman.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package rerunfilecheck Info: File `refman.out' has not changed.
-(rerunfilecheck)             Checksum: 548B094797B8B6ADD52DF370D6DD049A;11876.
+(rerunfilecheck)             Checksum: 2799F3D22A6DEA23B876E734D549CE25;14686.
  ) 
 Here is how much of TeX's memory you used:
- 18125 strings out of 478268
- 293508 string characters out of 5846348
- 605673 words of memory out of 5000000
- 35815 multiletter control sequences out of 15000+600000
- 526871 words of font info for 97 fonts, out of 8000000 for 9000
+ 18237 strings out of 478268
+ 296191 string characters out of 5846348
+ 610289 words of memory out of 5000000
+ 35865 multiletter control sequences out of 15000+600000
+ 528635 words of font info for 104 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  99i,16n,117p,505b,642s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/te
 xlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/tex
 live/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texli
-ve/2022/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2022/
-texmf-dist/fonts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2022/texmf-d
-ist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2022/texmf-dist/fon
-ts/type1/urw/helvetic/uhvb8ac.pfb></usr/local/texlive/2022/texmf-dist/fonts/typ
-e1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/urw/
-helvetic/uhvro8a.pfb>
-Output written on refman.pdf (31 pages, 161837 bytes).
+ve/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive
+/2022/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2022/te
+xmf-dist/fonts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2022/texmf-dis
+t/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2022/texmf-dist/fonts
+/type1/urw/helvetic/uhvb8ac.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1
+/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/urw/he
+lvetic/uhvro8a.pfb>
+Output written on refman.pdf (40 pages, 191908 bytes).
 PDF statistics:
- 1161 PDF objects out of 1200 (max. 8388607)
- 1039 compressed objects within 11 object streams
- 162 named destinations out of 1000 (max. 500000)
- 514 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1431 PDF objects out of 1440 (max. 8388607)
+ 1296 compressed objects within 13 object streams
+ 219 named destinations out of 1000 (max. 500000)
+ 634 words of extra memory for PDF output out of 10000 (max. 10000000)
 
