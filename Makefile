@@ -4,7 +4,7 @@
 #clean - deletes compiled link and executable files
 
 CXX = c++
-CFLAGS = -std=gnu++11
+CFLAGS = -std=c++11
 OBJS = main.o cmdline.o expr.o test.o
 CXXSOURCE = main.cpp cmdline.cpp expr.cpp test.cpp
 HEADERS = cmdline.h catch.h expr.h test.h
@@ -20,10 +20,10 @@ main.o: main.cpp
 cmdline.o: cmdline.cpp cmdline.h catch.h
 	$(CXX) $(CFLAGS) -c cmdline.cpp
 
-expr.o: expr.cpp expr.h catch.h
+expr.o: expr.cpp expr.h
 	$(CXX) $(CFLAGS) -c expr.cpp
 
-test.o: test.cpp test.h expr.h
+test.o: test.cpp catch.h expr.h
 	$(CXX) $(CFLAGS) -c test.cpp
 
 .PHONY:clean test

@@ -4,7 +4,7 @@
 
 #pragma include once
 #include "expr.h"
-#include "test.h"
+#include "catch.h"
 
 TEST_CASE("Equals"){
     SECTION("Num_equals"){
@@ -227,13 +227,13 @@ TEST_CASE("To_string"){
                     CHECK((new Add(new Num(10),new Mult(new Num(12), new Variable("x"))))->to_pretty_string() == "10 + 12 * x");
                 }
                 SECTION("Add_add_none"){
-                    CHECK((new Add(new Add(new Num(12), new Variable("x")), new Num(10)))->to_pretty_string() == "12 + x + 10");
+                    CHECK((new Add(new Add(new Num(12), new Variable("x")), new Num(10)))->to_pretty_string() == "(12 + x) + 10");
                 }
                 SECTION("Add_add_add"){
-                    CHECK((new Add(new Add(new Num(12), new Variable("x")), new Add(new Num(10), new Num(1))))->to_pretty_string() == "12 + x + 10 + 1");
+                    CHECK((new Add(new Add(new Num(12), new Variable("x")), new Add(new Num(10), new Num(1))))->to_pretty_string() == "(12 + x) + 10 + 1");
                 }
                 SECTION("Add_add_mult"){
-                    CHECK((new Add(new Add(new Num(12), new Variable("x")), new Mult(new Num(10), new Num(1))))->to_pretty_string() == "12 + x + 10 * 1");
+                    CHECK((new Add(new Add(new Num(12), new Variable("x")), new Mult(new Num(10), new Num(1))))->to_pretty_string() == "(12 + x) + 10 * 1");
                 }
                 SECTION("Mult_add_none"){
                     CHECK((new Add(new Mult(new Num(12), new Variable("x")), new Num(10)))->to_pretty_string() == "12 * x + 10");
@@ -265,13 +265,17 @@ TEST_CASE("To_string"){
                     CHECK((new Mult(new Add(new Num(12), new Variable("x")), new Mult(new Num(10), new Num(1))))->to_pretty_string() == "(12 + x) * 10 * 1");
                 }
                 SECTION("Mult_mult_none"){
-                    CHECK((new Mult(new Mult(new Num(12), new Variable("x")), new Num(10)))->to_pretty_string() == "12 * x * 10");
+                    CHECK((new Mult(new Mult(new Num(12), new Variable("x")), new Num(10)))->to_pretty_string() == "(12 * x) * 10");
                 }
                 SECTION("Mult_mult_add"){
-                    CHECK((new Mult(new Mult(new Num(12), new Variable("x")), new Add(new Num(10), new Num(1))))->to_pretty_string() == "12 * x * (10 + 1)");
+                    CHECK((new Mult(new Mult(new Num(12), new Variable("x")), new Add(new Num(10), new Num(1))))->to_pretty_string() == "(12 * x) * (10 + 1)");
                 }
                 SECTION("Mult_mult_mult"){
-                    CHECK((new Mult(new Mult(new Num(12), new Variable("x")), new Mult(new Num(10), new Num(1))))->to_pretty_string() == "12 * x * 10 * 1");
+                    CHECK((new Mult(new Mult(new Num(12), new Variable("x")), new Mult(new Num(10), new Num(1))))->to_pretty_string() == "(12 * x) * 10 * 1");
+                }
+                SECTION("William")
+                {
+                    CHECK((new Mult( new Mult(new Num(10), new Mult(new Mult(new Num(10), new Num(10)), new Num(10))), new Mult(new Num(10), new Num(10))))->to_pretty_string()  == "(10 * (10 * 10) * 10) * 10 * 10");
                 }
             }
         }

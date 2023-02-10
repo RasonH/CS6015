@@ -38,6 +38,6 @@ MSDScript/msdscript
 .DS_Store
 *.idea
 .idea
-MSDScript/CMakeLists.txt
-MSDScript/cmake-build-debug-coverage/
-MSDScript/cmake-build-debug/
+CMakeLists.txt
+cmake-build-debug-coverage/
+cmake-build-debug/

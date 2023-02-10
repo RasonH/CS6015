@@ -7,7 +7,6 @@
 
 #include "cmdline.h"
 #include "expr.h"
-#include "test.h"
 
 /*! \brief passing arguments through command line
  *  --help --test ...

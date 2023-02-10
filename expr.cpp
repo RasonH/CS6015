@@ -155,8 +155,13 @@ void Add::print(std::ostream &ostream){
 }
 
 void Add::pretty_print(std::ostream &ostream) {
-    // if add is in the middle, don't need to add any parenthesis on lhs or rhs
-    this->lhs->pretty_print(ostream);
+    if(this->lhs->pretty_print_at() == prec_add){
+        ostream << "(";
+        this->lhs->pretty_print(ostream);
+        ostream << ")";
+    }else{
+        this->lhs->pretty_print(ostream);
+    }
     ostream << " + ";
     this->rhs->pretty_print(ostream);
 }
@@ -209,7 +214,7 @@ void Mult::print(std::ostream &ostream){
 
 void Mult::pretty_print(std::ostream &ostream) {
     // if any of lhs or rhs is Add, then put parenthesis to it
-    if(this->lhs->pretty_print_at() == prec_add){
+    if(this->lhs->pretty_print_at() != prec_none){
         ostream << "(";
         this->lhs->pretty_print(ostream);
         ostream << ")";
