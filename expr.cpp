@@ -18,10 +18,14 @@ std::string Expr::to_string() {
     return st.str();
 }
 
+void Expr::pretty_print(std::ostream &ostream){
+    std::streampos init = ostream.tellp();
+    this->pretty_print_at(ostream, init);
+}
+
 std::string Expr::to_pretty_string() {
     std::stringstream st("");
-    std::streampos init = st.tellp();
-    this->pretty_print(st,init);
+    this->pretty_print(st);
     return st.str();
 }
 
@@ -60,7 +64,7 @@ void Num::print(std::ostream &ostream){
     ostream << std::to_string(this->val_);
 }
 
-void Num::pretty_print(std::ostream &ostream, std::streampos &lastReturnSeen) {
+void Num::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen) {
     Num::print(ostream);
 }
 
@@ -107,7 +111,7 @@ void Variable::print(std::ostream &ostream){
     ostream << this->string_;
 }
 
-void Variable::pretty_print(std::ostream &ostream, std::streampos &lastReturnSeen) {
+void Variable::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen) {
     Variable::print(ostream);
 }
 
@@ -159,16 +163,16 @@ void Add::print(std::ostream &ostream){
     ostream << ")";
 }
 
-void Add::pretty_print(std::ostream &ostream, std::streampos &lastReturnSeen) {
+void Add::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen) {
     if(this->lhs_->get_prec() == prec_add || this->lhs_->get_prec() == prec_let){
         ostream << "(";
-        this->lhs_->pretty_print(ostream, lastReturnSeen);
+        this->lhs_->pretty_print_at(ostream, lastReturnSeen);
         ostream << ")";
     }else{
-        this->lhs_->pretty_print(ostream, lastReturnSeen);
+        this->lhs_->pretty_print_at(ostream, lastReturnSeen);
     }
     ostream << " + ";
-    this->rhs_->pretty_print(ostream, lastReturnSeen);
+    this->rhs_->pretty_print_at(ostream, lastReturnSeen);
 }
 
 precedence_t Add::get_prec(){
@@ -220,23 +224,23 @@ void Mult::print(std::ostream &ostream){
 }
 
 
-void Mult::pretty_print(std::ostream &ostream, std::streampos &lastReturnSeen) {
+void Mult::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen) {
     if(this->lhs_->get_prec() != prec_none){
         ostream << "(";
-        this->lhs_->pretty_print(ostream, lastReturnSeen);
+        this->lhs_->pretty_print_at(ostream, lastReturnSeen);
         ostream << ")";
     }else{
-        this->lhs_->pretty_print(ostream, lastReturnSeen);
+        this->lhs_->pretty_print_at(ostream, lastReturnSeen);
     }
 
     ostream << " * ";
 
     if(this->rhs_->get_prec() == prec_add){
         ostream << "(";
-        this->rhs_->pretty_print(ostream, lastReturnSeen);
+        this->rhs_->pretty_print_at(ostream, lastReturnSeen);
         ostream << ")";
     }else{
-        this->rhs_->pretty_print(ostream, lastReturnSeen);
+        this->rhs_->pretty_print_at(ostream, lastReturnSeen);
     }
 }
 
@@ -273,8 +277,7 @@ int Let::interp(){
 }
 
 bool Let::has_variable(){
-    return  this->rhs_->has_variable()
-            || this->body_->has_variable();
+    return  this->body_->subst(lhs_, rhs_)->has_variable(); // after substitution still have variable, then true
 }
 
 Expr* Let::subst(std::string string, Expr* e){
@@ -297,18 +300,18 @@ void Let::print(std::ostream &ostream){
     ostream << ")";
 }
 
-void Let::pretty_print(std::ostream &ostream, std::streampos &lastReturnSeen) {
+void Let::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen) {
     std::streampos oldLastReturn = lastReturnSeen;
     std::streampos currentStart = ostream.tellp();
     ostream << "_let " << this->lhs_ << " = ";
-    this->rhs_->pretty_print(ostream, lastReturnSeen);
+    this->rhs_->pretty_print_at(ostream, lastReturnSeen);
     ostream << "\n";
     lastReturnSeen = ostream.tellp(); // make sure it will be at least update to this position
     for(u_long i = 0; i < (u_long)(currentStart - oldLastReturn); i++){
         ostream << " ";
     }
-    ostream << "_in ";
-    this->body_->pretty_print(ostream, lastReturnSeen);
+    ostream << "_in  ";
+    this->body_->pretty_print_at(ostream, lastReturnSeen);
 }
 
 precedence_t Let::get_prec(){
