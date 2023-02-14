@@ -7,6 +7,8 @@
 
 #include "expr.h"
 
+#include <utility>
+
 /*---------------------------------------
  Expression class
  ---------------------------------------*/
@@ -29,20 +31,20 @@ std::string Expr::to_pretty_string() {
  ---------------------------------------*/
 
 Num::Num(int val){
-    this->val = val;
+    this->val_ = val;
 }
 
 bool Num::equals(Expr *e){
-    Num *n = dynamic_cast<Num*>(e);
-    if(n == nullptr){
+    Num *pNum = dynamic_cast<Num*>(e);
+    if(pNum == nullptr){
         return false;
     }else{
-        return this->val == n->val;
+        return this->val_ == pNum->val_;
     }
 }
 
 int Num::interp(){
-    return this->val;
+    return this->val_;
 }
 
 bool Num::has_variable(){
@@ -54,14 +56,14 @@ Expr* Num::subst(std::string string, Expr* e){
 }
 
 void Num::print(std::ostream &ostream){
-    ostream << std::to_string(this->val);
+    ostream << std::to_string(this->val_);
 }
 
 void Num::pretty_print(std::ostream &ostream) {
     Num::print(ostream);
 }
 
-precedence_t Num::pretty_print_at(){
+precedence_t Num::get_prec(){
     return prec_none;
 }
 
@@ -73,15 +75,15 @@ precedence_t Num::pretty_print_at(){
  ---------------------------------------*/
 
 Variable::Variable(std::string varName){
-    this->name = std::move(varName);
+    this->string_ = std::move(varName);
 }
 
 bool Variable::equals(Expr *e){
-    Variable *v = dynamic_cast<Variable*>(e);
-    if(v == nullptr){
+    Variable *pVar = dynamic_cast<Variable*>(e);
+    if(pVar == nullptr){
         return false;
     }else{
-        return (this->name == v->name);
+        return (this->string_ == pVar->string_);
     }
 }
 
@@ -94,21 +96,21 @@ bool Variable::has_variable(){
 }
 
 Expr* Variable::subst(std::string string, Expr* e){
-    if(this->name == string){ // TODO: what if the string is ""
+    if(this->string_ == string){ // TODO: what if the string is ""
         return e;
     }
     return this;
 }
 
 void Variable::print(std::ostream &ostream){
-    ostream << this->name;
+    ostream << this->string_;
 }
 
 void Variable::pretty_print(std::ostream &ostream) {
     Variable::print(ostream);
 }
 
-precedence_t Variable::pretty_print_at(){
+precedence_t Variable::get_prec(){
     return prec_none;
 }
 
@@ -120,53 +122,55 @@ precedence_t Variable::pretty_print_at(){
  ---------------------------------------*/
 
 Add::Add(Expr *lhs, Expr *rhs) {
-    this->lhs = lhs;
-    this->rhs = rhs;
+    this->lhs_ = lhs;
+    this->rhs_ = rhs;
 }
 
 bool Add::equals(Expr *e){
-    Add *a = dynamic_cast<Add*>(e);
-    if(a == nullptr){
+    Add *pAdd = dynamic_cast<Add*>(e);
+    if(pAdd == nullptr){
         return false;
     }else{
-        return (this->lhs->equals(a->lhs) && this->rhs->equals(a->rhs));
+        return  (this->lhs_->equals(pAdd->lhs_))
+                && (this->rhs_->equals(pAdd->rhs_));
     }
 }
 
 int Add::interp(){
-    return this->lhs->interp() + this->rhs->interp();
+    return this->lhs_->interp() + this->rhs_->interp();
 }
 
 bool Add::has_variable(){
-    return this->lhs->has_variable() || this->rhs->has_variable();
+    return  this->lhs_->has_variable()
+            || this->rhs_->has_variable();
 }
 
 Expr* Add::subst(std::string string, Expr* e){
-    return new Add(this->lhs->subst(string, e),
-                    this->rhs->subst(string, e));
+    return new Add(this->lhs_->subst(string, e),
+                   this->rhs_->subst(string, e));
 }
 
 void Add::print(std::ostream &ostream){
     ostream << "(";
-    this->lhs->print(ostream);
+    this->lhs_->print(ostream);
     ostream << "+";
-    this->rhs->print(ostream);
+    this->rhs_->print(ostream);
     ostream << ")";
 }
 
 void Add::pretty_print(std::ostream &ostream) {
-    if(this->lhs->pretty_print_at() == prec_add){
+    if(this->lhs_->get_prec() == prec_add || this->lhs_->get_prec() == prec_let){
         ostream << "(";
-        this->lhs->pretty_print(ostream);
+        this->lhs_->pretty_print(ostream);
         ostream << ")";
     }else{
-        this->lhs->pretty_print(ostream);
+        this->lhs_->pretty_print(ostream);
     }
     ostream << " + ";
-    this->rhs->pretty_print(ostream);
+    this->rhs_->pretty_print(ostream);
 }
 
-precedence_t Add::pretty_print_at(){
+precedence_t Add::get_prec(){
     return prec_add;
 }
 
@@ -178,65 +182,136 @@ precedence_t Add::pretty_print_at(){
  ---------------------------------------*/
 
 Mult::Mult(Expr *lhs, Expr *rhs) {
-    this->lhs = lhs;
-    this->rhs = rhs;
+    this->lhs_ = lhs;
+    this->rhs_ = rhs;
 }
 
 bool Mult::equals(Expr *e){
-    Mult *m = dynamic_cast<Mult*>(e);
-    if(m == nullptr){
+    Mult *pMult = dynamic_cast<Mult*>(e);
+    if(pMult == nullptr){
         return false;
     }else{
-        return (this->lhs->equals(m->lhs) && this->rhs->equals(m->rhs));
+        return  (this->lhs_->equals(pMult->lhs_))
+                && (this->rhs_->equals(pMult->rhs_));
     }
 }
 
 int Mult::interp(){
-    return this->lhs->interp() * this->rhs->interp();
+    return this->lhs_->interp() * this->rhs_->interp();
 }
 
 bool Mult::has_variable(){
-    return this->lhs->has_variable() || this->rhs->has_variable();
+    return  this->lhs_->has_variable()
+            || this->rhs_->has_variable();
 }
 
 Expr* Mult::subst(std::string string, Expr* e){
-    return new Mult(this->lhs->subst(string, e),
-                    this->rhs->subst(string, e));
+    return new Mult(this->lhs_->subst(string, e),
+                    this->rhs_->subst(string, e));
 }
 
 void Mult::print(std::ostream &ostream){
     ostream << "(";
-    this->lhs->print(ostream);
+    this->lhs_->print(ostream);
     ostream << "*";
-    this->rhs->print(ostream);
+    this->rhs_->print(ostream);
     ostream << ")";
 }
 
 void Mult::pretty_print(std::ostream &ostream) {
-    // if any of lhs or rhs is Add, then put parenthesis to it
-    if(this->lhs->pretty_print_at() != prec_none){
+    if(this->lhs_->get_prec() != prec_none){
         ostream << "(";
-        this->lhs->pretty_print(ostream);
+        this->lhs_->pretty_print(ostream);
         ostream << ")";
     }else{
-        this->lhs->pretty_print(ostream);
+        this->lhs_->pretty_print(ostream);
     }
 
     ostream << " * ";
 
-    if(this->rhs->pretty_print_at() == prec_add){
+    if(this->rhs_->get_prec() == prec_add){
         ostream << "(";
-        this->rhs->pretty_print(ostream);
+        this->rhs_->pretty_print(ostream);
         ostream << ")";
     }else{
-        this->rhs->pretty_print(ostream);
+        this->rhs_->pretty_print(ostream);
     }
 }
 
-precedence_t Mult::pretty_print_at(){
+precedence_t Mult::get_prec(){
     return prec_mult;
 }
 
+
+/*---------------------------------------
+ Let class
+ ---------------------------------------*/
+
+Let::Let(std::string lhs, Expr *rhs, Expr *body) {
+    this->lhs_ = std::move(lhs);
+    this->rhs_ = rhs;
+    this->body_ = body;
+}
+
+bool Let::equals(Expr *e){
+    Let *pLet = dynamic_cast<Let*>(e);
+    if(pLet == nullptr){
+        return false;
+    }else{
+        return  (this->lhs_ == pLet->lhs_)
+                && (this->rhs_->equals(pLet->rhs_))
+                && (this->body_->equals(pLet->body_));
+    }
+}
+
+int Let::interp(){
+    return  this->body_
+            ->subst(lhs_, rhs_)
+            ->interp();
+}
+
+bool Let::has_variable(){
+    return  this->rhs_->has_variable()
+            || this->body_->has_variable();
+}
+
+Expr* Let::subst(std::string string, Expr* e){
+    if(string == this->lhs_){
+        return new Let(this->lhs_,
+                       this->rhs_->subst(string, e),
+                       this->body_);
+    }else{
+        return new Let(this->lhs_,
+                        this->rhs_->subst(string, e),
+                        this->body_->subst(string, e));
+    }
+}
+
+void Let::print(std::ostream &ostream){
+    ostream << "(_let " << this->lhs_ << "=";
+    this->rhs_->print(ostream);
+    ostream << " _in ";
+    this->body_->print(ostream);
+    ostream << ")";
+}
+
+void Let::pretty_print(std::ostream &ostream) {
+    std::streampos posStart = ostream.tellp();
+    ostream << "_let " << this->lhs_ << " = ";
+    this->rhs_->pretty_print(ostream);
+    ostream << "\n";
+    std::streampos  posReturn = ostream.tellp();
+    //print enough space
+    for(int i = 0; i < (int) posStart; i++){
+        ostream << " ";
+    }
+    ostream << "_in ";
+    this->body_->pretty_print(ostream);
+}
+
+precedence_t Let::get_prec(){
+    return prec_let;
+}
 
 
 

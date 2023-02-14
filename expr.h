@@ -23,6 +23,7 @@ typedef enum {
     prec_none,  // = 0
     prec_add,   // = 1
     prec_mult,  // = 2
+    prec_let,   // = 3
 } precedence_t;
 
 
@@ -75,7 +76,13 @@ public:
     * \brief implementation helper function of pretty_print for classifying case
     * \return precedence_t type enum
     */
-    virtual precedence_t pretty_print_at() = 0;
+    virtual precedence_t get_prec() = 0;
+
+    /**
+     * \brief helper function for keep tracking the position of ostream when calling pretty_print()
+     * \return the position of the last seen "\\n"
+     */
+    virtual std::streampos pretty_print_at(std::streampos&) = 0;
 
     /**
     * \brief  converting expression to string with basic format
@@ -95,7 +102,7 @@ public:
  */
 class Num : public Expr {
 public:
-    int val; //!< the integer value of the Num object
+    int val_; //!< the integer value of the Num object
 
     /**
     * \brief Constructor for Num object
@@ -134,7 +141,7 @@ public:
 
     void pretty_print(std::ostream &ostream) override;
 
-    precedence_t pretty_print_at() override;
+    precedence_t get_prec() override;
 };
 
 
@@ -143,7 +150,7 @@ public:
  */
 class Variable : public Expr {
 public:
-    std::string name;  //!< the string name that makes up the Variable object
+    std::string string_;  //!< the string name that makes up the Variable object
 
     /**
     * \brief Constructor for Variable object
@@ -182,7 +189,7 @@ public:
 
     void pretty_print(std::ostream &ostream) override;
 
-    precedence_t pretty_print_at() override;
+    precedence_t get_prec() override;
 };
 
 
@@ -192,8 +199,8 @@ public:
  */
 class Add : public Expr {
 public:
-    Expr *lhs; //!< the Expr object that makes up the left hand side of the Add object
-    Expr *rhs; //!< the Expr object that makes up the right hand side of the Add object
+    Expr *lhs_; //!< the Expr object that makes up the left hand side of the Add object
+    Expr *rhs_; //!< the Expr object that makes up the right hand side of the Add object
 
     /**
    * \brief Constructor for Add object
@@ -234,7 +241,7 @@ public:
 
     void pretty_print(std::ostream &ostream) override;
 
-    precedence_t pretty_print_at() override;
+    precedence_t get_prec() override;
 };
 
 
@@ -244,8 +251,8 @@ public:
  */
 class Mult : public Expr {
 public:
-    Expr *lhs; //!< the Expr object that makes up the left hand side of the Mult object
-    Expr *rhs; //!< the Expr object that makes up the right hand side of the Mult object
+    Expr *lhs_; //!< the Expr object that makes up the left hand side of the Mult object
+    Expr *rhs_; //!< the Expr object that makes up the right hand side of the Mult object
 
     /**
    * \brief Constructor for Mult object
@@ -285,7 +292,57 @@ public:
 
     void pretty_print(std::ostream &ostream) override;
 
-    precedence_t pretty_print_at() override;
+    std::streampos pretty_print_at(std::streampos&) override;
+
+    precedence_t get_prec() override;
 };
 
+/*! \brief Let class inherits from Expr class, representing setting values for some expressions if applicable
+ */
+class Let : public Expr {
+public:
+    std::string lhs_; //!< the expression that is waiting to be set with value
+    Expr *rhs_; //!< the setting value
+    Expr *body_; //!< in which expression the variable is set with the value
 
+    /**
+    * \brief Constructor for Let object
+    * \param lhs string that represents the variable waiting to be set
+    * \param rhs an Expr with some value passing to the lhs expression
+    * \param body in which expression the variable is set with the value
+    */
+    Let(std::string lhs, Expr* rhs, Expr* body);
+
+    /**
+    * \brief Judge if this Let class object equals to another object
+    * \param e an Expr pointer to Expr object waited to be compared
+    * \return returns a boolean, true if two object equals, otherwise false
+    */
+    bool equals(Expr *e) override;
+
+    /**
+    * \brief Interpret Let object to an integer value
+    * \return returns the actual integer value of the Num
+    */
+    int interp() override;
+
+    /**
+    * \brief Judge if the Let object contains any Variable
+    * \return returns a boolean, always return false
+    */
+    bool has_variable() override;
+
+    /**
+    * \brief Substitute the Variable inside Let object with another Expr
+    * \param string first argument, a target string that is waited to be substituted
+    * \param e second argument, an Expr pointer to object that is going to substitute the Variable inside expression
+    * \return returns this object, since there is no Variable in Let object
+    */
+    Expr* subst(std::string string, Expr* e) override;
+
+    void print(std::ostream &ostream) override;
+
+    void pretty_print(std::ostream &ostream) override;
+
+    precedence_t get_prec() override;
+};

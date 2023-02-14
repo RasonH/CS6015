@@ -163,10 +163,10 @@ TEST_CASE("Substitute"){
 
 TEST_CASE("Precedence"){
     SECTION("Pretty_print_at"){
-        CHECK((new Num(1))->pretty_print_at() == prec_none);
-        CHECK((new Variable("x"))->pretty_print_at() == prec_none);
-        CHECK((new Add(new Num(1), new Variable("x")))->pretty_print_at() == prec_add);
-        CHECK((new Mult(new Num(1), new Variable("x")))->pretty_print_at() == prec_mult);
+        CHECK((new Num(1))->get_prec() == prec_none);
+        CHECK((new Variable("x"))->get_prec() == prec_none);
+        CHECK((new Add(new Num(1), new Variable("x")))->get_prec() == prec_add);
+        CHECK((new Mult(new Num(1), new Variable("x")))->get_prec() == prec_mult);
 
     }
 }

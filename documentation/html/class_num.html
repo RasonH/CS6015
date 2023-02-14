@@ -114,7 +114,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa2284b2add710918c9300f8a72a12e40"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_num.html#aa2284b2add710918c9300f8a72a12e40">pretty_print</a> (std::ostream &amp;ostream) override</td></tr>
 <tr class="memdesc:aa2284b2add710918c9300f8a72a12e40"><td class="mdescLeft">&#160;</td><td class="mdescRight">print the expression into a pretty format (avoids unnecessary parentheses, with space around + / *)  <br /></td></tr>
 <tr class="separator:aa2284b2add710918c9300f8a72a12e40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3553a3a1b6437b9915c309c4be4391ae"><td class="memItemLeft" align="right" valign="top">precedence_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_num.html#a3553a3a1b6437b9915c309c4be4391ae">pretty_print_at</a> () override</td></tr>
+<tr class="memitem:a3553a3a1b6437b9915c309c4be4391ae"><td class="memItemLeft" align="right" valign="top">precedence_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_num.html#a3553a3a1b6437b9915c309c4be4391ae">get_prec</a> () override</td></tr>
 <tr class="memdesc:a3553a3a1b6437b9915c309c4be4391ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">implementation helper function of pretty_print for classifying case  <br /></td></tr>
 <tr class="separator:a3553a3a1b6437b9915c309c4be4391ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_expr"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_expr')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_expr.html">Expr</a></td></tr>
@@ -136,7 +136,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a24ac16ad055d71f8f602f299e4f8a5e6 inherit pub_methods_class_expr"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_expr.html#a24ac16ad055d71f8f602f299e4f8a5e6">pretty_print</a> (std::ostream &amp;ostream)=0</td></tr>
 <tr class="memdesc:a24ac16ad055d71f8f602f299e4f8a5e6 inherit pub_methods_class_expr"><td class="mdescLeft">&#160;</td><td class="mdescRight">print the expression into a pretty format (avoids unnecessary parentheses, with space around + / *)  <br /></td></tr>
 <tr class="separator:a24ac16ad055d71f8f602f299e4f8a5e6 inherit pub_methods_class_expr"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4df8be15ce6625cde95d96b3c33be51c inherit pub_methods_class_expr"><td class="memItemLeft" align="right" valign="top">virtual precedence_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_expr.html#a4df8be15ce6625cde95d96b3c33be51c">pretty_print_at</a> ()=0</td></tr>
+<tr class="memitem:a4df8be15ce6625cde95d96b3c33be51c inherit pub_methods_class_expr"><td class="memItemLeft" align="right" valign="top">virtual precedence_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_expr.html#a4df8be15ce6625cde95d96b3c33be51c">get_prec</a> ()=0</td></tr>
 <tr class="memdesc:a4df8be15ce6625cde95d96b3c33be51c inherit pub_methods_class_expr"><td class="mdescLeft">&#160;</td><td class="mdescRight">implementation helper function of pretty_print for classifying case  <br /></td></tr>
 <tr class="separator:a4df8be15ce6625cde95d96b3c33be51c inherit pub_methods_class_expr"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe130f37bd185ec13c5113de16fc7bf7 inherit pub_methods_class_expr"><td class="memItemLeft" align="right" valign="top"><a id="abe130f37bd185ec13c5113de16fc7bf7" name="abe130f37bd185ec13c5113de16fc7bf7"></a>
@@ -327,7 +327,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>val</b></td></tr>
 </div>
 </div>
 <a id="a3553a3a1b6437b9915c309c4be4391ae" name="a3553a3a1b6437b9915c309c4be4391ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3553a3a1b6437b9915c309c4be4391ae">&#9670;&#160;</a></span>pretty_print_at()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3553a3a1b6437b9915c309c4be4391ae">&#9670;&#160;</a></span>get_prec()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -336,7 +336,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>val</b></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">precedence_t Num::pretty_print_at </td>
+          <td class="memname">precedence_t Num::get_prec </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
