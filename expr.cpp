@@ -20,7 +20,8 @@ std::string Expr::to_string() {
 
 std::string Expr::to_pretty_string() {
     std::stringstream st("");
-    this->pretty_print(st);
+    std::streampos init = st.tellp();
+    this->pretty_print(st,init);
     return st.str();
 }
 
@@ -59,7 +60,7 @@ void Num::print(std::ostream &ostream){
     ostream << std::to_string(this->val_);
 }
 
-void Num::pretty_print(std::ostream &ostream) {
+void Num::pretty_print(std::ostream &ostream, std::streampos &lastReturnSeen) {
     Num::print(ostream);
 }
 
@@ -106,7 +107,7 @@ void Variable::print(std::ostream &ostream){
     ostream << this->string_;
 }
 
-void Variable::pretty_print(std::ostream &ostream) {
+void Variable::pretty_print(std::ostream &ostream, std::streampos &lastReturnSeen) {
     Variable::print(ostream);
 }
 
@@ -158,16 +159,16 @@ void Add::print(std::ostream &ostream){
     ostream << ")";
 }
 
-void Add::pretty_print(std::ostream &ostream) {
+void Add::pretty_print(std::ostream &ostream, std::streampos &lastReturnSeen) {
     if(this->lhs_->get_prec() == prec_add || this->lhs_->get_prec() == prec_let){
         ostream << "(";
-        this->lhs_->pretty_print(ostream);
+        this->lhs_->pretty_print(ostream, lastReturnSeen);
         ostream << ")";
     }else{
-        this->lhs_->pretty_print(ostream);
+        this->lhs_->pretty_print(ostream, lastReturnSeen);
     }
     ostream << " + ";
-    this->rhs_->pretty_print(ostream);
+    this->rhs_->pretty_print(ostream, lastReturnSeen);
 }
 
 precedence_t Add::get_prec(){
@@ -218,23 +219,24 @@ void Mult::print(std::ostream &ostream){
     ostream << ")";
 }
 
-void Mult::pretty_print(std::ostream &ostream) {
+
+void Mult::pretty_print(std::ostream &ostream, std::streampos &lastReturnSeen) {
     if(this->lhs_->get_prec() != prec_none){
         ostream << "(";
-        this->lhs_->pretty_print(ostream);
+        this->lhs_->pretty_print(ostream, lastReturnSeen);
         ostream << ")";
     }else{
-        this->lhs_->pretty_print(ostream);
+        this->lhs_->pretty_print(ostream, lastReturnSeen);
     }
 
     ostream << " * ";
 
     if(this->rhs_->get_prec() == prec_add){
         ostream << "(";
-        this->rhs_->pretty_print(ostream);
+        this->rhs_->pretty_print(ostream, lastReturnSeen);
         ostream << ")";
     }else{
-        this->rhs_->pretty_print(ostream);
+        this->rhs_->pretty_print(ostream, lastReturnSeen);
     }
 }
 
@@ -295,18 +297,18 @@ void Let::print(std::ostream &ostream){
     ostream << ")";
 }
 
-void Let::pretty_print(std::ostream &ostream) {
-    std::streampos posStart = ostream.tellp();
+void Let::pretty_print(std::ostream &ostream, std::streampos &lastReturnSeen) {
+    std::streampos oldLastReturn = lastReturnSeen;
+    std::streampos currentStart = ostream.tellp();
     ostream << "_let " << this->lhs_ << " = ";
-    this->rhs_->pretty_print(ostream);
+    this->rhs_->pretty_print(ostream, lastReturnSeen);
     ostream << "\n";
-    std::streampos  posReturn = ostream.tellp();
-    //print enough space
-    for(int i = 0; i < (int) posStart; i++){
+    lastReturnSeen = ostream.tellp(); // make sure it will be at least update to this position
+    for(u_long i = 0; i < (u_long)(currentStart - oldLastReturn); i++){
         ostream << " ";
     }
     ostream << "_in ";
-    this->body_->pretty_print(ostream);
+    this->body_->pretty_print(ostream, lastReturnSeen);
 }
 
 precedence_t Let::get_prec(){

@@ -70,19 +70,13 @@ public:
     * \brief print the expression into a pretty format (avoids unnecessary parentheses, with space around + / *)
     * \param ostream deliver string through this output stream
     */
-    virtual void pretty_print(std::ostream &ostream) = 0;
+    virtual void pretty_print(std::ostream &ostream, std::streampos &lastReturnSeen) = 0;
 
     /**
     * \brief implementation helper function of pretty_print for classifying case
     * \return precedence_t type enum
     */
     virtual precedence_t get_prec() = 0;
-
-    /**
-     * \brief helper function for keep tracking the position of ostream when calling pretty_print()
-     * \return the position of the last seen "\\n"
-     */
-    virtual std::streampos pretty_print_at(std::streampos&) = 0;
 
     /**
     * \brief  converting expression to string with basic format
@@ -139,7 +133,7 @@ public:
 
     void print(std::ostream &ostream) override;
 
-    void pretty_print(std::ostream &ostream) override;
+    void pretty_print(std::ostream &ostream, std::streampos &lastReturnSeen) override;
 
     precedence_t get_prec() override;
 };
@@ -187,7 +181,7 @@ public:
 
     void print(std::ostream &ostream) override;
 
-    void pretty_print(std::ostream &ostream) override;
+    void pretty_print(std::ostream &ostream, std::streampos &lastReturnSeen) override;
 
     precedence_t get_prec() override;
 };
@@ -239,7 +233,7 @@ public:
 
     void print(std::ostream &ostream) override;
 
-    void pretty_print(std::ostream &ostream) override;
+    void pretty_print(std::ostream &ostream, std::streampos &lastReturnSeen) override;
 
     precedence_t get_prec() override;
 };
@@ -290,9 +284,7 @@ public:
 
     void print(std::ostream &ostream) override;
 
-    void pretty_print(std::ostream &ostream) override;
-
-    std::streampos pretty_print_at(std::streampos&) override;
+    void pretty_print(std::ostream &ostream, std::streampos &lastReturnSeen) override;
 
     precedence_t get_prec() override;
 };
@@ -342,7 +334,7 @@ public:
 
     void print(std::ostream &ostream) override;
 
-    void pretty_print(std::ostream &ostream) override;
+    void pretty_print(std::ostream &ostream, std::streampos &lastReturnSeen) override;
 
     precedence_t get_prec() override;
 };
