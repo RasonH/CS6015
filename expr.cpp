@@ -20,7 +20,7 @@ std::string Expr::to_string() {
 
 void Expr::pretty_print(std::ostream &ostream){
     std::streampos init = ostream.tellp();
-    this->pretty_print_at(ostream, init);
+    this->pretty_print_at(ostream, init, false, false);
 }
 
 std::string Expr::to_pretty_string() {
@@ -29,6 +29,10 @@ std::string Expr::to_pretty_string() {
     return st.str();
 }
 
+//bool Expr::isOnAnyLhs(Exp* lastLHS){
+//    bool result = (this->get_prec() == prec_add) || (this->get_prec() == prec_mult);
+//    return onLhs |= result;
+//}
 
 
 /*---------------------------------------
@@ -64,8 +68,8 @@ void Num::print(std::ostream &ostream){
     ostream << std::to_string(this->val_);
 }
 
-void Num::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen) {
-    Num::print(ostream);
+void Num::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLvlLeft, bool lastLvlMult) {
+    this->print(ostream);
 }
 
 precedence_t Num::get_prec(){
@@ -79,12 +83,12 @@ precedence_t Num::get_prec(){
  Variable class
  ---------------------------------------*/
 
-Variable::Variable(std::string varName){
+Var::Var(std::string varName){
     this->string_ = std::move(varName);
 }
 
-bool Variable::equals(Expr *e){
-    Variable *pVar = dynamic_cast<Variable*>(e);
+bool Var::equals(Expr *e){
+    Var *pVar = dynamic_cast<Var*>(e);
     if(pVar == nullptr){
         return false;
     }else{
@@ -92,30 +96,30 @@ bool Variable::equals(Expr *e){
     }
 }
 
-int Variable::interp(){
+int Var::interp(){
     throw std::runtime_error("no value for variable");
 }
 
-bool Variable::has_variable(){
+bool Var::has_variable(){
     return true;
 }
 
-Expr* Variable::subst(std::string string, Expr* e){
+Expr* Var::subst(std::string string, Expr* e){
     if(this->string_ == string){ // TODO: what if the string is ""
         return e;
     }
     return this;
 }
 
-void Variable::print(std::ostream &ostream){
+void Var::print(std::ostream &ostream){
     ostream << this->string_;
 }
 
-void Variable::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen) {
-    Variable::print(ostream);
+void Var::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLvlLeft, bool lastLvlMult) {
+    this->print(ostream);
 }
 
-precedence_t Variable::get_prec(){
+precedence_t Var::get_prec(){
     return prec_none;
 }
 
@@ -163,16 +167,22 @@ void Add::print(std::ostream &ostream){
     ostream << ")";
 }
 
-void Add::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen) {
+void Add::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLvlLeft, bool lastLvlMult) {
     if(this->lhs_->get_prec() == prec_add || this->lhs_->get_prec() == prec_let){
         ostream << "(";
-        this->lhs_->pretty_print_at(ostream, lastReturnSeen);
+        this->lhs_->pretty_print_at(ostream, lastReturnSeen, true, false);
         ostream << ")";
     }else{
-        this->lhs_->pretty_print_at(ostream, lastReturnSeen);
+        this->lhs_->pretty_print_at(ostream, lastReturnSeen, true, false);
     }
     ostream << " + ";
-    this->rhs_->pretty_print_at(ostream, lastReturnSeen);
+    if((lastLvlLeft == true) && (this->rhs_->get_prec() == prec_let)){
+        ostream << "(";
+        this->lhs_->pretty_print_at(ostream,lastReturnSeen,false, false);
+        ostream << ")";
+    }else{
+        this->rhs_->pretty_print_at(ostream, lastReturnSeen, false, false);
+    }
 }
 
 precedence_t Add::get_prec(){
@@ -224,23 +234,23 @@ void Mult::print(std::ostream &ostream){
 }
 
 
-void Mult::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen) {
+void Mult::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLvlLeft, bool lastLvlMult) {
     if(this->lhs_->get_prec() != prec_none){
         ostream << "(";
-        this->lhs_->pretty_print_at(ostream, lastReturnSeen);
+        this->lhs_->pretty_print_at(ostream, lastReturnSeen, true, true);
         ostream << ")";
     }else{
-        this->lhs_->pretty_print_at(ostream, lastReturnSeen);
+        this->lhs_->pretty_print_at(ostream, lastReturnSeen, true, true);
     }
 
     ostream << " * ";
 
-    if(this->rhs_->get_prec() == prec_add){
+    if(this->rhs_->get_prec() == prec_add || ((lastLvlLeft == true) && (this->rhs_->get_prec() == prec_let) && lastLvlMult != true)){
         ostream << "(";
-        this->rhs_->pretty_print_at(ostream, lastReturnSeen);
+        this->rhs_->pretty_print_at(ostream, lastReturnSeen, false, true);
         ostream << ")";
     }else{
-        this->rhs_->pretty_print_at(ostream, lastReturnSeen);
+        this->rhs_->pretty_print_at(ostream, lastReturnSeen, false, true);
     }
 }
 
@@ -300,18 +310,16 @@ void Let::print(std::ostream &ostream){
     ostream << ")";
 }
 
-void Let::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen) {
+void Let::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLvlLeft, bool lastLvlMult) { // still need to deal with cases that doesn't have but need to have
     std::streampos oldLastReturn = lastReturnSeen;
     std::streampos currentStart = ostream.tellp();
     ostream << "_let " << this->lhs_ << " = ";
-    this->rhs_->pretty_print_at(ostream, lastReturnSeen);
+    this->rhs_->pretty_print_at(ostream, lastReturnSeen, false, false);
     ostream << "\n";
     lastReturnSeen = ostream.tellp(); // make sure it will be at least update to this position
-    for(u_long i = 0; i < (u_long)(currentStart - oldLastReturn); i++){
-        ostream << " ";
-    }
+    ostream << std::string(currentStart - oldLastReturn, ' ');
     ostream << "_in  ";
-    this->body_->pretty_print_at(ostream, lastReturnSeen);
+    this->body_->pretty_print_at(ostream, lastReturnSeen, false, false);
 }
 
 precedence_t Let::get_prec(){
