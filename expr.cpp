@@ -29,11 +29,6 @@ std::string Expr::to_pretty_string() {
     return st.str();
 }
 
-//bool Expr::isOnAnyLhs(Exp* lastLHS){
-//    bool result = (this->get_prec() == prec_add) || (this->get_prec() == prec_mult);
-//    return onLhs |= result;
-//}
-
 
 /*---------------------------------------
  Number class
@@ -176,13 +171,7 @@ void Add::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen,
         this->lhs_->pretty_print_at(ostream, lastReturnSeen, true, false);
     }
     ostream << " + ";
-    if((lastLvlLeft == true) && (this->rhs_->get_prec() == prec_let)){
-        ostream << "(";
-        this->lhs_->pretty_print_at(ostream,lastReturnSeen,false, false);
-        ostream << ")";
-    }else{
-        this->rhs_->pretty_print_at(ostream, lastReturnSeen, false, false);
-    }
+    this->rhs_->pretty_print_at(ostream, lastReturnSeen, false, false);
 }
 
 precedence_t Add::get_prec(){
@@ -245,7 +234,8 @@ void Mult::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen
 
     ostream << " * ";
 
-    if(this->rhs_->get_prec() == prec_add || ((lastLvlLeft == true) && (this->rhs_->get_prec() == prec_let) && lastLvlMult != true)){
+    if(this->rhs_->get_prec() == prec_add
+    || ((this->rhs_->get_prec() == prec_let) && (lastLvlLeft == true) && lastLvlMult != true)){
         ostream << "(";
         this->rhs_->pretty_print_at(ostream, lastReturnSeen, false, true);
         ostream << ")";
