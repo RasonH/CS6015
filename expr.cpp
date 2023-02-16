@@ -235,7 +235,7 @@ void Mult::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen
     ostream << " * ";
 
     if(this->rhs_->get_prec() == prec_add
-    || ((this->rhs_->get_prec() == prec_let) && (lastLvlLeft == true) && lastLvlMult != true)){
+    || ((this->rhs_->get_prec() == prec_let) && (lastLvlLeft == true) && (lastLvlMult == false))){
         ostream << "(";
         this->rhs_->pretty_print_at(ostream, lastReturnSeen, false, true);
         ostream << ")";

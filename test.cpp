@@ -560,6 +560,9 @@ TEST_CASE("TESTS from Kevin and William"){
             CHECK( (new Mult(new Mult(new Num (2), new Let("x", new Num(5), new Add(new Var("x") ,new  Num(1)) )), new Num(3) )) -> to_pretty_string()
                    == "(2 * _let x = 5\n"
                       "     _in  x + 1) * 3");
+            CHECK( (new Add(new Mult(new Num (2), new Let("x", new Num(5), new Add(new Var("x") ,new  Num(1)) )), new Num(3) )) -> to_pretty_string()
+                   == "2 * (_let x = 5\n"
+                      "     _in  x + 1) + 3");
         }
             // A _let needs parentheses when it is nested immediately as the right argument of an unparenthesized *
             // where _let would have needed parentheses in the surrounding context
