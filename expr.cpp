@@ -20,7 +20,7 @@ std::string Expr::to_string() {
 
 void Expr::pretty_print(std::ostream &ostream){
     std::streampos init = ostream.tellp();
-    this->pretty_print_at(ostream, init, false, false);
+    this->pretty_print_at(ostream, init, false);
 }
 
 std::string Expr::to_pretty_string() {
@@ -63,7 +63,7 @@ void Num::print(std::ostream &ostream){
     ostream << std::to_string(this->val_);
 }
 
-void Num::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLvlLeft, bool lastLvlMult) {
+void Num::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLeftAndAdd) {
     this->print(ostream);
 }
 
@@ -110,7 +110,7 @@ void Var::print(std::ostream &ostream){
     ostream << this->string_;
 }
 
-void Var::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLvlLeft, bool lastLvlMult) {
+void Var::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLeftAndAdd) {
     this->print(ostream);
 }
 
@@ -162,16 +162,16 @@ void Add::print(std::ostream &ostream){
     ostream << ")";
 }
 
-void Add::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLvlLeft, bool lastLvlMult) {
+void Add::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLeftAndAdd) {
     if(this->lhs_->get_prec() == prec_add || this->lhs_->get_prec() == prec_let){
         ostream << "(";
-        this->lhs_->pretty_print_at(ostream, lastReturnSeen, true, false);
+        this->lhs_->pretty_print_at(ostream, lastReturnSeen, true);
         ostream << ")";
     }else{
-        this->lhs_->pretty_print_at(ostream, lastReturnSeen, true, false);
+        this->lhs_->pretty_print_at(ostream, lastReturnSeen, true);
     }
     ostream << " + ";
-    this->rhs_->pretty_print_at(ostream, lastReturnSeen, false, false);
+    this->rhs_->pretty_print_at(ostream, lastReturnSeen, false);
 }
 
 precedence_t Add::get_prec(){
@@ -223,24 +223,23 @@ void Mult::print(std::ostream &ostream){
 }
 
 
-void Mult::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLvlLeft, bool lastLvlMult) {
+void Mult::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLeftAndAdd) {
     if(this->lhs_->get_prec() != prec_none){
         ostream << "(";
-        this->lhs_->pretty_print_at(ostream, lastReturnSeen, true, true);
+        this->lhs_->pretty_print_at(ostream, lastReturnSeen, false);
         ostream << ")";
     }else{
-        this->lhs_->pretty_print_at(ostream, lastReturnSeen, true, true);
+        this->lhs_->pretty_print_at(ostream, lastReturnSeen, false);
     }
 
     ostream << " * ";
 
-    if(this->rhs_->get_prec() == prec_add
-    || ((this->rhs_->get_prec() == prec_let) && (lastLvlLeft == true) && (lastLvlMult == false))){
+    if(this->rhs_->get_prec() == prec_add || ((this->rhs_->get_prec() == prec_let) && lastLeftAndAdd)){
         ostream << "(";
-        this->rhs_->pretty_print_at(ostream, lastReturnSeen, false, true);
+        this->rhs_->pretty_print_at(ostream, lastReturnSeen, false);
         ostream << ")";
     }else{
-        this->rhs_->pretty_print_at(ostream, lastReturnSeen, false, true);
+        this->rhs_->pretty_print_at(ostream, lastReturnSeen, false);
     }
 }
 
@@ -300,16 +299,16 @@ void Let::print(std::ostream &ostream){
     ostream << ")";
 }
 
-void Let::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLvlLeft, bool lastLvlMult) { // still need to deal with cases that doesn't have but need to have
+void Let::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLeftAndAdd) { // still need to deal with cases that doesn't have but need to have
     std::streampos oldLastReturn = lastReturnSeen;
     std::streampos currentStart = ostream.tellp();
     ostream << "_let " << this->lhs_ << " = ";
-    this->rhs_->pretty_print_at(ostream, lastReturnSeen, false, false);
+    this->rhs_->pretty_print_at(ostream, lastReturnSeen, false);
     ostream << "\n";
     lastReturnSeen = ostream.tellp(); // make sure it will be at least update to this position
     ostream << std::string(currentStart - oldLastReturn, ' ');
     ostream << "_in  ";
-    this->body_->pretty_print_at(ostream, lastReturnSeen, false, false);
+    this->body_->pretty_print_at(ostream, lastReturnSeen, false);
 }
 
 precedence_t Let::get_prec(){
