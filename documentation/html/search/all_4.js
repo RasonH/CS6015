@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['interp_0',['interp',['../class_expr.html#aeba8585d8225419d49166371306542c1',1,'Expr::interp()'],['../class_num.html#a0c55f8227dd834ec1961f745fce2d75e',1,'Num::interp()'],['../class_variable.html#a78bd17d17fd39447eb96517ba9dd0804',1,'Variable::interp()'],['../class_add.html#a571fab39592f2e11fc028c3af89d258d',1,'Add::interp()'],['../class_mult.html#a0ae0098f4a1adaef9686983f263ab35a',1,'Mult::interp()']]]
+  ['get_5fprec_0',['get_prec',['../class_expr.html#a0259bf251f82c2c316db53b8cc4ffee1',1,'Expr::get_prec()'],['../class_num.html#ab2a96b65de29202e5b0bca39085bd94b',1,'Num::get_prec()'],['../class_var.html#abb844f778ac3c9215a31253d82cab35f',1,'Var::get_prec()'],['../class_add.html#a48eeac161f311c0e0ddf7f6177de3fca',1,'Add::get_prec()'],['../class_mult.html#ac591a74dfdeb4a20bf67804bf273f036',1,'Mult::get_prec()'],['../class_let.html#a15c3181dc11b6e5122c2d8fef1d69317',1,'Let::get_prec()']]]
 ];

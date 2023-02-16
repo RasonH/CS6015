@@ -87,10 +87,11 @@ Inheritance diagram for Expr:</div>
  <div class="center">
   <img src="class_expr.png" usemap="#Expr_map" alt=""/>
   <map id="Expr_map" name="Expr_map">
-<area href="class_add.html" title="Add class inherits from Expr class, representing addition for two expressions." alt="Add" shape="rect" coords="0,56,60,80"/>
-<area href="class_mult.html" title="Mult class inherits from Expr class, representing multiplication for two expressions." alt="Mult" shape="rect" coords="70,56,130,80"/>
-<area href="class_num.html" title="Num class inherits from Expr class, representing pure number." alt="Num" shape="rect" coords="140,56,200,80"/>
-<area href="class_variable.html" title="Variable class inherits from Expr class, representing pure variable." alt="Variable" shape="rect" coords="210,56,270,80"/>
+<area href="class_add.html" title="Add class inherits from Expr class, representing addition for two expressions." alt="Add" shape="rect" coords="0,56,38,80"/>
+<area href="class_let.html" title="Let class inherits from Expr class, representing setting values for some expressions if applicable." alt="Let" shape="rect" coords="48,56,86,80"/>
+<area href="class_mult.html" title="Mult class inherits from Expr class, representing multiplication for two expressions." alt="Mult" shape="rect" coords="96,56,134,80"/>
+<area href="class_num.html" title="Num class inherits from Expr class, representing pure number." alt="Num" shape="rect" coords="144,56,182,80"/>
+<area href="class_var.html" title="Var class inherits from Expr class, representing pure variable." alt="Var" shape="rect" coords="192,56,230,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -103,20 +104,23 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aeba8585d8225419d49166371306542c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interpret <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a> object to an integer value.  <br /></td></tr>
 <tr class="separator:aeba8585d8225419d49166371306542c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92dc26078993a4b9721ea732274a435c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_expr.html#a92dc26078993a4b9721ea732274a435c">has_variable</a> ()=0</td></tr>
-<tr class="memdesc:a92dc26078993a4b9721ea732274a435c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Judge if the <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a> object contains any <a class="el" href="class_variable.html" title="Variable class inherits from Expr class, representing pure variable.">Variable</a>.  <br /></td></tr>
+<tr class="memdesc:a92dc26078993a4b9721ea732274a435c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Judge if the <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a> object contains any Variable.  <br /></td></tr>
 <tr class="separator:a92dc26078993a4b9721ea732274a435c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1801de8f95587658635d6fd749268c88"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_expr.html">Expr</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_expr.html#a1801de8f95587658635d6fd749268c88">subst</a> (std::string string, <a class="el" href="class_expr.html">Expr</a> *e)=0</td></tr>
-<tr class="memdesc:a1801de8f95587658635d6fd749268c88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Substitute the <a class="el" href="class_variable.html" title="Variable class inherits from Expr class, representing pure variable.">Variable</a> inside <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a> object with another <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a>.  <br /></td></tr>
+<tr class="memdesc:a1801de8f95587658635d6fd749268c88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Substitute the Variable inside <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a> object with another <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a>.  <br /></td></tr>
 <tr class="separator:a1801de8f95587658635d6fd749268c88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ee199e933971af8934037d09c1fa1db"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_expr.html#a5ee199e933971af8934037d09c1fa1db">print</a> (std::ostream &amp;ostream)=0</td></tr>
 <tr class="memdesc:a5ee199e933971af8934037d09c1fa1db"><td class="mdescLeft">&#160;</td><td class="mdescRight">print the expression into most basic format (with parentheses, no space)  <br /></td></tr>
 <tr class="separator:a5ee199e933971af8934037d09c1fa1db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24ac16ad055d71f8f602f299e4f8a5e6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_expr.html#a24ac16ad055d71f8f602f299e4f8a5e6">pretty_print_at</a> (std::ostream &amp;ostream)=0</td></tr>
-<tr class="memdesc:a24ac16ad055d71f8f602f299e4f8a5e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">print the expression into a pretty format (avoids unnecessary parentheses, with space around + / *)  <br /></td></tr>
-<tr class="separator:a24ac16ad055d71f8f602f299e4f8a5e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4df8be15ce6625cde95d96b3c33be51c"><td class="memItemLeft" align="right" valign="top">virtual precedence_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_expr.html#a4df8be15ce6625cde95d96b3c33be51c">get_prec</a> ()=0</td></tr>
-<tr class="memdesc:a4df8be15ce6625cde95d96b3c33be51c"><td class="mdescLeft">&#160;</td><td class="mdescRight">implementation helper function of pretty_print_at for classifying case  <br /></td></tr>
-<tr class="separator:a4df8be15ce6625cde95d96b3c33be51c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43206ef952eeed6d790ffdf5976bc382"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_expr.html#a43206ef952eeed6d790ffdf5976bc382">pretty_print_at</a> (std::ostream &amp;ostream, std::streampos &amp;lastReturnSeen, bool lastLvlLeft, bool lastLvlMult)=0</td></tr>
+<tr class="memdesc:a43206ef952eeed6d790ffdf5976bc382"><td class="mdescLeft">&#160;</td><td class="mdescRight">helper function for <a class="el" href="class_expr.html#a05dc3b88e15e8e277cfa9c06b4997254" title="print the expression into a pretty format (avoids unnecessary parentheses, with space around + / *)">pretty_print(std::ostream &amp;ostream)</a>  <br /></td></tr>
+<tr class="separator:a43206ef952eeed6d790ffdf5976bc382"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0259bf251f82c2c316db53b8cc4ffee1"><td class="memItemLeft" align="right" valign="top">virtual precedence_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_expr.html#a0259bf251f82c2c316db53b8cc4ffee1">get_prec</a> ()=0</td></tr>
+<tr class="memdesc:a0259bf251f82c2c316db53b8cc4ffee1"><td class="mdescLeft">&#160;</td><td class="mdescRight">implementation helper function of pretty_print_at for classifying case  <br /></td></tr>
+<tr class="separator:a0259bf251f82c2c316db53b8cc4ffee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05dc3b88e15e8e277cfa9c06b4997254"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_expr.html#a05dc3b88e15e8e277cfa9c06b4997254">pretty_print</a> (std::ostream &amp;ostream)</td></tr>
+<tr class="memdesc:a05dc3b88e15e8e277cfa9c06b4997254"><td class="mdescLeft">&#160;</td><td class="mdescRight">print the expression into a pretty format (avoids unnecessary parentheses, with space around + / *)  <br /></td></tr>
+<tr class="separator:a05dc3b88e15e8e277cfa9c06b4997254"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe130f37bd185ec13c5113de16fc7bf7"><td class="memItemLeft" align="right" valign="top"><a id="abe130f37bd185ec13c5113de16fc7bf7" name="abe130f37bd185ec13c5113de16fc7bf7"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>to_string</b> ()</td></tr>
 <tr class="memdesc:abe130f37bd185ec13c5113de16fc7bf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">converting expression to string with basic format <br /></td></tr>
@@ -163,7 +167,37 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>to_pretty_stri
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>returns a boolean, true if two object equals, otherwise false </dd></dl>
 
-<p>Implemented in <a class="el" href="class_num.html#a07316c2897aadb9257b8de74dbfdcc03">Num</a>, <a class="el" href="class_variable.html#aac3d3e951551da0d306005ddbabd92cc">Variable</a>, <a class="el" href="class_add.html#a78f321a6b8799113d3fbcb7d975cc44b">Add</a>, and <a class="el" href="class_mult.html#aa64da9a8fc6b019f8a2db6f813d9a4e6">Mult</a>.</p>
+<p>Implemented in <a class="el" href="class_num.html#a07316c2897aadb9257b8de74dbfdcc03">Num</a>, <a class="el" href="class_var.html#af0889cd60f10a3b3c7712f53023e7f5b">Var</a>, <a class="el" href="class_add.html#a78f321a6b8799113d3fbcb7d975cc44b">Add</a>, <a class="el" href="class_mult.html#aa64da9a8fc6b019f8a2db6f813d9a4e6">Mult</a>, and <a class="el" href="class_let.html#aa0defef255c02323cf36929a67bbe95e">Let</a>.</p>
+
+</div>
+</div>
+<a id="a0259bf251f82c2c316db53b8cc4ffee1" name="a0259bf251f82c2c316db53b8cc4ffee1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0259bf251f82c2c316db53b8cc4ffee1">&#9670;&#160;</a></span>get_prec()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual precedence_t Expr::get_prec </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>implementation helper function of pretty_print_at for classifying case </p>
+<dl class="section return"><dt>Returns</dt><dd>precedence_t type enum </dd></dl>
+
+<p>Implemented in <a class="el" href="class_num.html#ab2a96b65de29202e5b0bca39085bd94b">Num</a>, <a class="el" href="class_var.html#abb844f778ac3c9215a31253d82cab35f">Var</a>, <a class="el" href="class_add.html#a48eeac161f311c0e0ddf7f6177de3fca">Add</a>, <a class="el" href="class_mult.html#ac591a74dfdeb4a20bf67804bf273f036">Mult</a>, and <a class="el" href="class_let.html#a15c3181dc11b6e5122c2d8fef1d69317">Let</a>.</p>
 
 </div>
 </div>
@@ -190,10 +224,10 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>to_pretty_stri
 </table>
 </div><div class="memdoc">
 
-<p>Judge if the <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a> object contains any <a class="el" href="class_variable.html" title="Variable class inherits from Expr class, representing pure variable.">Variable</a>. </p>
-<dl class="section return"><dt>Returns</dt><dd>returns a boolean, true if the <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a> object contains any <a class="el" href="class_variable.html" title="Variable class inherits from Expr class, representing pure variable.">Variable</a>, otherwise false </dd></dl>
+<p>Judge if the <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a> object contains any Variable. </p>
+<dl class="section return"><dt>Returns</dt><dd>returns a boolean, true if the <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a> object contains any Variable, otherwise false </dd></dl>
 
-<p>Implemented in <a class="el" href="class_num.html#a24a51278e76d4b01b457fb5f521bcc38">Num</a>, <a class="el" href="class_variable.html#a87c1752b9487297e2e64dbf14e70a4c7">Variable</a>, <a class="el" href="class_add.html#a1a829a6c1e949a57cd810e8a6e3c52d5">Add</a>, and <a class="el" href="class_mult.html#a214c39d71da10d21bdbd7fbc70032357">Mult</a>.</p>
+<p>Implemented in <a class="el" href="class_num.html#a24a51278e76d4b01b457fb5f521bcc38">Num</a>, <a class="el" href="class_var.html#a8fdfa306660b048eff151d156b923dd6">Var</a>, <a class="el" href="class_add.html#a1a829a6c1e949a57cd810e8a6e3c52d5">Add</a>, <a class="el" href="class_mult.html#a214c39d71da10d21bdbd7fbc70032357">Mult</a>, and <a class="el" href="class_let.html#a9ecf8ca9ef5b8b7843fc5386381ca147">Let</a>.</p>
 
 </div>
 </div>
@@ -221,14 +255,40 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>to_pretty_stri
 </div><div class="memdoc">
 
 <p>Interpret <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a> object to an integer value. </p>
-<dl class="section return"><dt>Returns</dt><dd>returns the actual integer value of the <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a>, if it contains <a class="el" href="class_variable.html" title="Variable class inherits from Expr class, representing pure variable.">Variable</a>, throw an exception </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>returns the actual integer value of the <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a>, if it contains Variable, throw an exception </dd></dl>
 
-<p>Implemented in <a class="el" href="class_num.html#a0c55f8227dd834ec1961f745fce2d75e">Num</a>, <a class="el" href="class_variable.html#a78bd17d17fd39447eb96517ba9dd0804">Variable</a>, <a class="el" href="class_add.html#a571fab39592f2e11fc028c3af89d258d">Add</a>, and <a class="el" href="class_mult.html#a0ae0098f4a1adaef9686983f263ab35a">Mult</a>.</p>
+<p>Implemented in <a class="el" href="class_num.html#a0c55f8227dd834ec1961f745fce2d75e">Num</a>, <a class="el" href="class_var.html#afb2ef9a9bc393b9c3afbe4a7b87caaeb">Var</a>, <a class="el" href="class_add.html#a571fab39592f2e11fc028c3af89d258d">Add</a>, <a class="el" href="class_mult.html#a0ae0098f4a1adaef9686983f263ab35a">Mult</a>, and <a class="el" href="class_let.html#aaf266adfcfc089739d8c26c20e45df33">Let</a>.</p>
 
 </div>
 </div>
-<a id="a24ac16ad055d71f8f602f299e4f8a5e6" name="a24ac16ad055d71f8f602f299e4f8a5e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24ac16ad055d71f8f602f299e4f8a5e6">&#9670;&#160;</a></span>pretty_print_at()</h2>
+<a id="a05dc3b88e15e8e277cfa9c06b4997254" name="a05dc3b88e15e8e277cfa9c06b4997254"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05dc3b88e15e8e277cfa9c06b4997254">&#9670;&#160;</a></span>pretty_print()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Expr::pretty_print </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>ostream</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>print the expression into a pretty format (avoids unnecessary parentheses, with space around + / *) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ostream</td><td>deliver string through this output stream </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a43206ef952eeed6d790ffdf5976bc382" name="a43206ef952eeed6d790ffdf5976bc382"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43206ef952eeed6d790ffdf5976bc382">&#9670;&#160;</a></span>pretty_print_at()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -240,8 +300,30 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>to_pretty_stri
           <td class="memname">virtual void Expr::pretty_print_at </td>
           <td>(</td>
           <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>ostream</em></td><td>)</td>
+          <td class="paramname"><em>ostream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">std::streampos &amp;&#160;</td>
+          <td class="paramname"><em>lastReturnSeen</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>lastLvlLeft</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>lastLvlMult</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -251,45 +333,18 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>to_pretty_stri
 </table>
 </div><div class="memdoc">
 
-<p>print the expression into a pretty format (avoids unnecessary parentheses, with space around + / *) </p>
+<p>helper function for <a class="el" href="class_expr.html#a05dc3b88e15e8e277cfa9c06b4997254" title="print the expression into a pretty format (avoids unnecessary parentheses, with space around + / *)">pretty_print(std::ostream &amp;ostream)</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ostream</td><td>deliver string through this output stream </td></tr>
+    <tr><td class="paramname">lastReturnSeen</td><td>tracking the position of last '\n' seen (generated by <a class="el" href="class_let.html" title="Let class inherits from Expr class, representing setting values for some expressions if applicable.">Let</a>) by passing reference </td></tr>
+    <tr><td class="paramname">lastLvlLeft</td><td>tracking where did the last binding came from, return true if it is the left hand side of the upper level expression </td></tr>
+    <tr><td class="paramname">lastLvlMult</td><td>tracking where did the last binding came from, return true if the upper level expression is a <a class="el" href="class_mult.html" title="Mult class inherits from Expr class, representing multiplication for two expressions.">Mult</a> </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="class_num.html#aa2284b2add710918c9300f8a72a12e40">Num</a>, <a class="el" href="class_variable.html#afdf9c5aba88658219b74cb1c512f0c82">Variable</a>, <a class="el" href="class_add.html#a859f81b70053196986ec76fee80fdf04">Add</a>, and <a class="el" href="class_mult.html#a2b24b184f7886350fffcd2982695d3de">Mult</a>.</p>
-
-</div>
-</div>
-<a id="a4df8be15ce6625cde95d96b3c33be51c" name="a4df8be15ce6625cde95d96b3c33be51c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4df8be15ce6625cde95d96b3c33be51c">&#9670;&#160;</a></span>get_prec()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual precedence_t Expr::get_prec </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>implementation helper function of pretty_print_at for classifying case </p>
-<dl class="section return"><dt>Returns</dt><dd>precedence_t type enum </dd></dl>
-
-<p>Implemented in <a class="el" href="class_num.html#a3553a3a1b6437b9915c309c4be4391ae">Num</a>, <a class="el" href="class_variable.html#a2e5aaf917979a821aa4607c2d8ca773e">Variable</a>, <a class="el" href="class_add.html#ad7a77abf875c837e5b8b3dc6775d1c7a">Add</a>, and <a class="el" href="class_mult.html#abc8a42394363d3cf3d394b23710e9330">Mult</a>.</p>
+<p>Implemented in <a class="el" href="class_num.html#a2353e5f857c5f173a7ce64b660f5cf9a">Num</a>, <a class="el" href="class_var.html#ab3c296ba122962aeef1cc5b15b61aba9">Var</a>, <a class="el" href="class_add.html#aaeb9c580c65dba4683164a45b3b031f1">Add</a>, <a class="el" href="class_mult.html#a8c97d5641b2691ea21718ccdba1f2213">Mult</a>, and <a class="el" href="class_let.html#a53824add3064ed37314625137224bc8b">Let</a>.</p>
 
 </div>
 </div>
@@ -325,7 +380,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>to_pretty_stri
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="class_num.html#a59b419a918cdd9f2df5ab098de0cd630">Num</a>, <a class="el" href="class_variable.html#a4f0347fdc2fa34a05aa50a9444a27acf">Variable</a>, <a class="el" href="class_add.html#a474e574631ac74034d5bda5888c84726">Add</a>, and <a class="el" href="class_mult.html#a4aa4a8b707ee78d4e3ec497d5d3ad526">Mult</a>.</p>
+<p>Implemented in <a class="el" href="class_num.html#a59b419a918cdd9f2df5ab098de0cd630">Num</a>, <a class="el" href="class_var.html#abad3282534d0267c93ddf20ff2d5519e">Var</a>, <a class="el" href="class_add.html#a474e574631ac74034d5bda5888c84726">Add</a>, <a class="el" href="class_mult.html#a4aa4a8b707ee78d4e3ec497d5d3ad526">Mult</a>, and <a class="el" href="class_let.html#a2533199abb28517cdc5495bc6a30206e">Let</a>.</p>
 
 </div>
 </div>
@@ -363,23 +418,23 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>to_pretty_stri
 </table>
 </div><div class="memdoc">
 
-<p>Substitute the <a class="el" href="class_variable.html" title="Variable class inherits from Expr class, representing pure variable.">Variable</a> inside <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a> object with another <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a>. </p>
+<p>Substitute the Variable inside <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a> object with another <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">string</td><td>first argument, a target string that is waited to be substituted </td></tr>
-    <tr><td class="paramname">e</td><td>second argument, an <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a> pointer to object that is going to substitute the <a class="el" href="class_variable.html" title="Variable class inherits from Expr class, representing pure variable.">Variable</a> inside expression </td></tr>
+    <tr><td class="paramname">e</td><td>second argument, an <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a> pointer to object that is going to substitute the Variable inside expression </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>returns the new <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a> pointer to object after substitution, return the original object if string <a class="el" href="class_variable.html" title="Variable class inherits from Expr class, representing pure variable.">Variable</a> not found </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>returns the new <a class="el" href="class_expr.html" title="Abstract expression class (pure abstract class)">Expr</a> pointer to object after substitution, return the original object if string Variable not found </dd></dl>
 
-<p>Implemented in <a class="el" href="class_num.html#a2ab1e79272a4269db4f2102d95b69ade">Num</a>, <a class="el" href="class_variable.html#a7313c927ac9c43b8e667d6243f53bf6f">Variable</a>, <a class="el" href="class_add.html#aad320e7455927bd9e1eb1b012c11fb94">Add</a>, and <a class="el" href="class_mult.html#af0b9b03cb3c60000b590d785fa56c236">Mult</a>.</p>
+<p>Implemented in <a class="el" href="class_num.html#a2ab1e79272a4269db4f2102d95b69ade">Num</a>, <a class="el" href="class_var.html#a04d0cad793449fc47075868d17996ba1">Var</a>, <a class="el" href="class_add.html#aad320e7455927bd9e1eb1b012c11fb94">Add</a>, <a class="el" href="class_mult.html#af0b9b03cb3c60000b590d785fa56c236">Mult</a>, and <a class="el" href="class_let.html#a6df58e989241ea6b883b7698dbf2444e">Let</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/Users/rasonhung/Study/MSD/CS6015/MSDScript/<a class="el" href="expr_8h_source.html">expr.h</a></li>
-<li>/Users/rasonhung/Study/MSD/CS6015/MSDScript/expr.cpp</li>
+<li>/Users/rasonhung/Study/MSD/CS6015/<a class="el" href="expr_8h_source.html">expr.h</a></li>
+<li>/Users/rasonhung/Study/MSD/CS6015/expr.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

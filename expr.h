@@ -152,42 +152,42 @@ public:
 
 
 
-/*! \brief Variable class inherits from Expr class, representing pure variable
+/*! \brief Var class inherits from Expr class, representing pure variable
  */
 class Var : public Expr {
 public:
-    std::string string_;  //!< the string name that makes up the Variable object
+    std::string string_;  //!< the string name that makes up the Var object
 
     /**
-    * \brief Constructor for Variable object
-    * \param varName a string that can be seen as the label of the Variable
+    * \brief Constructor for Var object
+    * \param varName a string that can be seen as the label of the Var
     */
     explicit Var(std::string varName);
 
     /**
-    * \brief Judge if this Variable class object equals to another object, overrides function in superclass.
+    * \brief Judge if this Var class object equals to another object, overrides function in superclass.
     * \param e an Expr pointer to Expr object waited to be compared
     * \return returns a boolean, true if two object equals, otherwise false
     */
     bool equals(Expr *e) override;
 
     /**
-    * \brief Interpret Variable object to an integer value
-    * \return A Variable doesn't have specific integer value, throw an exception
+    * \brief Interpret Var object to an integer value
+    * \return A Var doesn't have specific integer value, throw an exception
     */
     int interp() override;
 
     /**
-    * \brief Judge if the Variable object contains any Variable
+    * \brief Judge if the Var object contains any Var
     * \return returns a boolean, always return true
     */
     bool has_variable() override;
 
     /**
-    * \brief Substitute the Variable object with another Expr
+    * \brief Substitute the Var object with another Expr
     * \param string first argument, a target string that is waited to be substituted
-    * \param e second argument, an Expr pointer to object that is going to substitute the Variable inside expression
-    * \return returns the new Expr pointer to object after substitution, return the original object if string Variable not found
+    * \param e second argument, an Expr pointer to object that is going to substitute the Var inside expression
+    * \return returns the new Expr pointer to object after substitution, return the original object if string variable not found
     */
     Expr* subst(std::string string, Expr* e) override;
 
@@ -224,21 +224,21 @@ public:
 
     /**
     * \brief Interpret Add object to an integer value
-    * \return returns the actual integer value (lhs + rhs) of the Add, if it contains Variable, throw an exception
+    * \return returns the actual integer value (lhs + rhs) of the Add, if it contains Var, throw an exception
     */
     int interp() override;
 
     /**
-    * \brief Judge if the Add object contains any Variable
-    * \return returns a boolean, true if the Expr object contains any Variable, otherwise false
+    * \brief Judge if the Add object contains any Var
+    * \return returns a boolean, true if the Expr object contains any Var, otherwise false
     */
     bool has_variable() override;
 
     /**
-    * \brief Substitute the Variable inside Add object with another Expr
+    * \brief Substitute the Var inside Add object with another Expr
     * \param string first argument, a target string that is waited to be substituted
-    * \param e second argument, an Expr pointer to object that is going to substitute the Variable inside expression
-    * \return returns the new Expr pointer to object after substitution, return the original object if string Variable not found
+    * \param e second argument, an Expr pointer to object that is going to substitute the Var inside expression
+    * \return returns the new Expr pointer to object after substitution, return the original object if string variable not found
     */
     Expr* subst(std::string string, Expr* e) override;
 
@@ -276,21 +276,21 @@ public:
 
     /**
     * \brief Interpret Mult object to an integer value
-    * \return returns the actual integer value (lhs * rhs) of the Mult, if it contains Variable, throw an exception
+    * \return returns the actual integer value (lhs * rhs) of the Mult, if it contains Var, throw an exception
     */
     int interp() override;
 
     /**
-    * \brief Judge if the Mult object contains any Variable
-    * \return returns a boolean, true if the Expr object contains any Variable, otherwise false
+    * \brief Judge if the Mult object contains any Var
+    * \return returns a boolean, true if the Expr object contains any Var, otherwise false
     */
     bool has_variable() override;
 
     /**
-    * \brief Substitute the Variable inside Mult object with another Expr
+    * \brief Substitute the Var inside Mult object with another Expr
     * \param string first argument, a target string that is waited to be substituted
-    * \param e second argument, an Expr pointer to object that is going to substitute the Variable inside expression
-    * \return returns the new Expr pointer to object after substitution, return the original object if string Variable not found
+    * \param e second argument, an Expr pointer to object that is going to substitute the Var inside expression
+    * \return returns the new Expr pointer to object after substitution, return the original object if string variable not found
     */
     Expr* subst(std::string string, Expr* e) override;
 
@@ -337,10 +337,10 @@ public:
     bool has_variable() override;
 
     /**
-    * \brief Substitute the Variable inside Let object with another Expr
+    * \brief Substitute the Var inside Let object with another Expr
     * \param string first argument, a target string that is waited to be substituted
-    * \param e second argument, an Expr pointer to object that is going to substitute the Variable inside expression
-    * \return returns this object, since there is no Variable in Let object
+    * \param e second argument, an Expr pointer to object that is going to substitute the Var inside expression
+    * \return returns this object, since there is no Var in Let object
     */
     Expr* subst(std::string string, Expr* e) override;
 

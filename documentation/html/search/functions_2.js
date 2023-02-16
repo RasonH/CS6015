@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['has_5fvariable_0',['has_variable',['../class_expr.html#a92dc26078993a4b9721ea732274a435c',1,'Expr::has_variable()'],['../class_num.html#a24a51278e76d4b01b457fb5f521bcc38',1,'Num::has_variable()'],['../class_variable.html#a87c1752b9487297e2e64dbf14e70a4c7',1,'Variable::has_variable()'],['../class_add.html#a1a829a6c1e949a57cd810e8a6e3c52d5',1,'Add::has_variable()'],['../class_mult.html#a214c39d71da10d21bdbd7fbc70032357',1,'Mult::has_variable()']]]
+  ['get_5fprec_0',['get_prec',['../class_expr.html#a0259bf251f82c2c316db53b8cc4ffee1',1,'Expr::get_prec()'],['../class_num.html#ab2a96b65de29202e5b0bca39085bd94b',1,'Num::get_prec()'],['../class_var.html#abb844f778ac3c9215a31253d82cab35f',1,'Var::get_prec()'],['../class_add.html#a48eeac161f311c0e0ddf7f6177de3fca',1,'Add::get_prec()'],['../class_mult.html#ac591a74dfdeb4a20bf67804bf273f036',1,'Mult::get_prec()'],['../class_let.html#a15c3181dc11b6e5122c2d8fef1d69317',1,'Let::get_prec()']]]
 ];

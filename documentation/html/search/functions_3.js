@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['interp_0',['interp',['../class_expr.html#aeba8585d8225419d49166371306542c1',1,'Expr::interp()'],['../class_num.html#a0c55f8227dd834ec1961f745fce2d75e',1,'Num::interp()'],['../class_variable.html#a78bd17d17fd39447eb96517ba9dd0804',1,'Variable::interp()'],['../class_add.html#a571fab39592f2e11fc028c3af89d258d',1,'Add::interp()'],['../class_mult.html#a0ae0098f4a1adaef9686983f263ab35a',1,'Mult::interp()']]]
+  ['has_5fvariable_0',['has_variable',['../class_expr.html#a92dc26078993a4b9721ea732274a435c',1,'Expr::has_variable()'],['../class_num.html#a24a51278e76d4b01b457fb5f521bcc38',1,'Num::has_variable()'],['../class_var.html#a8fdfa306660b048eff151d156b923dd6',1,'Var::has_variable()'],['../class_add.html#a1a829a6c1e949a57cd810e8a6e3c52d5',1,'Add::has_variable()'],['../class_mult.html#a214c39d71da10d21bdbd7fbc70032357',1,'Mult::has_variable()'],['../class_let.html#a9ecf8ca9ef5b8b7843fc5386381ca147',1,'Let::has_variable()']]]
 ];

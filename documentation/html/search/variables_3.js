@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['val_0',['val',['../class_num.html#ab0654582066deb3adbbd64cf7190a7b7',1,'Num']]]
+  ['string_5f_0',['string_',['../class_var.html#aaf1c38ad722c2c585c66dbf0776a857f',1,'Var']]]
 ];

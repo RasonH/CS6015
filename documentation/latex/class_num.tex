@@ -18,22 +18,22 @@ Inheritance diagram for Num\+:\begin{figure}[H]
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{class_num_a9fce58e650a99ae50f4140ed9c87ec9f}{Num}} (int \mbox{\hyperlink{class_num_ab0654582066deb3adbbd64cf7190a7b7}{val}})
+\mbox{\hyperlink{class_num_a9fce58e650a99ae50f4140ed9c87ec9f}{Num}} (int val)
 \begin{DoxyCompactList}\small\item\em Constructor for \mbox{\hyperlink{class_num}{Num}} object. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{class_num_a07316c2897aadb9257b8de74dbfdcc03}{equals}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$e) override
 \begin{DoxyCompactList}\small\item\em Judge if this \mbox{\hyperlink{class_num}{Num}} class object equals to another object. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{class_num_a0c55f8227dd834ec1961f745fce2d75e}{interp}} () override
 \begin{DoxyCompactList}\small\item\em Interpret \mbox{\hyperlink{class_num}{Num}} object to an integer value. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{class_num_a24a51278e76d4b01b457fb5f521bcc38}{has\+\_\+variable}} () override
-\begin{DoxyCompactList}\small\item\em Judge if the \mbox{\hyperlink{class_num}{Num}} object contains any \mbox{\hyperlink{class_variable}{Variable}}. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Judge if the \mbox{\hyperlink{class_num}{Num}} object contains any Variable. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_num_a2ab1e79272a4269db4f2102d95b69ade}{subst}} (std\+::string string, \mbox{\hyperlink{class_expr}{Expr}} $\ast$e) override
-\begin{DoxyCompactList}\small\item\em Substitute the \mbox{\hyperlink{class_variable}{Variable}} inside \mbox{\hyperlink{class_num}{Num}} object with another \mbox{\hyperlink{class_expr}{Expr}}. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Substitute the Variable inside \mbox{\hyperlink{class_num}{Num}} object with another \mbox{\hyperlink{class_expr}{Expr}}. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_num_a59b419a918cdd9f2df5ab098de0cd630}{print}} (std\+::ostream \&ostream) override
 \begin{DoxyCompactList}\small\item\em print the expression into most basic format (with parentheses, no space) \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{class_num_aa2284b2add710918c9300f8a72a12e40}{pretty\+\_\+print}} (std\+::ostream \&ostream) override
-\begin{DoxyCompactList}\small\item\em print the expression into a pretty format (avoids unnecessary parentheses, with space around + / $\ast$) \end{DoxyCompactList}\item 
-precedence\+\_\+t \mbox{\hyperlink{class_num_a3553a3a1b6437b9915c309c4be4391ae}{pretty\+\_\+print\+\_\+at}} () override
-\begin{DoxyCompactList}\small\item\em implementation helper function of pretty\+\_\+print for classifying case \end{DoxyCompactList}\end{DoxyCompactItemize}
+void \mbox{\hyperlink{class_num_a2353e5f857c5f173a7ce64b660f5cf9a}{pretty\+\_\+print\+\_\+at}} (std\+::ostream \&ostream, std\+::streampos \&last\+Return\+Seen, bool last\+Lvl\+Left, bool last\+Lvl\+Mult) override
+\begin{DoxyCompactList}\small\item\em helper function for \mbox{\hyperlink{class_expr_a05dc3b88e15e8e277cfa9c06b4997254}{pretty\+\_\+print(std\+::ostream \&ostream)}} \end{DoxyCompactList}\item 
+precedence\+\_\+t \mbox{\hyperlink{class_num_ab2a96b65de29202e5b0bca39085bd94b}{get\+\_\+prec}} () override
+\begin{DoxyCompactList}\small\item\em implementation helper function of pretty\+\_\+print\+\_\+at for classifying case \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_expr}{Expr}}}
 \begin{DoxyCompactItemize}
 \item 
@@ -42,15 +42,17 @@ virtual bool \mbox{\hyperlink{class_expr_abf9cdb765fb84304881789d273d7594f}{equa
 virtual int \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{interp}} ()=0
 \begin{DoxyCompactList}\small\item\em Interpret \mbox{\hyperlink{class_expr}{Expr}} object to an integer value. \end{DoxyCompactList}\item 
 virtual bool \mbox{\hyperlink{class_expr_a92dc26078993a4b9721ea732274a435c}{has\+\_\+variable}} ()=0
-\begin{DoxyCompactList}\small\item\em Judge if the \mbox{\hyperlink{class_expr}{Expr}} object contains any \mbox{\hyperlink{class_variable}{Variable}}. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Judge if the \mbox{\hyperlink{class_expr}{Expr}} object contains any Variable. \end{DoxyCompactList}\item 
 virtual \mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_expr_a1801de8f95587658635d6fd749268c88}{subst}} (std\+::string string, \mbox{\hyperlink{class_expr}{Expr}} $\ast$e)=0
-\begin{DoxyCompactList}\small\item\em Substitute the \mbox{\hyperlink{class_variable}{Variable}} inside \mbox{\hyperlink{class_expr}{Expr}} object with another \mbox{\hyperlink{class_expr}{Expr}}. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Substitute the Variable inside \mbox{\hyperlink{class_expr}{Expr}} object with another \mbox{\hyperlink{class_expr}{Expr}}. \end{DoxyCompactList}\item 
 virtual void \mbox{\hyperlink{class_expr_a5ee199e933971af8934037d09c1fa1db}{print}} (std\+::ostream \&ostream)=0
 \begin{DoxyCompactList}\small\item\em print the expression into most basic format (with parentheses, no space) \end{DoxyCompactList}\item 
-virtual void \mbox{\hyperlink{class_expr_a24ac16ad055d71f8f602f299e4f8a5e6}{pretty\+\_\+print}} (std\+::ostream \&ostream)=0
+virtual void \mbox{\hyperlink{class_expr_a43206ef952eeed6d790ffdf5976bc382}{pretty\+\_\+print\+\_\+at}} (std\+::ostream \&ostream, std\+::streampos \&last\+Return\+Seen, bool last\+Lvl\+Left, bool last\+Lvl\+Mult)=0
+\begin{DoxyCompactList}\small\item\em helper function for \mbox{\hyperlink{class_expr_a05dc3b88e15e8e277cfa9c06b4997254}{pretty\+\_\+print(std\+::ostream \&ostream)}} \end{DoxyCompactList}\item 
+virtual precedence\+\_\+t \mbox{\hyperlink{class_expr_a0259bf251f82c2c316db53b8cc4ffee1}{get\+\_\+prec}} ()=0
+\begin{DoxyCompactList}\small\item\em implementation helper function of pretty\+\_\+print\+\_\+at for classifying case \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_expr_a05dc3b88e15e8e277cfa9c06b4997254}{pretty\+\_\+print}} (std\+::ostream \&ostream)
 \begin{DoxyCompactList}\small\item\em print the expression into a pretty format (avoids unnecessary parentheses, with space around + / $\ast$) \end{DoxyCompactList}\item 
-virtual precedence\+\_\+t \mbox{\hyperlink{class_expr_a4df8be15ce6625cde95d96b3c33be51c}{pretty\+\_\+print\+\_\+at}} ()=0
-\begin{DoxyCompactList}\small\item\em implementation helper function of pretty\+\_\+print for classifying case \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_expr_abe130f37bd185ec13c5113de16fc7bf7}\label{class_expr_abe130f37bd185ec13c5113de16fc7bf7}} 
 std\+::string {\bfseries to\+\_\+string} ()
 \begin{DoxyCompactList}\small\item\em converting expression to string with basic format \end{DoxyCompactList}\item 
@@ -60,8 +62,8 @@ std\+::string {\bfseries to\+\_\+pretty\+\_\+string} ()
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{class_num_ab0654582066deb3adbbd64cf7190a7b7}\label{class_num_ab0654582066deb3adbbd64cf7190a7b7}} 
-int {\bfseries val}
+\mbox{\Hypertarget{class_num_a7f18be5c4e58cd87547bd4c0d974490e}\label{class_num_a7f18be5c4e58cd87547bd4c0d974490e}} 
+int {\bfseries val\+\_\+}
 \begin{DoxyCompactList}\small\item\em the integer value of the \mbox{\hyperlink{class_num}{Num}} object \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -109,6 +111,23 @@ returns a boolean, true if two object equals, otherwise false
 
 Implements \mbox{\hyperlink{class_expr_abf9cdb765fb84304881789d273d7594f}{Expr}}.
 
+\mbox{\Hypertarget{class_num_ab2a96b65de29202e5b0bca39085bd94b}\label{class_num_ab2a96b65de29202e5b0bca39085bd94b}} 
+\index{Num@{Num}!get\_prec@{get\_prec}}
+\index{get\_prec@{get\_prec}!Num@{Num}}
+\doxysubsubsection{\texorpdfstring{get\_prec()}{get\_prec()}}
+{\footnotesize\ttfamily precedence\+\_\+t Num\+::get\+\_\+prec (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+implementation helper function of pretty\+\_\+print\+\_\+at for classifying case 
+
+\begin{DoxyReturn}{Returns}
+precedence\+\_\+t type enum 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_a0259bf251f82c2c316db53b8cc4ffee1}{Expr}}.
+
 \mbox{\Hypertarget{class_num_a24a51278e76d4b01b457fb5f521bcc38}\label{class_num_a24a51278e76d4b01b457fb5f521bcc38}} 
 \index{Num@{Num}!has\_variable@{has\_variable}}
 \index{has\_variable@{has\_variable}!Num@{Num}}
@@ -117,7 +136,7 @@ Implements \mbox{\hyperlink{class_expr_abf9cdb765fb84304881789d273d7594f}{Expr}}
 
 
 
-Judge if the \mbox{\hyperlink{class_num}{Num}} object contains any \mbox{\hyperlink{class_variable}{Variable}}. 
+Judge if the \mbox{\hyperlink{class_num}{Num}} object contains any Variable. 
 
 \begin{DoxyReturn}{Returns}
 returns a boolean, always return false 
@@ -143,41 +162,30 @@ returns the actual integer value of the \mbox{\hyperlink{class_num}{Num}}
 
 Implements \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{Expr}}.
 
-\mbox{\Hypertarget{class_num_aa2284b2add710918c9300f8a72a12e40}\label{class_num_aa2284b2add710918c9300f8a72a12e40}} 
-\index{Num@{Num}!pretty\_print@{pretty\_print}}
-\index{pretty\_print@{pretty\_print}!Num@{Num}}
-\doxysubsubsection{\texorpdfstring{pretty\_print()}{pretty\_print()}}
-{\footnotesize\ttfamily void Num\+::pretty\+\_\+print (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{ostream }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{class_num_a2353e5f857c5f173a7ce64b660f5cf9a}\label{class_num_a2353e5f857c5f173a7ce64b660f5cf9a}} 
+\index{Num@{Num}!pretty\_print\_at@{pretty\_print\_at}}
+\index{pretty\_print\_at@{pretty\_print\_at}!Num@{Num}}
+\doxysubsubsection{\texorpdfstring{pretty\_print\_at()}{pretty\_print\_at()}}
+{\footnotesize\ttfamily void Num\+::pretty\+\_\+print\+\_\+at (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{ostream,  }\item[{std\+::streampos \&}]{last\+Return\+Seen,  }\item[{bool}]{last\+Lvl\+Left,  }\item[{bool}]{last\+Lvl\+Mult }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
-print the expression into a pretty format (avoids unnecessary parentheses, with space around + / $\ast$) 
+helper function for \mbox{\hyperlink{class_expr_a05dc3b88e15e8e277cfa9c06b4997254}{pretty\+\_\+print(std\+::ostream \&ostream)}} 
 
 
 \begin{DoxyParams}{Parameters}
 {\em ostream} & deliver string through this output stream \\
 \hline
+{\em last\+Return\+Seen} & tracking the position of last \textquotesingle{}\textbackslash{}n\textquotesingle{} seen (generated by \mbox{\hyperlink{class_let}{Let}}) by passing reference \\
+\hline
+{\em last\+Lvl\+Left} & tracking where did the last binding came from, return true if it is the left hand side of the upper level expression \\
+\hline
+{\em last\+Lvl\+Mult} & tracking where did the last binding came from, return true if the upper level expression is a \mbox{\hyperlink{class_mult}{Mult}} \\
+\hline
 \end{DoxyParams}
 
 
-Implements \mbox{\hyperlink{class_expr_a24ac16ad055d71f8f602f299e4f8a5e6}{Expr}}.
-
-\mbox{\Hypertarget{class_num_a3553a3a1b6437b9915c309c4be4391ae}\label{class_num_a3553a3a1b6437b9915c309c4be4391ae}} 
-\index{Num@{Num}!pretty\_print\_at@{pretty\_print\_at}}
-\index{pretty\_print\_at@{pretty\_print\_at}!Num@{Num}}
-\doxysubsubsection{\texorpdfstring{pretty\_print\_at()}{pretty\_print\_at()}}
-{\footnotesize\ttfamily precedence\+\_\+t Num\+::pretty\+\_\+print\+\_\+at (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
-
-
-
-implementation helper function of pretty\+\_\+print for classifying case 
-
-\begin{DoxyReturn}{Returns}
-precedence\+\_\+t type enum 
-\end{DoxyReturn}
-
-
-Implements \mbox{\hyperlink{class_expr_a4df8be15ce6625cde95d96b3c33be51c}{Expr}}.
+Implements \mbox{\hyperlink{class_expr_a43206ef952eeed6d790ffdf5976bc382}{Expr}}.
 
 \mbox{\Hypertarget{class_num_a59b419a918cdd9f2df5ab098de0cd630}\label{class_num_a59b419a918cdd9f2df5ab098de0cd630}} 
 \index{Num@{Num}!print@{print}}
@@ -206,17 +214,17 @@ Implements \mbox{\hyperlink{class_expr_a5ee199e933971af8934037d09c1fa1db}{Expr}}
 
 
 
-Substitute the \mbox{\hyperlink{class_variable}{Variable}} inside \mbox{\hyperlink{class_num}{Num}} object with another \mbox{\hyperlink{class_expr}{Expr}}. 
+Substitute the Variable inside \mbox{\hyperlink{class_num}{Num}} object with another \mbox{\hyperlink{class_expr}{Expr}}. 
 
 
 \begin{DoxyParams}{Parameters}
 {\em string} & first argument, a target string that is waited to be substituted \\
 \hline
-{\em e} & second argument, an \mbox{\hyperlink{class_expr}{Expr}} pointer to object that is going to substitute the \mbox{\hyperlink{class_variable}{Variable}} inside expression \\
+{\em e} & second argument, an \mbox{\hyperlink{class_expr}{Expr}} pointer to object that is going to substitute the Variable inside expression \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-returns this object, since there is no \mbox{\hyperlink{class_variable}{Variable}} in \mbox{\hyperlink{class_num}{Num}} object 
+returns this object, since there is no Variable in \mbox{\hyperlink{class_num}{Num}} object 
 \end{DoxyReturn}
 
 
@@ -226,5 +234,5 @@ Implements \mbox{\hyperlink{class_expr_a1801de8f95587658635d6fd749268c88}{Expr}}
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-/\+Users/rasonhung/\+Study/\+MSD/\+CS6015/\+MSDScript/\mbox{\hyperlink{expr_8h}{expr.\+h}}\item 
-/\+Users/rasonhung/\+Study/\+MSD/\+CS6015/\+MSDScript/expr.\+cpp\end{DoxyCompactItemize}
+/\+Users/rasonhung/\+Study/\+MSD/\+CS6015/\mbox{\hyperlink{expr_8h}{expr.\+h}}\item 
+/\+Users/rasonhung/\+Study/\+MSD/\+CS6015/expr.\+cpp\end{DoxyCompactItemize}

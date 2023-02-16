@@ -1,5 +1,5 @@
-\hypertarget{expr_8h}{}\doxysection{/\+Users/rasonhung/\+Study/\+MSD/\+CS6015/\+MSDScript/expr.h File Reference}
-\label{expr_8h}\index{/Users/rasonhung/Study/MSD/CS6015/MSDScript/expr.h@{/Users/rasonhung/Study/MSD/CS6015/MSDScript/expr.h}}
+\hypertarget{expr_8h}{}\doxysection{/\+Users/rasonhung/\+Study/\+MSD/\+CS6015/expr.h File Reference}
+\label{expr_8h}\index{/Users/rasonhung/Study/MSD/CS6015/expr.h@{/Users/rasonhung/Study/MSD/CS6015/expr.h}}
 
 
 expression class  
@@ -18,12 +18,14 @@ class \mbox{\hyperlink{class_expr}{Expr}}
 (pure abstract class) \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{class_num}{Num}}
 \begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_num}{Num}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing pure number. \end{DoxyCompactList}\item 
-class \mbox{\hyperlink{class_variable}{Variable}}
-\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_variable}{Variable}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing pure variable. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_var}{Var}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_var}{Var}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing pure variable. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{class_add}{Add}}
 \begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_add}{Add}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing addition for two expressions. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{class_mult}{Mult}}
-\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_mult}{Mult}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing multiplication for two expressions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_mult}{Mult}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing multiplication for two expressions. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_let}{Let}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_let}{Let}} class inherits from \mbox{\hyperlink{class_expr}{Expr}} class, representing setting values for some expressions if applicable. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Enumerations}
 \begin{DoxyCompactItemize}
 \item 
@@ -31,6 +33,7 @@ class \mbox{\hyperlink{class_mult}{Mult}}
 enum {\bfseries precedence\+\_\+t} \{ {\bfseries prec\+\_\+none}
 , {\bfseries prec\+\_\+add}
 , {\bfseries prec\+\_\+mult}
+, {\bfseries prec\+\_\+let}
  \}
 \end{DoxyCompactItemize}
 
@@ -38,4 +41,4 @@ enum {\bfseries precedence\+\_\+t} \{ {\bfseries prec\+\_\+none}
 \doxysubsection{Detailed Description}
 expression class 
 
-Contains the blueprint of the superclass -\/ \mbox{\hyperlink{class_expr}{Expr}}, with its subclass -\/ \mbox{\hyperlink{class_num}{Num}}, \mbox{\hyperlink{class_add}{Add}}, \mbox{\hyperlink{class_mult}{Mult}}, \mbox{\hyperlink{class_variable}{Variable}} 
+Contains the blueprint of the superclass -\/ \mbox{\hyperlink{class_expr}{Expr}}, with its subclass -\/ \mbox{\hyperlink{class_num}{Num}}, \mbox{\hyperlink{class_add}{Add}}, \mbox{\hyperlink{class_mult}{Mult}}, Variable 

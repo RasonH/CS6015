@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lhs_0',['lhs',['../class_add.html#a15ee8d84bb8a04af294732ebe1a8a6c3',1,'Add::lhs()'],['../class_mult.html#a9e2acda98ce8c008004b39f1f76e7eab',1,'Mult::lhs()']]]
+  ['has_5fvariable_0',['has_variable',['../class_expr.html#a92dc26078993a4b9721ea732274a435c',1,'Expr::has_variable()'],['../class_num.html#a24a51278e76d4b01b457fb5f521bcc38',1,'Num::has_variable()'],['../class_var.html#a8fdfa306660b048eff151d156b923dd6',1,'Var::has_variable()'],['../class_add.html#a1a829a6c1e949a57cd810e8a6e3c52d5',1,'Add::has_variable()'],['../class_mult.html#a214c39d71da10d21bdbd7fbc70032357',1,'Mult::has_variable()'],['../class_let.html#a9ecf8ca9ef5b8b7843fc5386381ca147',1,'Let::has_variable()']]]
 ];
