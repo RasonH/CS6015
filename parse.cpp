@@ -25,8 +25,15 @@ void skip_whitespace(std::istream &in){
 
 //helper function for testing
 Expr *parse_str(std::string s){
+    bool exprParsed = false;
     std::stringstream in(s);
-    return parse_expr(in);
+    Expr* e = parse_expr(in);
+    skip_whitespace(in);
+    if(isgraph(in.peek())){ // if there is still character at the end after parsing a whole expression
+        throw std::runtime_error("invalid input");
+    }else{
+        return e;
+    }
 }
 
 
@@ -34,6 +41,7 @@ Expr *parse_str(std::string s){
 Expr *parse_num(std::istream &in){
     int n = 0;
     bool negative = false;
+    bool numSeen = false;
 
     if (in.peek() == '-'){
         negative = true;
@@ -43,6 +51,9 @@ Expr *parse_num(std::istream &in){
     while (1){
         int c = in.peek();
         if (isdigit(c)) {
+            if(numSeen == false){
+                numSeen = true;
+            }
             consume(in, c);
             n = n * 10 + (c - '0');
         }else
@@ -50,21 +61,25 @@ Expr *parse_num(std::istream &in){
     }
     if (negative)
         n = -n;
+    if (numSeen == false){
+        throw std::runtime_error("invalid input");
+    }
     return new Num(n);
 }
 
 // parse variable
-Expr *parse_val(std::istream &in){
-    std::string val;
+Expr *parse_var(std::istream &in){
+    std::string s;
     while(1){
         char c = in.peek();
         if (isalpha(c)){
             consume(in, c);
-            val = val + c;
+            s = s + c;
         }else
             break;
     }
-    return new Var(val);
+//    if()
+    return new Var(s);
 }
 
 //parse keyword
@@ -87,7 +102,7 @@ std::string parse_keyword(std::istream &in){
 //parse _let
 Expr *parse_let(std::istream &in){
     skip_whitespace(in);
-    std::string lhs = parse_val(in) -> to_string();
+    std::string lhs = parse_var(in) -> to_string();
     skip_whitespace(in);
     int c = in.peek();
     if (c == '='){
@@ -171,7 +186,7 @@ Expr *parse_multicand(std::istream &in) {
     }
         //grammar <variable>
     else if (isalpha(c)) {
-        return parse_val(in);
+        return parse_var(in);
     }
         //grammar _let
     else if (c == '_') {

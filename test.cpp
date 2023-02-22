@@ -691,20 +691,18 @@ TEST_CASE("parse") {
     CHECK( parse_str("10")->equals(new Num(10)) );
     CHECK( parse_str("-3")->equals(new Num(-3)) );
     CHECK( parse_str("  \n 5  ")->equals(new Num(5)) );
-    //TODO
-//    CHECK_THROWS_WITH( parse_str("-"), "invalid input" );
+    CHECK_THROWS_WITH( parse_str("-"), "invalid input" );
+    CHECK_THROWS_WITH( parse_str("(((-1))"), "missing close parenthesis" );
 
-    // This was some temporary debugging code:
-    //  std::istringstream in("-");
-    //  parse_num(in)->print(std::cout); std::cout << "\n";
-    //TODO
-//    CHECK_THROWS_WITH( parse_str(" -   5  "), "invalid input" );
-
+    CHECK_THROWS_WITH( parse_str(" -   5  "), "invalid input" );
     CHECK( parse_str("x")->equals(new Var("x")) );
     CHECK( parse_str("xyz")->equals(new Var("xyz")) );
     CHECK( parse_str("xYz")->equals(new Var("xYz")) );
-    //TODO
-//    CHECK_THROWS_WITH( parse_str("x_z"), "invalid input" );
+
+    CHECK_THROWS_WITH( parse_str("x_z"), "invalid input" );
+    CHECK_THROWS_WITH( parse_str("1 2"), "invalid input" );
+    CHECK_THROWS_WITH( parse_str("1 x"), "invalid input" );
+
 
     CHECK( parse_str("x + y")->equals(new Add(new Var("x"), new Var("y"))) );
 
