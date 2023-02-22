@@ -5,9 +5,9 @@
 
 CXX = c++
 CFLAGS = -std=c++11
-OBJS = main.o cmdline.o expr.o test.o
+OBJS = main.o cmdline.o expr.o test.o parse.o
 CXXSOURCE = main.cpp cmdline.cpp expr.cpp test.cpp
-HEADERS = cmdline.h catch.h expr.h test.h
+HEADERS = cmdline.h catch.h expr.h test.h parse.h
 
 msdscript: $(OBJS)
 	$(CXX) $(OBJS) -o msdscript
@@ -23,7 +23,7 @@ cmdline.o: cmdline.cpp cmdline.h catch.h
 expr.o: expr.cpp expr.h
 	$(CXX) $(CFLAGS) -c expr.cpp
 
-test.o: test.cpp catch.h expr.h
+test.o: test.cpp catch.h
 	$(CXX) $(CFLAGS) -c test.cpp
 
 parse.o: parse.cpp parse.h

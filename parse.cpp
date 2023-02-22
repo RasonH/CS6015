@@ -3,19 +3,19 @@
 //
 
 #include <istream>
-#include <sstream>
 #include "parse.h"
 
+
 //helper function consume
-void consume(std::istream &in, int expect){
+void consume(std::istream &in, int nextChar){
     int c = in.get();
-    if (c != expect)
+    if (c != nextChar)
         throw std::runtime_error("consume mismatch");
 }
 
 //helper function check space
-void skip_whitespace(std::istream &in){
-    while (1){
+void skip_space(std::istream &in){
+    while (true){
         int c = in.peek();
         if (!isspace(c))
             break;
@@ -24,11 +24,10 @@ void skip_whitespace(std::istream &in){
 }
 
 //helper function for testing
-Expr *parse_str(std::string s){
-    bool exprParsed = false;
+Expr *parse_str(const std::string& s){
     std::stringstream in(s);
     Expr* e = parse_expr(in);
-    skip_whitespace(in);
+    skip_space(in);
     if(isgraph(in.peek())){ // if there is still character at the end after parsing a whole expression
         throw std::runtime_error("invalid input");
     }else{
@@ -48,10 +47,10 @@ Expr *parse_num(std::istream &in){
         consume(in, '-');
     }
 
-    while (1){
+    while (true){
         int c = in.peek();
         if (isdigit(c)) {
-            if(numSeen == false){
+            if(!numSeen){
                 numSeen = true;
             }
             consume(in, c);
@@ -61,7 +60,7 @@ Expr *parse_num(std::istream &in){
     }
     if (negative)
         n = -n;
-    if (numSeen == false){
+    if (!numSeen){
         throw std::runtime_error("invalid input");
     }
     return new Num(n);
@@ -70,13 +69,14 @@ Expr *parse_num(std::istream &in){
 // parse variable
 Expr *parse_var(std::istream &in){
     std::string s;
-    while(1){
+    while(true){
         char c = in.peek();
         if (isalpha(c)){
             consume(in, c);
             s = s + c;
-        }else
+        }else {
             break;
+        }
     }
 //    if()
     return new Var(s);
@@ -95,28 +95,28 @@ std::string parse_keyword(std::istream &in){
             c = in.peek();
         }
     }
-    skip_whitespace(in);
+    skip_space(in);
     return keyword;
 }
 
 //parse _let
 Expr *parse_let(std::istream &in){
-    skip_whitespace(in);
+    skip_space(in);
     std::string lhs = parse_var(in) -> to_string();
-    skip_whitespace(in);
+    skip_space(in);
     int c = in.peek();
     if (c == '='){
         consume(in, '=');
     }else{
         throw std::runtime_error("variable '=' is required");
     }
-    skip_whitespace(in);
+    skip_space(in);
     Expr *rhs = parse_expr(in);
-    skip_whitespace(in);
+    skip_space(in);
     if (parse_keyword(in) != "_in"){
         throw std::runtime_error("variable _in is required");
     }
-    skip_whitespace(in);
+    skip_space(in);
     Expr *body = parse_expr(in);
     return new Let(lhs,rhs,body);
 }
@@ -129,7 +129,7 @@ Expr *parse_expr(std::istream &in){
     Expr *e;
 
     e = parse_addend(in);
-    skip_whitespace(in);
+    skip_space(in);
 
     int c = in.peek();
     if (c == '+'){
@@ -148,7 +148,7 @@ Expr *parse_addend(std::istream &in){
     Expr *e;
 
     e = parse_multicand(in);
-    skip_whitespace(in);
+    skip_space(in);
 
     int c = in.peek();
     if (c == '*'){
@@ -167,37 +167,39 @@ Expr *parse_addend(std::istream &in){
  **/
 
 Expr *parse_multicand(std::istream &in) {
-    skip_whitespace(in);
+    skip_space(in);
 
     int c = in.peek();
-    // grammar <number>
+    // <number>
     if ((c == '-') || isdigit(c)) {
         return parse_num(in);
     }
-        //grammar ( <expr> )
+    // ( <expr> )
     else if (c == '(') {
         consume(in, '(');
         Expr *e = parse_expr(in);// parse parenthesized
-        skip_whitespace(in);
+        skip_space(in);
         c = in.get();
-        if (c != ')')
-            throw std::runtime_error("missing close parenthesis");
+        if (c != ')') {
+            throw std::runtime_error("invalid input"); // missing the closing parenthesis
+        }
         return e;
     }
-        //grammar <variable>
+    // <variable>
     else if (isalpha(c)) {
         return parse_var(in);
     }
-        //grammar _let
+    // _let
     else if (c == '_') {
         std::string keyword = parse_keyword(in);
         if (keyword == "_let") {
             return parse_let(in);
+        }else{
+            throw std::runtime_error("invalid input"); // unknown keyword
         }
     }
-
     else {
         consume(in, c);
-        throw std::runtime_error("invalid input");
+        throw std::runtime_error("invalid input"); // still have things remained other than above possibilities
     }
 }
