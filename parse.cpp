@@ -28,7 +28,17 @@ Expr *parse_str(const std::string& s){
     std::stringstream in(s);
     Expr* e = parse_expr(in);
     skip_space(in);
-    if(isgraph(in.peek())){ // if there is still character at the end after parsing a whole expression
+    if(!in.eof()){ // if there is still character at the end after parsing a whole expression
+        throw std::runtime_error("invalid input");
+    }else{
+        return e;
+    }
+}
+
+Expr *parse_str(std::istream &in){
+    Expr* e = parse_expr(in);
+    skip_space(in);
+    if(!in.eof()){ // if there is still character at the end after parsing a whole expression
         throw std::runtime_error("invalid input");
     }else{
         return e;
@@ -78,7 +88,6 @@ Expr *parse_var(std::istream &in){
             break;
         }
     }
-//    if()
     return new Var(s);
 }
 
