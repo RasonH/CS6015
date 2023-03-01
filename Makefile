@@ -10,6 +10,9 @@ CXXSOURCE = main.cpp cmdline.cpp expr.cpp test.cpp
 HEADERS = cmdline.h catch.h expr.h test.h parse.h
 
 
+all:
+	make msdscript test_msdscript
+
 msdscript: $(OBJS)
 	$(CXX) $(OBJS) -o msdscript
 

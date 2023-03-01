@@ -8,22 +8,25 @@
 
 const int Itr = 100;
 const int Prob_Precision = 100;
-const int Max_Garbage_Length = 30; // the length limit of garbage string
+const int Max_Num_Length = 5;
+const int Max_Garbage_Length = 10; // the length limit of garbage string
 const int Max_Var_Length = 10;
 // Garbage_Prob + others = 100 (%)
 const int Garbage_Prob = 10;
 // The actual probability of the followings should be (100 - Garbage_Prob) * X_Prob (%)
 // Num + Var + Add + Mult + Let = 100
 const int Num_Prob = 35; // Num + Var probability should not be 0 - prevent infinite loop
-const int Var_Prob = 25;
-const int Par_Prob = 10;
+const int Var_Prob = 15;
+const int Par_Prob = 15;
 const int Add_Prob = 10;
-const int Mult_Prob = 10;
+const int Mult_Prob = 15;
 const int Let_Prob = 10; // though might not be used, still important
 
 std::string random_string();
 std::string random_expr_string();
 std::string random_var_string();
+//helper
+int pow(int base, const int exponent);
 
 int main(int argc, char *argv[]){
 
@@ -57,7 +60,7 @@ int main(int argc, char *argv[]){
         for(int i = 0; i < Itr; i++){
             std::string in = random_string();
             std::string program_name = argv[1];
-            std::cout << "Trying " << in << std::endl;
+            std::cout << ">>>> Trying " << in << std::endl;
 
             ExecResult interp_result = exec_program(2, interp_argv, in);
             ExecResult print_result = exec_program(2, print_argv, in);
@@ -69,86 +72,61 @@ int main(int argc, char *argv[]){
                 ExecResult re_interp_pretty_print_result = exec_program(2, interp_argv,
                                                                         pretty_print_result.out);
 
-                try{
-                    if (interp_result.exit_code != re_interp_print_result.exit_code) {
-                        throw std::runtime_error(">>>> [" + program_name + "] Different exit code: interp(" +
-                                                 std::to_string(interp_result.exit_code) + ") - print(" +
-                                                 std::to_string(re_interp_print_result.exit_code) + ").");
-                    }
-                }catch (std::runtime_error &e){
-                    std::cout << e.what() << std::endl;
+                if (interp_result.exit_code != re_interp_print_result.exit_code) {
+                    std::cout << "\t[" + program_name + "] Different exit code: interp(" +
+                                 std::to_string(interp_result.exit_code) + ") - print(" +
+                                 std::to_string(re_interp_print_result.exit_code) + ")." << std::endl;
                 }
 
-                try{
-                    if (interp_result.exit_code != re_interp_pretty_print_result.exit_code) {
-                        throw std::runtime_error(">>>> [" + program_name + "] Different exit code: interp(" +
-                                                 std::to_string(interp_result.exit_code) + ") - pretty_print(" +
-                                                 std::to_string(re_interp_pretty_print_result.exit_code) + ").");
-                    }
-                }catch (std::runtime_error &e){
-                    std::cout << e.what() << std::endl;
+                if (interp_result.exit_code != re_interp_pretty_print_result.exit_code) {
+                    std::cout << "\t[" + program_name + "] Different exit code: interp(" +
+                                             std::to_string(interp_result.exit_code) + ") - pretty_print(" +
+                                             std::to_string(re_interp_pretty_print_result.exit_code) + ")." << std::endl;
+                }
+                if (interp_result.out != re_interp_print_result.out) {
+                    std::cout << "\t[" + program_name + "] Different output: interp(" + interp_result.out +") - print(" + re_interp_print_result.out + ")." << std::endl;
                 }
 
-                try{
-                    if (interp_result.out != re_interp_print_result.out) {
-                        throw std::runtime_error(
-                                ">>>> [" + program_name + "] Different output: interp(" + interp_result.out +
-                                ") - print(" + re_interp_print_result.out + ").");
-                    }
-                }catch (std::runtime_error &e){
-                    std::cout << e.what() << std::endl;
-                }
-
-                try{
-                    if (interp_result.out != re_interp_pretty_print_result.out) {
-                        throw std::runtime_error(
-                                ">>>> [" + program_name + "] Different output: interp(" + interp_result.out +
-                                ") - print(" + re_interp_pretty_print_result.out + ").");
-                    }
-                }catch (std::runtime_error &e){
-                    std::cout << e.what() << std::endl;
+                if (interp_result.out != re_interp_pretty_print_result.out) {
+                    std::cout << "\t[" + program_name + "] Different output: interp(" + interp_result.out +") - pretty_print(" + re_interp_pretty_print_result.out + ")." << std::endl;
                 }
             }
 
             // test_msdscript <program0> <program1> -- testing program0 comparing with program1
-            if(argc == 3){
-                std::string  program_name2 = argv[2];
-                const char * const interp_argv2[] = {argv[2], "--interp"};
-                const char * const print_argv2[] = {argv[2], "--print"};
-                const char * const pretty_print_argv2[] = {argv[2], "--pretty-print"};
+            if(argc == 3) {
+                std::string program_name2 = argv[2];
+                const char *const interp_argv2[] = {argv[2], "--interp"};
+                const char *const print_argv2[] = {argv[2], "--print"};
+                const char *const pretty_print_argv2[] = {argv[2], "--pretty-print"};
 
                 ExecResult interp_result2 = exec_program(2, interp_argv2, in);
                 ExecResult print_result2 = exec_program(2, print_argv2, in);
                 ExecResult pretty_print_result2 = exec_program(2, pretty_print_argv2, in);
 
-                try{
-                    if(interp_result.exit_code != interp_result2.exit_code || interp_result.out != interp_result.out){
-                        throw std::runtime_error(">>>> [" + program_name + " & " + program_name2 + "] Different result for interp:\n"
-                                                                                                   "\t[" + program_name + "] " + std::to_string(interp_result.exit_code) + ", "+ interp_result.out +
-                                                                                                   "\t[" + program_name2 + "] " + std::to_string(interp_result2.exit_code) + ", "+ interp_result2.out);
-                    }
-                }catch (std::runtime_error &e){
-                    std::cout << e.what() << std::endl;
+                if (interp_result.exit_code != interp_result2.exit_code || interp_result.out != interp_result2.out) {
+                    std::cout << "\t[" + program_name + " & " + program_name2 + "] Different result for interp:\n"
+                                                                                "\t[" + program_name + "] " +
+                                 std::to_string(interp_result.exit_code) + ", " + interp_result.out +
+                                 "\t[" + program_name2 + "] " + std::to_string(interp_result2.exit_code) + ", " +
+                                 interp_result2.out << std::endl;
                 }
 
-                try{
-                    if(print_result.exit_code != print_result2.exit_code || print_result.out != print_result.out){
-                        throw std::runtime_error(">>>> [" + program_name + " & " + program_name2 + "] Different result for print:\n"
-                                                                                                   "\t[" + program_name + "] " + std::to_string(print_result.exit_code) + ", "+ print_result.out +
-                                                                                                  "\t[" + program_name2 + "] " + std::to_string(print_result2.exit_code) + ", "+ print_result2.out);
-                    }
-                }catch (std::runtime_error &e){
-                    std::cout << e.what() << std::endl;
+                if (print_result.exit_code != print_result2.exit_code || print_result.out != print_result2.out) {
+                    std::cout << "\t[" + program_name + " & " + program_name2 + "] Different result for print:\n"
+                                                                                "\t[" + program_name + "] " +
+                                 std::to_string(print_result.exit_code) + ", " + print_result.out +
+                                 "\t[" + program_name2 + "] " + std::to_string(print_result2.exit_code) + ", " +
+                                 print_result2.out << std::endl;
                 }
 
-                try{
-                    if(pretty_print_result.exit_code != pretty_print_result2.exit_code || pretty_print_result.out != pretty_print_result.out){
-                        throw std::runtime_error(">>>> [" + program_name + " & " + program_name2 + "] Different result for pretty_print1:\n"
-                                                                                                   "\t[" + program_name + "] " + std::to_string(pretty_print_result.exit_code) + ", "+ pretty_print_result.out+
-                                                                                                    "\t[" + program_name2 + "] " + std::to_string(pretty_print_result2.exit_code) + ", "+ pretty_print_result2.out);
-                    }
-                }catch (std::runtime_error &e){
-                    std::cout << e.what() << std::endl;
+                if (pretty_print_result.exit_code != pretty_print_result2.exit_code ||
+                    pretty_print_result.out != pretty_print_result2.out) {
+                    std::cout
+                            << "\t[" + program_name + " & " + program_name2 + "] Different result for pretty_print:\n"
+                                                                              "\t[" + program_name + "] " +
+                               std::to_string(pretty_print_result.exit_code) + ", " + pretty_print_result.out +
+                               "\t[" + program_name2 + "] " + std::to_string(pretty_print_result2.exit_code) + ", " +
+                               pretty_print_result2.out << std::endl;
                 }
             }
         }
@@ -180,7 +158,8 @@ std::string random_expr_string(){
      */
     int rand_num = rand();
     if(rand_num % 100 < Num_Prob){
-        return std::to_string(rand());
+        int neg = ((rand() % 2) == 0) ? -1 : 1;
+        return std::to_string((rand() % pow(10, Max_Num_Length)) * neg);
     }else if(rand_num % 100 < Var_Prob + Num_Prob){
         return random_var_string();
     }else if(rand_num % 100 < Par_Prob + Var_Prob + Num_Prob){
@@ -193,6 +172,14 @@ std::string random_expr_string(){
         return "_let " + random_var_string() + " = " + random_expr_string() + " _in " + random_expr_string();
     }
 
+}
+
+int pow(int base, const int exponent) {
+    int result = 1;
+    for(int i = 1; i <= exponent; i++){
+        result *= base;
+    }
+    return result;
 }
 
 std::string random_var_string(){

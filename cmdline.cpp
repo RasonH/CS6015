@@ -44,7 +44,7 @@ void use_arguments(int argc, const char *argv[]){
                     // print out result
                     std::cout << parse_str(std::cin)->interp() << std::endl;
                 } catch (std::runtime_error& e){
-                    std::cout << e.what() << std::endl;
+                    std::cout << e.what();
                     exit(1);
                 }
                 exit(0);
@@ -55,7 +55,7 @@ void use_arguments(int argc, const char *argv[]){
                     // print the std::cin
                     std::cout << parse_str(std::cin)->to_string() << std::endl;
                 } catch (std::runtime_error& e){
-                    std::cout << e.what() << std::endl;
+                    std::cout << e.what();
                     exit(1);
                 }
                 exit(0);
@@ -66,7 +66,7 @@ void use_arguments(int argc, const char *argv[]){
                     // print the std::cin
                     std::cout << parse_str(std::cin) -> to_pretty_string() << std::endl;
                 } catch (std::runtime_error& e){
-                    std::cout << e.what() << std::endl;
+                    std::cout << e.what();
                     exit(1);
                 }
                 exit(0);

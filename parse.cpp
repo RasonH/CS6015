@@ -29,7 +29,8 @@ Expr *parse_str(const std::string& s){
     Expr* e = parse_expr(in);
     skip_space(in);
     if(!in.eof()){ // if there is still character at the end after parsing a whole expression
-        throw std::runtime_error("invalid input");
+//        throw std::runtime_error("invalid input");
+        throw std::runtime_error("");
     }else{
         return e;
     }
@@ -39,7 +40,8 @@ Expr *parse_str(std::istream &in){
     Expr* e = parse_expr(in);
     skip_space(in);
     if(!in.eof()){ // if there is still character at the end after parsing a whole expression
-        throw std::runtime_error("invalid input");
+//        throw std::runtime_error("invalid input");
+        throw std::runtime_error("");
     }else{
         return e;
     }
@@ -71,7 +73,8 @@ Expr *parse_num(std::istream &in){
     if (negative)
         n = -n;
     if (!numSeen){
-        throw std::runtime_error("invalid input");
+//        throw std::runtime_error("invalid input");
+        throw std::runtime_error("");
     }
     return new Num(n);
 }
@@ -190,7 +193,8 @@ Expr *parse_multicand(std::istream &in) {
         skip_space(in);
         c = in.get();
         if (c != ')') {
-            throw std::runtime_error("invalid input"); // missing the closing parenthesis
+//            throw std::runtime_error("invalid input"); // missing the closing parenthesis
+            throw std::runtime_error(""); // missing the closing parenthesis
         }
         return e;
     }
@@ -204,11 +208,13 @@ Expr *parse_multicand(std::istream &in) {
         if (keyword == "_let") {
             return parse_let(in);
         }else{
-            throw std::runtime_error("invalid input"); // unknown keyword
+//            throw std::runtime_error("invalid input"); // unknown keyword
+            throw std::runtime_error(""); // unknown keyword
         }
     }
     else {
         consume(in, c);
-        throw std::runtime_error("invalid input"); // still have things remained other than above possibilities
+//        throw std::runtime_error("invalid input"); // still have things remained other than above possibilities
+        throw std::runtime_error(""); // still have things remained other than above possibilities
     }
 }
