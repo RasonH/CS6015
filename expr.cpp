@@ -91,7 +91,9 @@ bool Var::equals(Expr *e){
 }
 
 int Var::interp(){
-    throw std::runtime_error("no value for variable");
+//    throw std::runtime_error("no value for variable");
+//    throw std::runtime_error("invalid input");
+    throw std::runtime_error("");
 }
 
 bool Var::has_variable(){

@@ -9,6 +9,7 @@
 void consume(std::istream &in, int nextChar);
 void skip_space(std::istream &in);
 Expr *parse_str(const std::string& s);
+Expr *parse_str(std::istream &in);
 
 Expr *parse_num(std::istream &in);
 Expr *parse_var(std::istream &in);

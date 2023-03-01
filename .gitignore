@@ -30,7 +30,7 @@
 *.exe
 *.out
 *.app
-MSDScript/msdscript
+#MSDScript/msdscript
 
 # Others
 *.zip
@@ -41,4 +41,5 @@ MSDScript/msdscript
 CMakeLists.txt
 cmake-build-debug-coverage/
 cmake-build-debug/
-/msdscript
+msdscript*
+test_msdscript

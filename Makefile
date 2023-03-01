@@ -9,10 +9,12 @@ OBJS = main.o cmdline.o expr.o test.o parse.o
 CXXSOURCE = main.cpp cmdline.cpp expr.cpp test.cpp
 HEADERS = cmdline.h catch.h expr.h test.h parse.h
 
+
+all:
+	make msdscript test_msdscript
+
 msdscript: $(OBJS)
 	$(CXX) $(OBJS) -o msdscript
-
-#%.o : %.h
 
 main.o: main.cpp
 	$(CXX) $(CFLAGS) -c main.cpp
@@ -29,13 +31,19 @@ test.o: test.cpp catch.h
 parse.o: parse.cpp parse.h
 	$(CXX) $(CFLAGS) -c parse.cpp
 
-.PHONY:clean test
+test_msdscript: test_msdscript.cpp exec.h
+	$(CXX) $(CFLAGS) test_msdscript.cpp exec.cpp -o test_msdscript
+
+
+.PHONY:clean test doc clean_test_msdscript
 clean:
-	rm -rf *.o *.out msdscript
+	rm -rf *.o *.out msdscript test_msdscript
 
 test: msdscript
 	./msdscript --test
 
-.PHONY: doc
 doc:
 	cd documentation && doxygen
+
+clean_test_msdscript:
+	rm test_msdscript.o test_msdscript

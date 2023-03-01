@@ -38,48 +38,35 @@ void use_arguments(int argc, const char *argv[]){
                 } // will not be valid in this case when enter Catch2
             }
             else if(ith_arg == "--interp"){
-                std::cout << "Please enter an expression:" << std::endl;
-                // parse the std::cin
-                Expr *expr;
                 try {
-                    expr = parse_expr(std::cin);
+                    // parse the std::cin
                     // interp the std::cin
-                    int result = expr -> interp();
                     // print out result
-                    std::cout << "Result after interpation: " << std::endl;
-                    std::cout << result << std::endl;
+                    std::cout << parse_str(std::cin)->interp() << std::endl;
                 } catch (std::runtime_error& e){
-                    std::cout << e.what() << std::endl;
+                    std::cout << e.what();
                     exit(1);
                 }
                 exit(0);
             }
             else if (ith_arg == "--print"){
-                std::cout << "Please enter an expression:" << std::endl;
-                // parse the std::cin
-                Expr *expr;
                 try{
-                    expr = parse_expr(std::cin);
+                    // parse the std::cin
                     // print the std::cin
-                    std::cout << "Print Result: " << std::endl;
-                    std::cout << expr->to_string() << std::endl;
+                    std::cout << parse_str(std::cin)->to_string() << std::endl;
                 } catch (std::runtime_error& e){
-                    std::cout << e.what() << std::endl;
+                    std::cout << e.what();
                     exit(1);
                 }
                 exit(0);
             }
             else if (ith_arg == "--pretty-print"){
-                std::cout << "Please enter an expression:" << std::endl;
-                // parse the std::cin
-                Expr *expr;
                 try{
-                    expr = parse_expr(std::cin);
+                    // parse the std::cin
                     // print the std::cin
-                    std::cout << "Pretty Print Result: " << std::endl;
-                    std::cout << expr -> to_pretty_string() << std::endl;
+                    std::cout << parse_str(std::cin) -> to_pretty_string() << std::endl;
                 } catch (std::runtime_error& e){
-                    std::cout << e.what() << std::endl;
+                    std::cout << e.what();
                     exit(1);
                 }
                 exit(0);
