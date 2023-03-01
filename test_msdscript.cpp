@@ -8,18 +8,18 @@
 
 const int Itr = 100;
 const int Prob_Precision = 100;
-const int Max_Num_Length = 5;
+const int Max_Num_Length = 3;
 const int Max_Garbage_Length = 10; // the length limit of garbage string
-const int Max_Var_Length = 10;
+const int Max_Var_Length = 3;
 // Garbage_Prob + others = 100 (%)
 const int Garbage_Prob = 10;
 // The actual probability of the followings should be (100 - Garbage_Prob) * X_Prob (%)
 // Num + Var + Add + Mult + Let = 100
 const int Num_Prob = 35; // Num + Var probability should not be 0 - prevent infinite loop
-const int Var_Prob = 15;
-const int Par_Prob = 15;
+const int Var_Prob = 25;
+const int Par_Prob = 10;
 const int Add_Prob = 10;
-const int Mult_Prob = 15;
+const int Mult_Prob = 10;
 const int Let_Prob = 10; // though might not be used, still important
 
 std::string random_string();
