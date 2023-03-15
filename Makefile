@@ -5,9 +5,9 @@
 
 CXX = c++
 CFLAGS = -std=c++11
-OBJS = main.o cmdline.o expr.o test.o parse.o
-CXXSOURCE = main.cpp cmdline.cpp expr.cpp test.cpp
-HEADERS = cmdline.h catch.h expr.h test.h parse.h
+OBJS = main.o cmdline.o expr.o test.o parse.o val.o
+CXXSOURCE = main.cpp cmdline.cpp expr.cpp test.cpp val.cpp
+HEADERS = cmdline.h catch.h expr.h test.h parse.h val.h
 
 
 all:
@@ -19,13 +19,16 @@ msdscript: $(OBJS)
 main.o: main.cpp
 	$(CXX) $(CFLAGS) -c main.cpp
 
-cmdline.o: cmdline.cpp cmdline.h catch.h
+cmdline.o: cmdline.cpp cmdline.h
 	$(CXX) $(CFLAGS) -c cmdline.cpp
 
 expr.o: expr.cpp expr.h
 	$(CXX) $(CFLAGS) -c expr.cpp
 
-test.o: test.cpp catch.h
+val.o: val.cpp val.h
+	$(CXX) $(CFLAGS) -c val.cpp
+
+test.o: test.cpp
 	$(CXX) $(CFLAGS) -c test.cpp
 
 parse.o: parse.cpp parse.h

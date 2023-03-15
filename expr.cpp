@@ -5,6 +5,8 @@
 //  Created by Rason Hung on 1/22/23.
 //
 
+#pragma include once
+#include "val.h"
 #include "expr.h"
 #include <utility>
 
@@ -33,12 +35,12 @@ std::string Expr::to_pretty_string() {
  Number class
  ---------------------------------------*/
 
-Num::Num(int val){
+NumExpr::NumExpr(int val){
     this->val_ = val;
 }
 
-bool Num::equals(Expr *e){
-    Num *pNum = dynamic_cast<Num*>(e);
+bool NumExpr::equals(Expr *e){
+    NumExpr *pNum = dynamic_cast<NumExpr*>(e);
     if(pNum == nullptr){
         return false;
     }else{
@@ -46,27 +48,27 @@ bool Num::equals(Expr *e){
     }
 }
 
-int Num::interp(){
-    return this->val_;
+Val * NumExpr::interp(){
+    return new NumVal(this->val_);
 }
 
-bool Num::has_variable(){
+bool NumExpr::has_variable(){
     return false;
 }
 
-Expr* Num::subst(std::string string, Expr* e){
+Expr* NumExpr::subst(std::string string, Expr* e){
     return this;
 }
 
-void Num::print(std::ostream &ostream){
+void NumExpr::print(std::ostream &ostream){
     ostream << std::to_string(this->val_);
 }
 
-void Num::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLeftAndAdd) {
+void NumExpr::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLeftAndAdd) {
     this->print(ostream);
 }
 
-precedence_t Num::get_prec(){
+precedence_t NumExpr::get_prec(){
     return prec_none;
 }
 
@@ -77,12 +79,12 @@ precedence_t Num::get_prec(){
  Variable class
  ---------------------------------------*/
 
-Var::Var(std::string varName){
+VarExpr::VarExpr(std::string varName){
     this->string_ = std::move(varName);
 }
 
-bool Var::equals(Expr *e){
-    Var *pVar = dynamic_cast<Var*>(e);
+bool VarExpr::equals(Expr *e){
+    VarExpr *pVar = dynamic_cast<VarExpr*>(e);
     if(pVar == nullptr){
         return false;
     }else{
@@ -90,32 +92,32 @@ bool Var::equals(Expr *e){
     }
 }
 
-int Var::interp(){
+Val * VarExpr::interp(){
     throw std::runtime_error("no value for variable");
 //    throw std::runtime_error("invalid input");
 //    throw std::runtime_error("");
 }
 
-bool Var::has_variable(){
+bool VarExpr::has_variable(){
     return true;
 }
 
-Expr* Var::subst(std::string string, Expr* e){
+Expr* VarExpr::subst(std::string string, Expr* e){
     if(this->string_ == string){ // TODO: what if the string is ""
         return e;
     }
     return this;
 }
 
-void Var::print(std::ostream &ostream){
+void VarExpr::print(std::ostream &ostream){
     ostream << this->string_;
 }
 
-void Var::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLeftAndAdd) {
+void VarExpr::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLeftAndAdd) {
     this->print(ostream);
 }
 
-precedence_t Var::get_prec(){
+precedence_t VarExpr::get_prec(){
     return prec_none;
 }
 
@@ -126,13 +128,13 @@ precedence_t Var::get_prec(){
  Add class
  ---------------------------------------*/
 
-Add::Add(Expr *lhs, Expr *rhs) {
+AddExpr::AddExpr(Expr *lhs, Expr *rhs) {
     this->lhs_ = lhs;
     this->rhs_ = rhs;
 }
 
-bool Add::equals(Expr *e){
-    Add *pAdd = dynamic_cast<Add*>(e);
+bool AddExpr::equals(Expr *e){
+    AddExpr *pAdd = dynamic_cast<AddExpr*>(e);
     if(pAdd == nullptr){
         return false;
     }else{
@@ -141,21 +143,21 @@ bool Add::equals(Expr *e){
     }
 }
 
-int Add::interp(){
-    return this->lhs_->interp() + this->rhs_->interp();
+Val * AddExpr::interp(){
+    return (this->lhs_->interp())->add_to(this->rhs_->interp());
 }
 
-bool Add::has_variable(){
+bool AddExpr::has_variable(){
     return  this->lhs_->has_variable()
             || this->rhs_->has_variable();
 }
 
-Expr* Add::subst(std::string string, Expr* e){
-    return new Add(this->lhs_->subst(string, e),
-                   this->rhs_->subst(string, e));
+Expr* AddExpr::subst(std::string string, Expr* e){
+    return new AddExpr(this->lhs_->subst(string, e),
+                       this->rhs_->subst(string, e));
 }
 
-void Add::print(std::ostream &ostream){
+void AddExpr::print(std::ostream &ostream){
     ostream << "(";
     this->lhs_->print(ostream);
     ostream << "+";
@@ -163,7 +165,7 @@ void Add::print(std::ostream &ostream){
     ostream << ")";
 }
 
-void Add::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLeftAndAdd) {
+void AddExpr::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLeftAndAdd) {
     if(this->lhs_->get_prec() == prec_add || this->lhs_->get_prec() == prec_let){
         ostream << "(";
         this->lhs_->pretty_print_at(ostream, lastReturnSeen, true);
@@ -175,7 +177,7 @@ void Add::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen,
     this->rhs_->pretty_print_at(ostream, lastReturnSeen, false);
 }
 
-precedence_t Add::get_prec(){
+precedence_t AddExpr::get_prec(){
     return prec_add;
 }
 
@@ -186,13 +188,13 @@ precedence_t Add::get_prec(){
  Multiplication class
  ---------------------------------------*/
 
-Mult::Mult(Expr *lhs, Expr *rhs) {
+MultExpr::MultExpr(Expr *lhs, Expr *rhs) {
     this->lhs_ = lhs;
     this->rhs_ = rhs;
 }
 
-bool Mult::equals(Expr *e){
-    Mult *pMult = dynamic_cast<Mult*>(e);
+bool MultExpr::equals(Expr *e){
+    MultExpr *pMult = dynamic_cast<MultExpr*>(e);
     if(pMult == nullptr){
         return false;
     }else{
@@ -201,21 +203,21 @@ bool Mult::equals(Expr *e){
     }
 }
 
-int Mult::interp(){
-    return this->lhs_->interp() * this->rhs_->interp();
+Val * MultExpr::interp(){
+    return this->lhs_->interp()->mult_with(this->rhs_->interp()) ;
 }
 
-bool Mult::has_variable(){
+bool MultExpr::has_variable(){
     return  this->lhs_->has_variable()
             || this->rhs_->has_variable();
 }
 
-Expr* Mult::subst(std::string string, Expr* e){
-    return new Mult(this->lhs_->subst(string, e),
-                    this->rhs_->subst(string, e));
+Expr* MultExpr::subst(std::string string, Expr* e){
+    return new MultExpr(this->lhs_->subst(string, e),
+                        this->rhs_->subst(string, e));
 }
 
-void Mult::print(std::ostream &ostream){
+void MultExpr::print(std::ostream &ostream){
     ostream << "(";
     this->lhs_->print(ostream);
     ostream << "*";
@@ -224,7 +226,7 @@ void Mult::print(std::ostream &ostream){
 }
 
 
-void Mult::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLeftAndAdd) {
+void MultExpr::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLeftAndAdd) {
     if(this->lhs_->get_prec() != prec_none){
         ostream << "(";
         this->lhs_->pretty_print_at(ostream, lastReturnSeen, false);
@@ -244,7 +246,7 @@ void Mult::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen
     }
 }
 
-precedence_t Mult::get_prec(){
+precedence_t MultExpr::get_prec(){
     return prec_mult;
 }
 
@@ -253,14 +255,14 @@ precedence_t Mult::get_prec(){
  Let class
  ---------------------------------------*/
 
-Let::Let(std::string lhs, Expr *rhs, Expr *body) {
+LetExpr::LetExpr(std::string lhs, Expr *rhs, Expr *body) {
     this->lhs_ = std::move(lhs);
     this->rhs_ = rhs;
     this->body_ = body;
 }
 
-bool Let::equals(Expr *e){
-    Let *pLet = dynamic_cast<Let*>(e);
+bool LetExpr::equals(Expr *e){
+    LetExpr *pLet = dynamic_cast<LetExpr*>(e);
     if(pLet == nullptr){
         return false;
     }else{
@@ -270,29 +272,29 @@ bool Let::equals(Expr *e){
     }
 }
 
-int Let::interp(){
+Val * LetExpr::interp(){
     return  this->body_
-            ->subst(lhs_, rhs_)
+            ->subst(lhs_, rhs_->interp()->to_expr())
             ->interp();
 }
 
-bool Let::has_variable(){
+bool LetExpr::has_variable(){
     return  this->body_->subst(lhs_, rhs_)->has_variable(); // after substitution still have variable, then true
 }
 
-Expr* Let::subst(std::string string, Expr* e){
+Expr* LetExpr::subst(std::string string, Expr* e){
     if(string == this->lhs_){
-        return new Let(this->lhs_,
-                       this->rhs_->subst(string, e),
-                       this->body_);
+        return new LetExpr(this->lhs_,
+                           this->rhs_->subst(string, e),
+                           this->body_);
     }else{
-        return new Let(this->lhs_,
-                        this->rhs_->subst(string, e),
-                        this->body_->subst(string, e));
+        return new LetExpr(this->lhs_,
+                           this->rhs_->subst(string, e),
+                           this->body_->subst(string, e));
     }
 }
 
-void Let::print(std::ostream &ostream){
+void LetExpr::print(std::ostream &ostream){
     ostream << "(_let " << this->lhs_ << "=";
     this->rhs_->print(ostream);
     ostream << " _in ";
@@ -300,7 +302,7 @@ void Let::print(std::ostream &ostream){
     ostream << ")";
 }
 
-void Let::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLeftAndAdd) { // still need to deal with cases that doesn't have but need to have
+void LetExpr::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen, bool lastLeftAndAdd) { // still need to deal with cases that doesn't have but need to have
     std::streampos oldLastReturn = lastReturnSeen;
     std::streampos currentStart = ostream.tellp();
     ostream << "_let " << this->lhs_ << " = ";
@@ -312,7 +314,7 @@ void Let::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen,
     this->body_->pretty_print_at(ostream, lastReturnSeen, false);
 }
 
-precedence_t Let::get_prec(){
+precedence_t LetExpr::get_prec(){
     return prec_let;
 }
 

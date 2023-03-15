@@ -3,8 +3,9 @@
 //
 
 #pragma include once
-#include "expr.h"
-
+#include <cstdio>
+#include <istream>
+class Expr;
 
 void consume(std::istream &in, int nextChar);
 void skip_space(std::istream &in);

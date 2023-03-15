@@ -18,6 +18,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <utility>
+class Val;
 
 typedef enum {
     prec_none,  // = 0
@@ -25,7 +26,6 @@ typedef enum {
     prec_mult,  // = 2
     prec_let,   // = 3
 } precedence_t;
-
 
 /*! \brief Abstract expression class\n
 * (pure abstract class)
@@ -43,7 +43,7 @@ public:
     * \brief Interpret Expr object to an integer value
     * \return returns the actual integer value of the Expr, if it contains Variable, throw an exception
     */
-    virtual int interp() = 0;
+    virtual Val * interp() = 0;
 
     /**
     * \brief Judge if the Expr object contains any Variable
@@ -105,7 +105,7 @@ public:
 
 /*! \brief Num class inherits from Expr class, representing pure number
  */
-class Num : public Expr {
+class NumExpr : public Expr {
 public:
     int val_; //!< the integer value of the Num object
 
@@ -113,7 +113,7 @@ public:
     * \brief Constructor for Num object
     * \param val integer value of Num
     */
-    explicit Num(int val);
+    explicit NumExpr(int val);
 
     /**
     * \brief Judge if this Num class object equals to another object
@@ -126,7 +126,7 @@ public:
     * \brief Interpret Num object to an integer value
     * \return returns the actual integer value of the Num
     */
-    int interp() override;
+    Val * interp() override;
 
     /**
     * \brief Judge if the Num object contains any Variable
@@ -153,7 +153,7 @@ public:
 
 /*! \brief Var class inherits from Expr class, representing pure variable
  */
-class Var : public Expr {
+class VarExpr : public Expr {
 public:
     std::string string_;  //!< the string name that makes up the Var object
 
@@ -161,7 +161,7 @@ public:
     * \brief Constructor for Var object
     * \param varName a string that can be seen as the label of the Var
     */
-    explicit Var(std::string varName);
+    explicit VarExpr(std::string varName);
 
     /**
     * \brief Judge if this Var class object equals to another object, overrides function in superclass.
@@ -174,7 +174,7 @@ public:
     * \brief Interpret Var object to an integer value
     * \return A Var doesn't have specific integer value, throw an exception
     */
-    int interp() override;
+    Val * interp() override;
 
     /**
     * \brief Judge if the Var object contains any Var
@@ -202,7 +202,7 @@ public:
 
 /*! \brief Add class inherits from Expr class, representing addition for two expressions
  */
-class Add : public Expr {
+class AddExpr : public Expr {
 public:
     Expr *lhs_; //!< the Expr object that makes up the left hand side of the Add object
     Expr *rhs_; //!< the Expr object that makes up the right hand side of the Add object
@@ -212,7 +212,7 @@ public:
    * \param lhs an Expr object on the left hand side
    * \param rhs an Expr object on the right hand side
    */
-    Add(Expr *lhs, Expr *rhs);
+    AddExpr(Expr *lhs, Expr *rhs);
 
     /**
     * \brief Judge if this Add class object equals to another object
@@ -225,7 +225,7 @@ public:
     * \brief Interpret Add object to an integer value
     * \return returns the actual integer value (lhs + rhs) of the Add, if it contains Var, throw an exception
     */
-    int interp() override;
+    Val * interp() override;
 
     /**
     * \brief Judge if the Add object contains any Var
@@ -254,7 +254,7 @@ public:
 
 /*! \brief Mult class inherits from Expr class, representing multiplication for two expressions
  */
-class Mult : public Expr {
+class MultExpr : public Expr {
 public:
     Expr *lhs_; //!< the Expr object that makes up the left hand side of the Mult object
     Expr *rhs_; //!< the Expr object that makes up the right hand side of the Mult object
@@ -264,7 +264,7 @@ public:
    * \param lhs an Expr object on the left hand side
    * \param rhs an Expr object on the right hand side
    */
-    Mult(Expr *lhs, Expr *rhs);
+    MultExpr(Expr *lhs, Expr *rhs);
 
     /**
     * \brief Judge if this Mult class object equals to another object
@@ -277,7 +277,7 @@ public:
     * \brief Interpret Mult object to an integer value
     * \return returns the actual integer value (lhs * rhs) of the Mult, if it contains Var, throw an exception
     */
-    int interp() override;
+    Val * interp() override;
 
     /**
     * \brief Judge if the Mult object contains any Var
@@ -302,7 +302,7 @@ public:
 
 /*! \brief Let class inherits from Expr class, representing setting values for some expressions if applicable
  */
-class Let : public Expr {
+class LetExpr : public Expr {
 public:
     std::string lhs_; //!< the expression that is waiting to be set with value
     Expr *rhs_; //!< the setting value
@@ -314,7 +314,7 @@ public:
     * \param rhs an Expr with some value passing to the lhs expression
     * \param body in which expression the variable is set with the value
     */
-    Let(std::string lhs, Expr* rhs, Expr* body);
+    LetExpr(std::string lhs, Expr* rhs, Expr* body);
 
     /**
     * \brief Judge if this Let class object equals to another object
@@ -327,7 +327,7 @@ public:
     * \brief Interpret Let object to an integer value
     * \return returns the actual integer value of the Num
     */
-    int interp() override;
+    Val * interp() override;
 
     /**
     * \brief Judge if the Let object contains any Variable
