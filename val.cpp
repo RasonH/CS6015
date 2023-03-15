@@ -6,7 +6,7 @@
 #include "expr.h"
 
 NumVal::NumVal(int val) {
-    this -> val = val;
+    this->val = val;
 }
 
 bool NumVal::equals(Val *val) {
@@ -18,23 +18,23 @@ bool NumVal::equals(Val *val) {
 
 Val *NumVal::add_to(Val *other_val) {
     NumVal *other_num = dynamic_cast<NumVal*>(other_val);
-    if (other_num == nullptr) throw std::runtime_error("add of non-number");
+    if (other_num == nullptr) throw std::runtime_error("addition of non-number");
     return new NumVal(this->val + other_num->val);
 }
 
 Val *NumVal::mult_with(Val *other_val) {
     NumVal *other_num = dynamic_cast<NumVal *>(other_val);
     if (other_num == nullptr)
-        throw std::runtime_error("Should be a number.");
-    return new NumVal (this -> val * other_num -> val);
+        throw std::runtime_error("multiplication of non-number");
+    return new NumVal (this->val * other_num->val);
 }
 
 Expr *NumVal::to_expr() {
-    return new NumExpr(this -> val);
+    return new NumExpr(this->val);
 }
 
 std::string NumVal::to_string() {
-    return std::to_string(this -> val);
+    return std::to_string(this->val);
 }
 
 
@@ -44,14 +44,15 @@ BoolVal::BoolVal(bool val) {
 }
 
 bool BoolVal::equals(Val *val) {
-    BoolVal *boolVal = dynamic_cast<BoolVal *>(val);
-    if (boolVal == nullptr)
+    BoolVal *pBoolVal = dynamic_cast<BoolVal *>(val);
+    if (pBoolVal == nullptr) {
         return false;
-    return this->val == boolVal->val;
+    }
+    return this->val == pBoolVal->val;
 }
 
 Expr *BoolVal::to_expr() {
-    return nullptr;
+    return nullptr; // TODO: need to modify to return BoolExpr after creating the class
 }
 
 Val *BoolVal::add_to(Val *val) {
@@ -63,9 +64,8 @@ Val *BoolVal::mult_with(Val *val) {
 }
 
 std::string BoolVal::to_string() {
-    if (this -> val){
+    if (this->val == true) {
         return "_true";
-    }else {
-        return "_false";
     }
+    return "_false";
 }
