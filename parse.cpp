@@ -2,9 +2,9 @@
 // Created by Rason Hung on 2/21/23.
 //
 
-#include <istream>
+#pragma include once
 #include "parse.h"
-
+#include "expr.h"
 
 //helper function consume
 void consume(std::istream &in, int nextChar){
@@ -76,7 +76,7 @@ Expr *parse_num(std::istream &in){
         throw std::runtime_error("invalid input");
 //        throw std::runtime_error("");
     }
-    return new Num(n);
+    return new NumExpr(n);
 }
 
 // parse variable
@@ -91,7 +91,7 @@ Expr *parse_var(std::istream &in){
             break;
         }
     }
-    return new Var(s);
+    return new VarExpr(s);
 }
 
 //parse keyword
@@ -130,7 +130,7 @@ Expr *parse_let(std::istream &in){
     }
     skip_space(in);
     Expr *body = parse_expr(in);
-    return new Let(lhs,rhs,body);
+    return new LetExpr(lhs, rhs, body);
 }
 
 /* <expr> = <addend>
@@ -147,7 +147,7 @@ Expr *parse_expr(std::istream &in){
     if (c == '+'){
         consume(in, '+');
         Expr *rhs = parse_expr(in);
-        return new Add(e,rhs);
+        return new AddExpr(e, rhs);
     }else
         return e;
 }
@@ -166,7 +166,7 @@ Expr *parse_addend(std::istream &in){
     if (c == '*'){
         consume(in, '*');
         Expr *rhs = parse_addend(in);
-        return new Mult(e,rhs);
+        return new MultExpr(e, rhs);
     }else
         return e;
 }
