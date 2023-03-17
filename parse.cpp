@@ -29,18 +29,11 @@ void skip_space(std::istream &in) {
 // helper function for testing
 Expr *parse_str(const std::string &s) {
 	std::stringstream in(s);
-	Expr *e = parse_expr(in);
-	skip_space(in);
-	if (!in.eof()) { // if there is still character at the end after parsing a
-		// whole expression
-		throw std::runtime_error("invalid input");
-		//        throw std::runtime_error("");
-	} else {
-		return e;
-	}
+	return parse_str(in);
 }
 
 Expr *parse_str(std::istream &in) {
+	skip_space(in); // actually not necessary
 	Expr *e = parse_expr(in);
 	skip_space(in);
 	if (!in.eof()) { // if there is still character at the end after parsing a
@@ -54,6 +47,7 @@ Expr *parse_str(std::istream &in) {
 
 // parse number
 Expr *parse_num(std::istream &in) {
+	skip_space(in);
 	int n = 0;
 	bool negative = false;
 	bool numSeen = false;
@@ -80,11 +74,13 @@ Expr *parse_num(std::istream &in) {
 		throw std::runtime_error("invalid input");
 		//        throw std::runtime_error("");
 	}
+	skip_space(in);
 	return new NumExpr(n);
 }
 
 // parse variable
 Expr *parse_var(std::istream &in) {
+	skip_space(in);
 	std::string s;
 	while (true) {
 		char c = in.peek();
@@ -95,11 +91,13 @@ Expr *parse_var(std::istream &in) {
 			break;
 		}
 	}
+	skip_space(in);
 	return new VarExpr(s);
 }
 
 // parse keyword
 std::string parse_keyword(std::istream &in) {
+	skip_space(in);
 	int c = in.peek();
 	std::string keyword = "_";
 	if (c == '_') {
@@ -111,7 +109,6 @@ std::string parse_keyword(std::istream &in) {
 			c = in.peek();
 		}
 	}
-	skip_space(in);
 	return keyword;
 }
 
@@ -139,6 +136,7 @@ Expr *parse_let(std::istream &in) {
 
 // parse _if - _if 〈expr〉 _then 〈expr〉 _else 〈expr〉
 Expr *parse_if(std::istream &in) {
+	// already read in _if
 	skip_space(in);
 	Expr *testPart = parse_expr(in);
 	skip_space(in);
@@ -161,9 +159,8 @@ Expr *parse_if(std::istream &in) {
           | <comparg> == <expr>
  */
 Expr *parse_expr(std::istream &in) {
-	Expr *e;
-
-	e = parse_comparg(in);
+	skip_space(in);
+	Expr *e = parse_comparg(in);
 	skip_space(in);
 
 	int c = in.peek();
@@ -174,6 +171,8 @@ Expr *parse_expr(std::istream &in) {
 			consume(in, '=');
 			Expr *rhs = parse_expr(in);
 			return new EqExpr(e, rhs);
+		} else {
+			throw std::runtime_error("'==' is required in EqExpr");
 		}
 	} else {
 		return e;
@@ -185,9 +184,8 @@ Expr *parse_expr(std::istream &in) {
          	 | <addend> + <comparg>
  */
 Expr *parse_comparg(std::istream &in) {
-	Expr *e;
-
-	e = parse_addend(in);
+	skip_space(in);
+	Expr *e = parse_addend(in);
 	skip_space(in);
 
 	int c = in.peek();
@@ -205,9 +203,8 @@ Expr *parse_comparg(std::istream &in) {
             | <multicand> * <addend>
  */
 Expr *parse_addend(std::istream &in) {
-	Expr *e;
-
-	e = parse_multicand(in);
+	skip_space(in);
+	Expr *e = parse_multicand(in);
 	skip_space(in);
 
 	int c = in.peek();
@@ -268,7 +265,7 @@ Expr *parse_multicand(std::istream &in) {
 		} else {
 			throw std::runtime_error("invalid input"); // unknown keyword
 		}
-	} else {
+	} else { // next character is not any of these conditions
 		consume(in, c);
 		throw std::runtime_error("invalid input"); // still have things remained
 		// other than above possibilities
