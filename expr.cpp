@@ -443,7 +443,8 @@ void IfExpr::print(std::ostream &ostream) {
 	ostream << ")";
 }
 
-void IfExpr::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen,
+void IfExpr::pretty_print_at(std::ostream &ostream,
+							 std::streampos &lastReturnSeen,
 							 bool lastLeftAndAdd) { // TODO: still need to check
 	std::streampos oldLastReturn = lastReturnSeen;
 	std::streampos currentStart = ostream.tellp();
