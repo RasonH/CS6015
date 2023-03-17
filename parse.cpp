@@ -163,7 +163,7 @@ Expr *parse_if(std::istream &in) {
 Expr *parse_expr(std::istream &in) {
 	Expr *e;
 
-	e = parse_addend(in);
+	e = parse_comparg(in);
 	skip_space(in);
 
 	int c = in.peek();
@@ -254,7 +254,7 @@ Expr *parse_multicand(std::istream &in) {
 	else if (isalpha(c)) {
 		return parse_var(in);
 	}
-		// _let
+		// keywords
 	else if (c == '_') {
 		std::string keyword = parse_keyword(in);
 		if (keyword == "_let") {

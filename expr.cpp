@@ -350,7 +350,7 @@ bool EqExpr::equals(Expr *e) {
 }
 
 Val *EqExpr::interp() {
-	return new BoolVal(this->lhs_->equals(this->rhs_));
+	return new BoolVal(this->lhs_->interp()->equals(this->rhs_->interp()));
 }
 
 bool EqExpr::has_variable() {
@@ -461,6 +461,6 @@ void IfExpr::pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSe
 	this->else_part_->pretty_print_at(ostream, lastReturnSeen, false);
 }
 
-precedence_t get_prec() {
+precedence_t IfExpr::get_prec() {
 	return prec_keywords;
 };

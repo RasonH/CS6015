@@ -1102,8 +1102,7 @@ static std::string run(std::string s) {
 	return parse_str(s)->interp()->to_string();
 }
 
-TEST_CASE("Refactor") {
-
+TEST_CASE("Refactor") { // TODO: add more tests on refactored since bool, and need to check if pretty print works
 	SECTION("NumVal") {
 		CHECK((new NumVal(3))->equals(new NumVal(3)) == true);
 		CHECK((new NumVal(3))->equals(new NumVal(-3)) == false);
@@ -1122,11 +1121,67 @@ TEST_CASE("Refactor") {
 		CHECK((new BoolVal(true))->equals(new BoolVal(true)) == true);
 		CHECK((new BoolVal(true))->equals(new BoolVal(false)) == false);
 		CHECK((new BoolVal(true))->equals(nullptr) == false);
+		CHECK((new EqExpr(new NumExpr(1), new NumExpr(2)))->interp()
+				  ->equals(new BoolVal(false)));
+		CHECK(parse_str("1 == 2")->interp()->equals(new BoolVal(false)));
+		CHECK(parse_str("1 == 2")->interp()->to_string() == "_false");
+		CHECK(run("1 == 2") == "_false");
+	} SECTION("from quiz") {
+		CHECK((new EqExpr(new NumExpr(3), new NumExpr(3)))->interp()->equals(new BoolVal(true)) == true);
+		CHECK((new EqExpr(new NumExpr(3), new AddExpr(new NumExpr(1), new NumExpr(2))))->interp()
+				  ->equals(new BoolVal(true)) == true);
+		CHECK((parse_str("_if 1 == 2 _then 5 _else 6"))->
+			equals(new IfExpr(new EqExpr(new NumExpr(1), new NumExpr(2)), new NumExpr(5), new NumExpr(6))));
 
-		//        CHECK( (new EqExpr(new NumExpr(1), new NumExpr(2)))->interp()
-		//                       ->equals(new BoolVal(false)) );
-		//        CHECK( parse_str("1 == 2")->interp()->equals(new BoolVal(false))
-		//        ); CHECK( parse_str("1 == 2")->interp()->to_string() == "_false"
-		//        ); CHECK( run("1 == 2") == "_false" );
+		CHECK((((parse_str("_if 1 == 2 _then 5 _else 6"))->interp())->to_string()) == "6");
+		CHECK((((parse_str("1 == 2"))->interp())->to_string()) == "_false");
+		CHECK((((parse_str("(1 + 2) == (3 + 0)"))->interp())->to_string()) == "_true");
+		CHECK((((parse_str("1 + 2 == 3 + 0"))->interp())->to_string()) == "_true");
+		CHECK_THROWS_WITH(((((parse_str("(1 == 2) + 3 "))->interp())->to_string()) == "_true"), "add of non-number");
+		CHECK((((parse_str("1==2+3"))->interp())->to_string()) == "_false");
+		CHECK((((parse_str("_if _false\n"
+						   "_then 5\n"
+						   "_else 6"))->interp())->to_string()) == "6");
+		CHECK((((parse_str("_if _false\n"
+						   "_then _false\n"
+						   "_else _true"))->interp())->to_string()) == "_true");
+		CHECK((((parse_str("_if _false\n"
+						   "_then 5\n"
+						   "_else _false"))->interp())->to_string()) == "_false");
+		CHECK_THROWS_WITH(((((parse_str("_true + _false"))->interp())->to_string()) == "_false"), "add of non-number");
+		CHECK_THROWS_WITH(((((parse_str("_true + 1"))->interp())->to_string()) == "_false"), "add of non-number");
+		CHECK((((parse_str("_true == _true"))->interp())->to_string()) == "_true");
+		CHECK((((parse_str("1 == _true"))->interp())->to_string()) == "_false");
+		CHECK_THROWS_WITH(((((parse_str("_if 1 + 2\n"
+										"_then _false\n"
+										"_else _true"))->interp())->to_string()) == "_false"),
+						  "IfExpr's condition isn't BoolVal");
+		CHECK((((parse_str("_if _true\n"
+						   "_then 5\n"
+						   "_else _true + 1"))->interp())->to_string()) == "5");
+		CHECK_THROWS_WITH(((((parse_str("_if _false\n"
+										"_then 5\n"
+										"_else _true + 1"))->interp())->to_string()) == "_false"), "add of non-number");
+		CHECK_THROWS_WITH(((((parse_str("_let x = _true + 1\n"
+										"_in  _if _true\n"
+										"     _then 5\n"
+										"     _else x"))->interp())->to_string()) == "_false"), "add of non-number");
+		CHECK_THROWS_WITH(((((parse_str("_let x = _true + 1\n"
+										"_in  _if _true\n"
+										"     _then 5\n"
+										"     _else x"))->interp())->to_string()) == "_false"), "add of non-number");
+		CHECK((((parse_str("(_if _true\n"
+						   " _then 5\n"
+						   " _else _true) + 1"))->interp())->to_string()) == "6");
+		CHECK((((parse_str("_if (_if 1 == 2\n"
+						   "     _then _false\n"
+						   "     _else _true)\n"
+						   "_then 5\n"
+						   "_else 6"))->interp())->to_string()) == "5");
+		CHECK((((parse_str("_if (_if 1 == 2\n"
+						   "     _then _true\n"
+						   "      _else _false)\n"
+						   "_then 5\n"
+						   "_else 6"))->interp())->to_string()) == "6");
 	}
 }
