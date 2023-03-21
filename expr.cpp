@@ -358,7 +358,7 @@ Val *EqExpr::interp() {
 bool EqExpr::has_variable() {
 	return this->lhs_->has_variable() ||
 		this->rhs_->has_variable();
-};
+}
 
 Expr *EqExpr::subst(std::string string, Expr *e) {
 	return new EqExpr(lhs_->subst(string, e), rhs_->subst(string, e));
@@ -480,4 +480,4 @@ void IfExpr::pretty_print_at(std::ostream &ostream,
 
 precedence_t IfExpr::get_prec() {
 	return prec_keywords;
-};
+}
