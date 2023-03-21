@@ -147,7 +147,8 @@ void AddExpr::pretty_print_at(std::ostream &ostream,
 							  std::streampos &lastReturnSeen,
 							  bool lastLeftAndAdd) {
 	if (this->lhs_->get_prec() == prec_add ||
-		this->lhs_->get_prec() == prec_keywords) {
+		this->lhs_->get_prec() == prec_keywords ||
+		this->lhs_->get_prec() == prec_eq) {
 		ostream << "(";
 		this->lhs_->pretty_print_at(ostream, lastReturnSeen, true);
 		ostream << ")";
@@ -214,6 +215,7 @@ void MultExpr::pretty_print_at(std::ostream &ostream,
 	ostream << " * ";
 
 	if (this->rhs_->get_prec() == prec_add ||
+		this->rhs_->get_prec() == prec_eq ||
 		((this->rhs_->get_prec() == prec_keywords) && lastLeftAndAdd)) {
 		ostream << "(";
 		this->rhs_->pretty_print_at(ostream, lastReturnSeen, false);
@@ -373,7 +375,21 @@ void EqExpr::print(std::ostream &ostream) {
 void EqExpr::pretty_print_at(std::ostream &ostream,
 							 std::streampos &lastReturnSeen,
 							 bool lastLeftAndAdd) {
-	this->print(ostream); //TODO: pretty print still need to fix or refactor
+	if (this->lhs_->get_prec() != prec_none) {
+		ostream << "(";
+		this->lhs_->pretty_print_at(ostream, lastReturnSeen, false);
+		ostream << ")";
+	} else {
+		this->lhs_->pretty_print_at(ostream, lastReturnSeen, false);
+	}
+	ostream << " == ";
+	if (this->rhs_->get_prec() != prec_none) {
+		ostream << "(";
+		this->rhs_->pretty_print_at(ostream, lastReturnSeen, false);
+		ostream << ")";
+	} else {
+		this->rhs_->pretty_print_at(ostream, lastReturnSeen, false);
+	}
 }
 
 precedence_t EqExpr::get_prec() {

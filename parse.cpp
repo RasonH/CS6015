@@ -86,7 +86,7 @@ Expr *parse_var(std::istream &in) {
 		char c = in.peek();
 		if (isalpha(c)) {
 			consume(in, c);
-			s = s + c;
+			s += c;
 		} else {
 			break;
 		}
