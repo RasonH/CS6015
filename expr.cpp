@@ -147,7 +147,8 @@ void AddExpr::pretty_print_at(std::ostream &ostream,
 							  std::streampos &lastReturnSeen,
 							  bool lastLeftAndAdd) {
 	if (this->lhs_->get_prec() == prec_add ||
-		this->lhs_->get_prec() == prec_keywords) {
+		this->lhs_->get_prec() == prec_keywords ||
+		this->lhs_->get_prec() == prec_eq) {
 		ostream << "(";
 		this->lhs_->pretty_print_at(ostream, lastReturnSeen, true);
 		ostream << ")";
@@ -214,6 +215,7 @@ void MultExpr::pretty_print_at(std::ostream &ostream,
 	ostream << " * ";
 
 	if (this->rhs_->get_prec() == prec_add ||
+		this->rhs_->get_prec() == prec_eq ||
 		((this->rhs_->get_prec() == prec_keywords) && lastLeftAndAdd)) {
 		ostream << "(";
 		this->rhs_->pretty_print_at(ostream, lastReturnSeen, false);
@@ -356,7 +358,7 @@ Val *EqExpr::interp() {
 bool EqExpr::has_variable() {
 	return this->lhs_->has_variable() ||
 		this->rhs_->has_variable();
-};
+}
 
 Expr *EqExpr::subst(std::string string, Expr *e) {
 	return new EqExpr(lhs_->subst(string, e), rhs_->subst(string, e));
@@ -373,7 +375,21 @@ void EqExpr::print(std::ostream &ostream) {
 void EqExpr::pretty_print_at(std::ostream &ostream,
 							 std::streampos &lastReturnSeen,
 							 bool lastLeftAndAdd) {
-	this->print(ostream); //TODO: pretty print still need to fix or refactor
+	if (this->lhs_->get_prec() != prec_none) {
+		ostream << "(";
+		this->lhs_->pretty_print_at(ostream, lastReturnSeen, false);
+		ostream << ")";
+	} else {
+		this->lhs_->pretty_print_at(ostream, lastReturnSeen, false);
+	}
+	ostream << " == ";
+	if (this->rhs_->get_prec() != prec_none) {
+		ostream << "(";
+		this->rhs_->pretty_print_at(ostream, lastReturnSeen, false);
+		ostream << ")";
+	} else {
+		this->rhs_->pretty_print_at(ostream, lastReturnSeen, false);
+	}
 }
 
 precedence_t EqExpr::get_prec() {
@@ -464,4 +480,4 @@ void IfExpr::pretty_print_at(std::ostream &ostream,
 
 precedence_t IfExpr::get_prec() {
 	return prec_keywords;
-};
+}
