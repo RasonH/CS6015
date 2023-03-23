@@ -6,6 +6,7 @@
 
 #include "parse.h"
 #include "expr.h"
+// default design rule - skip spaces both front and end for every parse function
 
 // helper function consume
 void consume(std::istream &in, int nextChar) {
@@ -19,7 +20,7 @@ void consume(std::istream &in, int nextChar) {
 void skip_space(std::istream &in) {
 	while (true) {
 		int c = in.peek();
-		if (!isspace(c)) {
+		if (!(isspace(c) || (c == '\n'))) {
 			break;
 		}
 		consume(in, c);
@@ -33,12 +34,10 @@ Expr *parse_str(const std::string &s) {
 }
 
 Expr *parse_str(std::istream &in) {
-	skip_space(in); // actually not necessary
 	Expr *e = parse_expr(in);
-	skip_space(in);
 	if (!in.eof()) { // if there is still character at the end after parsing a
 		// whole expression
-		throw std::runtime_error("invalid input");
+		throw std::runtime_error("invalid input - still have character after parsing the whole expression");
 		//        throw std::runtime_error("");
 	} else {
 		return e;
@@ -47,16 +46,15 @@ Expr *parse_str(std::istream &in) {
 
 // parse number
 Expr *parse_num(std::istream &in) {
-	skip_space(in);
+//	(called by parse_inner, already skipped space in the front), the next character is '-' or digit
+//	skip_space(in); // no skipping space here, be careful with input"-   123456", rule: only "-123456" is valid to parse
 	int n = 0;
 	bool negative = false;
 	bool numSeen = false;
-
 	if (in.peek() == '-') {
 		negative = true;
 		consume(in, '-');
 	}
-
 	while (true) {
 		int c = in.peek();
 		if (isdigit(c)) {
@@ -65,13 +63,15 @@ Expr *parse_num(std::istream &in) {
 			}
 			consume(in, c);
 			n = n * 10 + (c - '0');
-		} else
+		} else {
 			break;
+		}
 	}
-	if (negative)
+	if (negative) {
 		n = -n;
+	}
 	if (!numSeen) {
-		throw std::runtime_error("invalid input");
+		throw std::runtime_error("invalid input - no number seen");
 		//        throw std::runtime_error("");
 	}
 	skip_space(in);
@@ -83,7 +83,7 @@ Expr *parse_var(std::istream &in) {
 	skip_space(in);
 	std::string s;
 	while (true) {
-		char c = in.peek();
+		int c = in.peek();
 		if (isalpha(c)) {
 			consume(in, c);
 			s += c;
@@ -99,8 +99,9 @@ Expr *parse_var(std::istream &in) {
 std::string parse_keyword(std::istream &in) {
 	skip_space(in);
 	int c = in.peek();
-	std::string keyword = "_";
+	std::string keyword = "";
 	if (c == '_') {
+		keyword += c;
 		consume(in, c);
 		c = in.peek();
 		while (isalpha(c)) {
@@ -109,127 +110,83 @@ std::string parse_keyword(std::istream &in) {
 			c = in.peek();
 		}
 	}
+	skip_space(in);
 	return keyword;
 }
 
 // parse _let - _let <variable> = <expr> _in <expr>
 Expr *parse_let(std::istream &in) {
+	// already read in _let and consumed
 	skip_space(in);
 	std::string lhs = parse_var(in)->to_string();
-	skip_space(in);
 	int c = in.peek();
 	if (c == '=') {
-		consume(in, '=');
+		consume(in, c);
 	} else {
 		throw std::runtime_error("'=' is required in _let");
 	}
-	skip_space(in);
 	Expr *rhs = parse_expr(in);
-	skip_space(in);
 	if (parse_keyword(in) != "_in") {
 		throw std::runtime_error("'_in' is required in _let");
 	}
-	skip_space(in);
 	Expr *body = parse_expr(in);
+	skip_space(in);
 	return new LetExpr(lhs, rhs, body);
 }
 
-// parse _if - _if 〈expr〉 _then 〈expr〉 _else 〈expr〉
+// parse _if - _if <expr> _then  <expr> _else <expr>
 Expr *parse_if(std::istream &in) {
-	// already read in _if
+	// already read in _if and consumed
 	skip_space(in);
 	Expr *testPart = parse_expr(in);
-	skip_space(in);
 	if (parse_keyword(in) != "_then") {
 		throw std::runtime_error("'_then' is required in _if");
 	}
-	skip_space(in);
 	Expr *thenPart = parse_expr(in);
-	skip_space(in);
 	if (parse_keyword(in) != "_else") {
 		throw std::runtime_error("'_else' is required in _if");
 	}
-	skip_space(in);
 	Expr *elsePart = parse_expr(in);
+	skip_space(in);
 	return new IfExpr(testPart, thenPart, elsePart);
 }
 
-/*
-   <expr> = <comparg>
-          | <comparg> == <expr>
- */
-Expr *parse_expr(std::istream &in) {
+// parse _fun - _fun (<variable>) <expr>
+Expr *parse_fun(std::istream &in) {
+	// already read in _fun and consumed
 	skip_space(in);
-	Expr *e = parse_comparg(in);
-	skip_space(in);
-
 	int c = in.peek();
-	if (c == '=') {
-		consume(in, '=');
-		c = in.peek();
-		if (c == '=') {
-			consume(in, '=');
-			Expr *rhs = parse_expr(in);
-			return new EqExpr(e, rhs);
-		} else {
-			throw std::runtime_error("'==' is required in EqExpr");
-		}
+	std::string formalArg;
+	if (c == '(') {
+		consume(in, c);
+		formalArg = parse_var(in)->to_string();
 	} else {
-		return e;
+		throw std::runtime_error("'(' is required in _fun");
 	}
+	c = in.peek();
+	if (c == ')') {
+		consume(in, c);
+	} else {
+		throw std::runtime_error("')' is required in _fun");
+	}
+	Expr *body = parse_expr(in);
+	skip_space(in);
+	return new FunExpr(formalArg, body);
 }
 
 /*
-   <comparg> = <addend>
-         	 | <addend> + <comparg>
- */
-Expr *parse_comparg(std::istream &in) {
-	skip_space(in);
-	Expr *e = parse_addend(in);
-	skip_space(in);
-
-	int c = in.peek();
-	if (c == '+') {
-		consume(in, '+');
-		Expr *rhs = parse_comparg(in);
-		return new AddExpr(e, rhs);
-	} else {
-		return e;
-	}
-}
-
-/*
-   <addend> = <multicand>
-            | <multicand> * <addend>
- */
-Expr *parse_addend(std::istream &in) {
-	skip_space(in);
-	Expr *e = parse_multicand(in);
-	skip_space(in);
-
-	int c = in.peek();
-	if (c == '*') {
-		consume(in, '*');
-		Expr *rhs = parse_addend(in);
-		return new MultExpr(e, rhs);
-	} else {
-		return e;
-	}
-}
-
-/*
-   <multicand> = <number>
-              | ( <expr> )
-              | <variable>
-              | _let <variable> = <expr> _in <expr>
-              | _true
-              | _false
-              | _if 〈expr〉 _then 〈expr〉 _else 〈expr〉
+   <inner> = <number>
+		   | ( <expr> )
+		   | <variable>
+		   | _let <variable> = <expr> _in <expr>
+		   | _true
+		   | _false
+		   | _if <expr> _then <expr> _else <expr>
+		   | _fun ( <variable> ) <expr>
  */
 
-Expr *parse_multicand(std::istream &in) {
+Expr *parse_inner(std::istream &in) {
 	skip_space(in);
-
 	int c = in.peek();
 	// <number>
 	if ((c == '-') || isdigit(c)) {
@@ -239,13 +196,15 @@ Expr *parse_multicand(std::istream &in) {
 	else if (c == '(') {
 		consume(in, '(');
 		Expr *e = parse_expr(in); // parse parenthesized
-		skip_space(in);
-		c = in.get();
+		c = in.peek();
 		if (c != ')') {
 			throw std::runtime_error(
-				"invalid input"); // missing the closing parenthesis
+				"invalid input - missing ')' - parse_inner"); // missing the closing parenthesis
+		} else {
+			consume(in, ')');
+			skip_space(in);
+			return e;
 		}
-		return e;
 	}
 		// <variable>
 	else if (isalpha(c)) {
@@ -257,17 +216,105 @@ Expr *parse_multicand(std::istream &in) {
 		if (keyword == "_let") {
 			return parse_let(in);
 		} else if (keyword == "_true") {
+			skip_space(in);
 			return new BoolExpr(true);
 		} else if (keyword == "_false") {
+			skip_space(in);
 			return new BoolExpr(false);
 		} else if (keyword == "_if") {
 			return parse_if(in);
+		} else if (keyword == "_fun") {
+			return parse_fun(in);
 		} else {
-			throw std::runtime_error("invalid input"); // unknown keyword
+			throw std::runtime_error("invalid input - unknown keyword"); // triggered keyword parsing but unknown keyword
 		}
 	} else { // next character is not any of these conditions
-		consume(in, c);
-		throw std::runtime_error("invalid input"); // still have things remained
-		// other than above possibilities
+//		consume(in, c);
+		throw std::runtime_error("invalid input - not included condition");
+		// other than previous possibilities
+	}
+}
+
+/*
+   <multicand> =  <inner>
+				| <multicand> ( <expr> )
+ */
+Expr *parse_multicand(std::istream &in) {
+	skip_space(in);
+	Expr *expr = parse_inner(in);
+	while (in.peek() == '(') {
+		consume(in, '(');
+		Expr *actualArg = parse_expr(in);
+		if (in.peek() == ')') {
+			consume(in, ')');
+			skip_space(in); // TODO: here assume "f   (1)   (2)  " is valid input
+		} else {
+			throw std::runtime_error("invalid input - missing ')' - parse_multicand"); // missing closing parenthesis
+		}
+		expr = new CallExpr(expr, actualArg); // e.g. f(1)(2) -> can be recursively parsed
+	}
+	skip_space(in);
+	return expr;
+}
+
+/*
+   <addend> = <multicand>
+            | <multicand> * <addend>
+ */
+Expr *parse_addend(std::istream &in) {
+	skip_space(in);
+	Expr *e = parse_multicand(in);
+	int c = in.peek();
+	if (c == '*') {
+		consume(in, '*');
+		Expr *rhs = parse_addend(in);
+		skip_space(in);
+		return new MultExpr(e, rhs);
+	} else {
+		skip_space(in);
+		return e;
+	}
+}
+/*
+   <comparg> = <addend>
+         	 | <addend> + <comparg>
+ */
+Expr *parse_comparg(std::istream &in) {
+	skip_space(in);
+	Expr *e = parse_addend(in);
+	int c = in.peek();
+	if (c == '+') {
+		consume(in, '+');
+		Expr *rhs = parse_comparg(in);
+		skip_space(in);
+		return new AddExpr(e, rhs);
+	} else {
+		skip_space(in);
+		return e;
+	}
+}
+
+/*
+   <expr> = <comparg>
+          | <comparg> == <expr>
+ */
+Expr *parse_expr(std::istream &in) {
+	skip_space(in);
+	Expr *e = parse_comparg(in);
+	int c = in.peek();
+	if (c == '=') {
+		consume(in, '=');
+		c = in.peek();
+		if (c == '=') {
+			consume(in, '=');
+			Expr *rhs = parse_expr(in);
+			skip_space(in);
+			return new EqExpr(e, rhs);
+		} else {
+			throw std::runtime_error("'==' is required in EqExpr");
+		}
+	} else {
+		skip_space(in);
+		return e;
 	}
 }

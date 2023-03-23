@@ -6,12 +6,11 @@
  */
 
 #include "cmdline.h"
-#include "expr.h"
 
 /*! \brief passing arguments through command line
  *  --help --test ...
 */
-int main(int argc, const char * argv[]) {
-    use_arguments(argc, argv);
-    return 0;
+int main(int argc, const char *argv[]) {
+	use_arguments(argc, argv);
+	return 0;
 }
