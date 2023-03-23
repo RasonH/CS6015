@@ -34,3 +34,7 @@ Expr *parse_comparg(std::istream &in);
 Expr *parse_addend(std::istream &in);
 
 Expr *parse_multicand(std::istream &in);
+
+Expr *parse_inner(std::istream &in);
+
+Expr *parse_fun(std::istream &in);

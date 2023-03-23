@@ -23,11 +23,11 @@
 class Val;
 
 typedef enum {
-	prec_none,        // = 0, NumExpr, VarExpr, BoolExpr
+	prec_none,       // = 0, NumExpr, VarExpr, BoolExpr, CallExpr
 	prec_add,        // = 1
-	prec_mult,        // = 2
-	prec_keywords,  // = 3, LetExpr, IfExpr
-	prec_eq,        // = 4, EqExpr TODO: still need to modify the precedence for print related
+	prec_mult,       // = 2
+	prec_keywords,   // = 3, LetExpr, IfExpr
+	prec_eq,         // = 4, EqExpr TODO: still need to modify the precedence for print related
 
 } precedence_t;
 
@@ -49,13 +49,6 @@ class Expr {
 	 * Variable, throw an exception
 	 */
 	virtual Val *interp() = 0;
-
-	/**
-	 * \brief Judge if the Expr object contains any Variable
-	 * \return returns a boolean, true if the Expr object contains any Variable,
-	 * otherwise false
-	 */
-	virtual bool has_variable() = 0;
 
 	/**
 	 * \brief Substitute the Variable inside Expr object with another Expr
@@ -139,12 +132,6 @@ class NumExpr : public Expr {
 	Val *interp() override;
 
 	/**
-	 * \brief Judge if the Num object contains any Variable
-	 * \return returns a boolean, always return false
-	 */
-	bool has_variable() override;
-
-	/**
 	 * \brief Substitute the Variable inside Num object with another Expr
 	 * \param string first argument, a target string that is waited to be
 	 * substituted \param e second argument, an Expr pointer to object that is
@@ -186,12 +173,6 @@ class VarExpr : public Expr {
 	 * \return A Var doesn't have specific integer value, throw an exception
 	 */
 	Val *interp() override;
-
-	/**
-	 * \brief Judge if the Var object contains any Var
-	 * \return returns a boolean, always return true
-	 */
-	bool has_variable() override;
 
 	/**
 	 * \brief Substitute the Var object with another Expr
@@ -243,13 +224,6 @@ class AddExpr : public Expr {
 	Val *interp() override;
 
 	/**
-	 * \brief Judge if the Add object contains any Var
-	 * \return returns a boolean, true if the Expr object contains any Var,
-	 * otherwise false
-	 */
-	bool has_variable() override;
-
-	/**
 	 * \brief Substitute the Var inside Add object with another Expr
 	 * \param string first argument, a target string that is waited to be
 	 * substituted \param e second argument, an Expr pointer to object that is
@@ -297,13 +271,6 @@ class MultExpr : public Expr {
 	 * contains Var, throw an exception
 	 */
 	Val *interp() override;
-
-	/**
-	 * \brief Judge if the Mult object contains any Var
-	 * \return returns a boolean, true if the Expr object contains any Var,
-	 * otherwise false
-	 */
-	bool has_variable() override;
 
 	/**
 	 * \brief Substitute the Var inside Mult object with another Expr
@@ -354,12 +321,6 @@ class LetExpr : public Expr {
 	Val *interp() override;
 
 	/**
-	 * \brief Judge if the Let object contains any Variable
-	 * \return returns a boolean, always return false
-	 */
-	bool has_variable() override;
-
-	/**
 	 * \brief Substitute the Var inside Let object with another Expr
 	 * \param string first argument, a target string that is waited to be
 	 * substituted \param e second argument, an Expr pointer to object that is
@@ -386,8 +347,6 @@ class BoolExpr : public Expr {
 
 	Val *interp() override;
 
-	bool has_variable() override;
-
 	Expr *subst(std::string string, Expr *e) override;
 
 	void print(std::ostream &ostream) override;
@@ -408,8 +367,6 @@ class EqExpr : public Expr { // equal class
 	bool equals(Expr *e) override;
 
 	Val *interp() override;
-
-	bool has_variable() override;
 
 	Expr *subst(std::string string, Expr *e) override;
 
@@ -433,7 +390,47 @@ class IfExpr : public Expr {
 
 	Val *interp() override;
 
-	bool has_variable() override;
+	Expr *subst(std::string string, Expr *e) override;
+
+	void print(std::ostream &ostream) override;
+
+	void pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen,
+						 bool lastLeftAndAdd) override;
+
+	precedence_t get_prec() override;
+};
+
+class FunExpr : public Expr {
+ public:
+	std::string formal_arg_; // _fun (x)
+	Expr *body_; // return expression
+
+	FunExpr(std::string formalArg, Expr *body);
+
+	bool equals(Expr *e) override;
+
+	Val *interp() override;
+
+	Expr *subst(std::string string, Expr *e) override;
+
+	void print(std::ostream &ostream) override;
+
+	void pretty_print_at(std::ostream &ostream, std::streampos &lastReturnSeen,
+						 bool lastLeftAndAdd) override;
+
+	precedence_t get_prec() override;
+};
+
+class CallExpr : public Expr {
+ public:
+	Expr *to_be_called_;
+	Expr *actual_arg_;
+
+	CallExpr(Expr *toBeCalled, Expr *actualArg);
+
+	bool equals(Expr *e) override;
+
+	Val *interp() override;
 
 	Expr *subst(std::string string, Expr *e) override;
 

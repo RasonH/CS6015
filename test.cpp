@@ -283,43 +283,43 @@ TEST_CASE("Interpret") {
 	}
 }
 
-TEST_CASE("Has_variable") {
-	SECTION("Variable_has_variable") {
-		CHECK((new VarExpr("x"))->has_variable() == true);
-		CHECK((new VarExpr("y"))->has_variable() == true);
-	}
-
-	SECTION("Others_has_variable") {
-		CHECK((new NumExpr(1))->has_variable() == false);
-		CHECK((new NumExpr(0))->has_variable() == false);
-		CHECK((new AddExpr(new NumExpr(1), new NumExpr(2)))->has_variable() ==
-			false);
-		CHECK((new AddExpr(new VarExpr("x"), new NumExpr(2)))->has_variable() ==
-			true);
-		CHECK((new AddExpr(new NumExpr(1), new VarExpr("x")))->has_variable() ==
-			true);
-		CHECK((new MultExpr(new NumExpr(1), new NumExpr(2)))->has_variable() ==
-			false);
-		CHECK((new MultExpr(new NumExpr(1), new VarExpr("x")))->has_variable() ==
-			true);
-		CHECK((new LetExpr("x", new NumExpr(2),
-						   new AddExpr(new VarExpr("y"), new NumExpr(3))))
-				  ->has_variable() == true);
-		CHECK((new LetExpr("x", new NumExpr(2),
-						   new AddExpr(new VarExpr("x"), new NumExpr(3))))
-				  ->has_variable() == false);
-	}
-
-	SECTION("Mixed_has_variable") {
-		CHECK((new AddExpr(new NumExpr(1), new VarExpr("x")))->has_variable() ==
-			true);
-		CHECK((new MultExpr(new VarExpr("y"), new NumExpr(2)))->has_variable() ==
-			true);
-		CHECK((new MultExpr(new AddExpr(new NumExpr(10), new NumExpr(15)),
-							new MultExpr(new NumExpr(20), new NumExpr(20))))
-				  ->has_variable() == false);
-	}
-}
+//TEST_CASE("Has_variable") {
+//	SECTION("Variable_has_variable") {
+//		CHECK((new VarExpr("x"))->has_variable() == true);
+//		CHECK((new VarExpr("y"))->has_variable() == true);
+//	}
+//
+//	SECTION("Others_has_variable") {
+//		CHECK((new NumExpr(1))->has_variable() == false);
+//		CHECK((new NumExpr(0))->has_variable() == false);
+//		CHECK((new AddExpr(new NumExpr(1), new NumExpr(2)))->has_variable() ==
+//			false);
+//		CHECK((new AddExpr(new VarExpr("x"), new NumExpr(2)))->has_variable() ==
+//			true);
+//		CHECK((new AddExpr(new NumExpr(1), new VarExpr("x")))->has_variable() ==
+//			true);
+//		CHECK((new MultExpr(new NumExpr(1), new NumExpr(2)))->has_variable() ==
+//			false);
+//		CHECK((new MultExpr(new NumExpr(1), new VarExpr("x")))->has_variable() ==
+//			true);
+//		CHECK((new LetExpr("x", new NumExpr(2),
+//						   new AddExpr(new VarExpr("y"), new NumExpr(3))))
+//				  ->has_variable() == true);
+//		CHECK((new LetExpr("x", new NumExpr(2),
+//						   new AddExpr(new VarExpr("x"), new NumExpr(3))))
+//				  ->has_variable() == false);
+//	}
+//
+//	SECTION("Mixed_has_variable") {
+//		CHECK((new AddExpr(new NumExpr(1), new VarExpr("x")))->has_variable() ==
+//			true);
+//		CHECK((new MultExpr(new VarExpr("y"), new NumExpr(2)))->has_variable() ==
+//			true);
+//		CHECK((new MultExpr(new AddExpr(new NumExpr(10), new NumExpr(15)),
+//							new MultExpr(new NumExpr(20), new NumExpr(20))))
+//				  ->has_variable() == false);
+//	}
+//}
 
 TEST_CASE("Substitute") {
 	CHECK((new AddExpr(new VarExpr("x"), new NumExpr(7)))
@@ -826,17 +826,19 @@ TEST_CASE("TESTS from Kevin and William") {
 								  new AddExpr(new NumExpr(2), new VarExpr("x"))))
 				->equals(new MultExpr(new NumExpr(3), new VarExpr("y"))));
 		}
-	}SECTION("Let_has_variable_mine") {
-		SECTION("has") {
-			REQUIRE((new LetExpr("x", new NumExpr(4),
-								 new AddExpr(new NumExpr(2), new VarExpr("x"))))
-						->has_variable() == false);
-		}SECTION("does_not_has") {
-			REQUIRE(!(new LetExpr("x", new NumExpr(4),
-								  new AddExpr(new NumExpr(2), new NumExpr(4))))
-				->has_variable());
-		}
-	}SECTION("Let_print_mine") {
+	}
+//	SECTION("Let_has_variable_mine") {
+//		SECTION("has") {
+//			REQUIRE((new LetExpr("x", new NumExpr(4),
+//								 new AddExpr(new NumExpr(2), new VarExpr("x"))))
+//						->has_variable() == false);
+//		}SECTION("does_not_has") {
+//			REQUIRE(!(new LetExpr("x", new NumExpr(4),
+//								  new AddExpr(new NumExpr(2), new NumExpr(4))))
+//				->has_variable());
+//		}
+//	}
+	SECTION("Let_print_mine") {
 		CHECK((new LetExpr("x", new NumExpr(5),
 						   new AddExpr(new LetExpr("y", new NumExpr(3),
 												   new AddExpr(new VarExpr("y"),
@@ -982,33 +984,34 @@ TEST_CASE("TESTS from Kevin and William") {
 }
 
 TEST_CASE("Parse") {
-	CHECK_THROWS_WITH(parse_str("()"), "invalid input");
+	CHECK_THROWS_WITH(parse_str("()"), "invalid input - not included condition");
 
 	CHECK(parse_str("(1)")->equals(new NumExpr(1)));
 	CHECK(parse_str("(((1)))")->equals(new NumExpr(1)));
 
-	CHECK_THROWS_WITH(parse_str("(1"), "invalid input");
+	CHECK_THROWS_WITH(parse_str("(1"), "invalid input - missing ')' - parse_inner");
 
 	CHECK(parse_str("1")->equals(new NumExpr(1)));
 	CHECK(parse_str("10")->equals(new NumExpr(10)));
 	CHECK(parse_str("-3")->equals(new NumExpr(-3)));
 	CHECK(parse_str("  \n 5  ")->equals(new NumExpr(5)));
-	CHECK_THROWS_WITH(parse_str("-"), "invalid input");
-	CHECK_THROWS_WITH(parse_str("(((-1))"), "invalid input");
+	CHECK_THROWS_WITH(parse_str("-"), "invalid input - no number seen");
+	CHECK_THROWS_WITH(parse_str("(((-1))"), "invalid input - missing ')' - parse_inner");
 
-	CHECK_THROWS_WITH(parse_str(" -   5  "), "invalid input");
+	CHECK_THROWS_WITH(parse_str(" -   5  "), "invalid input - no number seen");
 	CHECK(parse_str("x")->equals(new VarExpr("x")));
 	CHECK(parse_str("xyz")->equals(new VarExpr("xyz")));
 	CHECK(parse_str("xYz")->equals(new VarExpr("xYz")));
 
-	CHECK_THROWS_WITH(parse_str("x_z"), "invalid input");
-	CHECK_THROWS_WITH(parse_str("1 2"), "invalid input");
-	CHECK_THROWS_WITH(parse_str("1 x"), "invalid input");
-	CHECK_THROWS_WITH(parse_str("1)"), "invalid input");
-	CHECK_THROWS_WITH(parse_str("1+1)"), "invalid input");
-	CHECK_THROWS_WITH(parse_str("1+1 2)"), "invalid input");
-	CHECK_THROWS_WITH(parse_str("3+1-2)"), "invalid input");
-	CHECK_THROWS_WITH(parse_str("x!y"), "invalid input");
+	CHECK_THROWS_WITH(parse_str("x_z"),
+					  "invalid input - still have character after parsing the whole expression"); // invalid variable name
+	CHECK_THROWS_WITH(parse_str("1 2"), "invalid input - still have character after parsing the whole expression");
+	CHECK_THROWS_WITH(parse_str("1 x"), "invalid input - still have character after parsing the whole expression");
+	CHECK_THROWS_WITH(parse_str("1)"), "invalid input - still have character after parsing the whole expression");
+	CHECK_THROWS_WITH(parse_str("1+1)"), "invalid input - still have character after parsing the whole expression");
+	CHECK_THROWS_WITH(parse_str("1+1 2)"), "invalid input - still have character after parsing the whole expression");
+	CHECK_THROWS_WITH(parse_str("3+1-2)"), "invalid input - still have character after parsing the whole expression");
+	CHECK_THROWS_WITH(parse_str("x!y"), "invalid input - still have character after parsing the whole expression");
 
 	CHECK(parse_str("x + y")->equals(
 		new AddExpr(new VarExpr("x"), new VarExpr("y"))));
@@ -1038,7 +1041,7 @@ TEST_CASE("Parse") {
 	CHECK(parse_str(" 1211")->equals(new NumExpr(1211)));
 	CHECK(parse_str("-19 ")->equals(new NumExpr(-19)));
 	CHECK(parse_str("( -3    )")->equals(new NumExpr(-3)));
-	CHECK_THROWS_WITH(parse_str("(99"), "invalid input");
+	CHECK_THROWS_WITH(parse_str("(99"), "invalid input - missing ')' - parse_inner");
 
 	CHECK(
 		parse_str("2 + 1")->equals(new AddExpr(new NumExpr(2), new NumExpr(1))));
@@ -1048,9 +1051,9 @@ TEST_CASE("Parse") {
 		new AddExpr(new NumExpr(3), new NumExpr(2))));
 	CHECK(
 		parse_str("   5+1")->equals(new AddExpr(new NumExpr(5), new NumExpr(1))));
-	CHECK_THROWS_WITH(parse_str("(9 +"), "invalid input");
-	CHECK_THROWS_WITH(parse_str("(9 +1"), "invalid input");
-	CHECK_THROWS_WITH(parse_str("9 +)"), "invalid input");
+	CHECK_THROWS_WITH(parse_str("(9 +"), "invalid input - not included condition");
+	CHECK_THROWS_WITH(parse_str("(9 +1"), "invalid input - missing ')' - parse_inner");
+	CHECK_THROWS_WITH(parse_str("9 +)"), "invalid input - not included condition");
 
 	CHECK(parse_str("6 * 12")->equals(
 		new MultExpr(new NumExpr(6), new NumExpr(12))));
@@ -1060,13 +1063,13 @@ TEST_CASE("Parse") {
 			  ->equals(new MultExpr(new NumExpr(-8), new NumExpr(4))));
 	CHECK(parse_str("(2  * 1)")
 			  ->equals(new MultExpr(new NumExpr(2), new NumExpr(1))));
-	CHECK_THROWS_WITH(parse_str("(2  * 1"), "invalid input");
-	CHECK_THROWS_WITH(parse_str("2  * 1)"), "invalid input");
+	CHECK_THROWS_WITH(parse_str("(2  * 1"), "invalid input - missing ')' - parse_inner");
+	CHECK_THROWS_WITH(parse_str("2  * 1)"), "invalid input - still have character after parsing the whole expression");
 
 	CHECK(parse_str("cat")->equals(new VarExpr("cat")));
 	CHECK(parse_str("  dog")->equals(new VarExpr("dog")));
 	CHECK(parse_str("OWLS")->equals(new VarExpr("OWLS")));
-	CHECK_THROWS_WITH(parse_str("mo.ngo"), "invalid input");
+	CHECK_THROWS_WITH(parse_str("mo.ngo"), "invalid input - still have character after parsing the whole expression");
 
 	CHECK(
 		parse_str("_let x = 5 _in x+2")
@@ -1183,5 +1186,236 @@ TEST_CASE("Refactor") { // TODO: add more tests on refactored since bool, and ne
 						   "      _else _false)\n"
 						   "_then 5\n"
 						   "_else 6"))->interp())->to_string()) == "6");
+	}
+}
+
+TEST_CASE("Function") {
+	SECTION("Tests_from_quiz") {
+		// 1
+		CHECK(parse_str("_let f = _fun (x) x+ 1 \n"
+						"_in f(5) ")->interp()->equals(new NumVal(6)));
+
+		// 2
+		CHECK(parse_str("_let f = _fun (x)\n"
+						"           7\n"
+						"_in f(5)")->interp()->equals(new NumVal(7)));
+
+		// 3
+		CHECK(parse_str("_let f = _fun (x)\n"
+						"           _true\n"
+						"_in f(5) ")->interp()->equals(new BoolVal(true)));
+
+		// 4
+		CHECK_THROWS_WITH(parse_str("_let f = _fun (x)\n"
+									"           x + _true\n"
+									"_in f(5) ")->interp(), "add of non-number");
+
+		// 5
+		CHECK(parse_str("_let f = _fun (x)\n"
+						"           x + _true\n"
+						"_in 5 + 1 ")->interp()->equals(new NumVal(6)));
+
+		// 6
+		CHECK_THROWS_WITH(parse_str("_let f = _fun (x)\n"
+									"           7\n"
+									"_in  f(5 + _true)")->interp(), "add of non-number");
+
+		// 7
+		CHECK_THROWS_WITH(parse_str("_let f = _fun (x) x+ 1\n"
+									"_in f + 5")->interp(), "add of non-number");
+
+		// 8
+		CHECK(parse_str("_let f = _fun (x) x+ 1 \n"
+						"_in _if _false\n"
+						"    _then f(5)\n"
+						"    _else f(6)")->interp()->equals(new NumVal(7)));
+
+		// 9
+		CHECK(parse_str("_let f = _fun (x) x+ 1 \n"
+						"_in _let g = _fun (y) y+ 2 \n"
+						"_in _if _true\n"
+						"    _then f(5)\n"
+						"    _else g(5)")->interp()->equals(new NumVal(6)));
+
+		// 10
+		CHECK(parse_str("_let f = _fun (x) x+ 1 \n"
+						"_in _let g = _fun (y) y+ 2 \n"
+						"_in f(g(5)) ")->interp()->equals(new NumVal(8)));
+
+		// 11
+		CHECK(parse_str("_let f = _fun (x) x+ 1 \n"
+						"_in _let g = _fun (y)\n"
+						"              f(y + 2)\n"
+						"_in g(5) ")->interp()->equals(new NumVal(8)));
+		CHECK(parse_str("_let f = _fun (x) x+ 1 \n"
+						"_in _let g = _fun (y)\n"
+						"              f(y + 2)\n"
+						"_in g(5) ")
+				  ->equals(new LetExpr("f", new FunExpr("x", new AddExpr(new VarExpr("x"), new NumExpr(1))),
+									   new LetExpr("g",
+												   new FunExpr("y",
+															   new CallExpr(new VarExpr("f"),
+																			new AddExpr(new VarExpr("y"),
+																						new NumExpr(2)))),
+												   new CallExpr(new VarExpr("g"), new NumExpr(5))))) == true);
+
+		// 12
+		CHECK(parse_str("_let f = _fun (x) x+ 1 \n"
+						"_in _let g = _fun (x)\n"
+						"              f(2) + x\n"
+						"_in g(5) ")->interp()->equals(new NumVal(8)));
+
+		// 13
+		CHECK_THROWS_WITH(parse_str("_let f = _fun (x) x+ 1 \n"
+									"_in f 5 ")->interp(),
+						  "invalid input - still have character after parsing the whole expression");
+
+		// 14
+		CHECK(parse_str("_let f = _fun (x) x+ 1 \n"
+						"_in (f)(5) ")->interp()->equals(new NumVal(6)));
+
+		// 15
+		auto *add_x_1 = new AddExpr(new VarExpr("x"), new NumExpr(1));
+		auto *fun_val_x_add_x_1 = new FunVal("x", add_x_1);
+		CHECK(parse_str("_fun (x) x+ 1 ")->interp()->equals(fun_val_x_add_x_1));
+
+		//16
+		CHECK(parse_str("_let f = _fun (x) x+ 1 \n"
+						"_in f ")->interp()->equals(fun_val_x_add_x_1));
+
+		// 17
+		CHECK(parse_str("(_fun (x)\n"
+						"   x + 1)(5)")->interp()->equals(new NumVal(6)));
+
+		// 18
+		CHECK(parse_str("_let f = _if _false\n"
+						"            _then _fun (x)  \n"
+						"                        x+ 1 \n"
+						"           _else _fun (x)\n"
+						"                       x+ 2\n"
+						"_in f(5)")->interp()->equals(new NumVal(7)));
+
+		// 19
+		CHECK(parse_str("(_if _false \n"
+						"  _then _fun (x)\n"
+						"            x+ 1\n"
+						"   _else _fun (x)\n"
+						"                x + 2)(5)")->interp()->equals(new NumVal(7)));
+
+		// 20
+		CHECK(parse_str("_let f = _fun (g)\n"
+						"           g(5)\n"
+						"_in _let g = _fun (y)  \n"
+						"             y + 2\n"
+						"_in f(g) ")->interp()->equals(new NumVal(7)));
+
+		// 21
+		CHECK(parse_str("_let f = _fun (g)\n"
+						"           g(5)\n"
+						"_in f(_fun (y)\n"
+						"        y + 2)")->interp()->equals(new NumVal(7)));
+
+		// 22
+		CHECK(parse_str("_let f = _fun (x)\n"
+						"           _fun (y)\n"
+						"x+ y _in (f(5))(1) ")->interp()->equals(new NumVal(6)));
+
+		// 23
+		CHECK(parse_str("_let f = _fun (x)\n"
+						"           _fun (y)\n"
+						"x+ y _in f(5)(1) ")->interp()->equals(new NumVal(6)));
+		CHECK(parse_str("_let f = _fun (x)\n"
+						"           _fun (y)\n"
+						"x+ y _in f(5)(1) ")->equals(new LetExpr("f",
+																 new FunExpr("x",
+																			 new FunExpr("y",
+																						 new AddExpr(new VarExpr("x"),
+																									 new VarExpr("y")))),
+																 new CallExpr(new CallExpr(new VarExpr("f"),
+																						   new NumExpr(5)),
+																			  new NumExpr(1)))));
+
+		// 24
+		CHECK(parse_str("_let f = _fun (x)\n"
+						"           _fun (g)\n"
+						"             g(x + 1)\n"
+						"_in _let g = _fun (y)\n"
+						"              y+ 2 \n"
+						"_in (f(5))(g) ")->interp()->equals(new NumVal(8)));
+
+		// 25
+		CHECK(parse_str("_let f = _fun (x)\n"
+						"           _fun (g)\n"
+						"             g(x + 1)\n"
+						"_in _let g = _fun (y)\n"
+						"y+ 2 _in f(5)(g)")->interp()->equals(new NumVal(8)));
+
+		// 26
+		CHECK(parse_str("_let f = _fun (f)\n"
+						"           _fun (x)\n"
+						"             _if x == 0\n"
+						"             _then 0\n"
+						"             _else x + f(f)(x + -1)\n"
+						"_in f(f)(3)")->interp()->equals(new NumVal(6)));
+	} SECTION("factorial function recusion test") {
+		Expr *factrl_expr = new LetExpr(
+			"factrl",
+			new FunExpr(
+				"factrl",
+				new FunExpr(
+					"x",
+					new IfExpr(
+						new EqExpr(
+							new VarExpr("x"),
+							new NumExpr(1)
+						),
+						new NumExpr(1),
+						new MultExpr(
+							new VarExpr("x"),
+							new CallExpr(
+								new CallExpr(
+									new VarExpr("factrl"),
+									new VarExpr("factrl")
+								),
+								new AddExpr(
+									new VarExpr("x"),
+									new NumExpr(-1)
+								)
+							)
+						)
+					)
+				)
+			),
+			new CallExpr(
+				new CallExpr(
+					new VarExpr("factrl"),
+					new VarExpr("factrl")
+				),
+				new NumExpr(10)
+			)
+		);
+
+		CHECK(factrl_expr->to_pretty_string() == "_let factrl = _fun (factrl)\n"
+												 "                _fun (x)\n"
+												 "                  _if x == 1\n"
+												 "                  _then 1\n"
+												 "                  _else x * factrl(factrl)(x + -1)\n"
+												 "_in  factrl(factrl)(10)");
+
+		CHECK(factrl_expr->interp()->equals(new NumVal(3628800)));
+		std::string test_str = "_let factrl = _fun (factrl)\n"
+							   "                _fun (x)\n"
+							   "                  _if x == 1\n"
+							   "                  _then 1\n"
+							   "                  _else x * factrl(factrl)(x + -1)\n"
+							   "_in  factrl(factrl)(10)";
+
+		auto *parsed_expr = parse_str(test_str);
+		auto parsed_expr_pretty_str = parsed_expr->to_pretty_string();
+		auto parsed_expr_str = parsed_expr->to_string();
+		CHECK(parsed_expr_pretty_str == test_str);
+		CHECK(parsed_expr->equals(parse_str(parsed_expr_pretty_str)));
+		CHECK(parsed_expr->equals(parse_str(parsed_expr_str)));
+		CHECK(parsed_expr->interp()->equals(new NumVal(3628800)));
 	}
 }

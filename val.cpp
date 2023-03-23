@@ -5,6 +5,16 @@
 #include "val.h"
 #include "expr.h"
 
+/*--------------------------------------------------------------------------------------------
+	ooooo      ooo                               oooooo     oooo           oooo
+	`888b.     `8'                                `888.     .8'            `888
+	 8 `88b.    8  oooo  oooo  ooo. .oo.  .oo.     `888.   .8'    .oooo.    888
+	 8   `88b.  8  `888  `888  `888P"Y88bP"Y88b     `888. .8'    `P  )88b   888
+	 8     `88b.8   888   888   888   888   888      `888.8'      .oP"888   888
+	 8       `888   888   888   888   888   888       `888'      d8(  888   888
+	o8o        `8   `V88V"V8P' o888o o888o o888o       `8'       `Y888""8o o888o
+--------------------------------------------------------------------------------------------*/
+
 NumVal::NumVal(int rep) { this->rep_ = rep; }
 
 bool NumVal::equals(Val *val) {
@@ -19,7 +29,7 @@ bool NumVal::equals(Val *val) {
 Val *NumVal::add_to(Val *otherVal) {
 	NumVal *otherNum = dynamic_cast<NumVal *>(otherVal);
 	if (otherNum == nullptr) {
-		throw std::runtime_error("addition of non-number");
+		throw std::runtime_error("add of non-number");
 	} else {
 		return new NumVal(this->rep_ + otherNum->rep_);
 	}
@@ -28,7 +38,7 @@ Val *NumVal::add_to(Val *otherVal) {
 Val *NumVal::mult_with(Val *otherVal) {
 	NumVal *otherNum = dynamic_cast<NumVal *>(otherVal);
 	if (otherNum == nullptr) {
-		throw std::runtime_error("multiplication of non-number");
+		throw std::runtime_error("mult of non-number");
 	} else {
 		return new NumVal(this->rep_ * otherNum->rep_);
 	}
@@ -38,7 +48,20 @@ Expr *NumVal::to_expr() { return new NumExpr(this->rep_); }
 
 std::string NumVal::to_string() { return std::to_string(this->rep_); }
 
-// subclass boolValue
+Val *NumVal::call(Val *actualArg) {
+	throw std::runtime_error("Can not call on NumVal");
+}
+
+/*--------------------------------------------------------------------------------------------
+	oooooooooo.                      oooo  oooooo     oooo           oooo
+	`888'   `Y8b                     `888   `888.     .8'            `888
+	888     888  .ooooo.   .ooooo.   888    `888.   .8'    .oooo.    888
+	888oooo888' d88' `88b d88' `88b  888     `888. .8'    `P  )88b   888
+	888    `88b 888   888 888   888  888      `888.8'      .oP"888   888
+	888    .88P 888   888 888   888  888       `888'      d8(  888   888
+	o888bood8P'  `Y8bod8P' `Y8bod8P' o888o       `8'       `Y888""8o o888o
+--------------------------------------------------------------------------------------------*/
+
 BoolVal::BoolVal(bool rep) { this->rep_ = rep; }
 
 bool BoolVal::equals(Val *val) {
@@ -66,4 +89,52 @@ std::string BoolVal::to_string() {
 	} else {
 		return "_false";
 	}
+}
+
+Val *BoolVal::call(Val *actualArg) {
+	throw std::runtime_error("Can not call on BoolVal");
+}
+
+/*--------------------------------------------------------------------------------------------
+	oooooooooooo                         oooooo     oooo           oooo
+	`888'     `8                          `888.     .8'            `888
+	888         oooo  oooo  ooo. .oo.     `888.   .8'    .oooo.    888
+	888oooo8    `888  `888  `888P"Y88b     `888. .8'    `P  )88b   888
+	888    "     888   888   888   888      `888.8'      .oP"888   888
+	888          888   888   888   888       `888'      d8(  888   888
+	o888o         `V88V"V8P' o888o o888o       `8'       `Y888""8o o888o
+--------------------------------------------------------------------------------------------*/
+
+FunVal::FunVal(std::string formalArg, Expr *body) {
+	formal_arg_ = formalArg;
+	body_ = body;
+}
+
+bool FunVal::equals(Val *val) {
+	FunVal *pFunVal = dynamic_cast<FunVal *>(val);
+	if (pFunVal == nullptr) {
+		return false;
+	} else {
+		return (this->formal_arg_ == pFunVal->formal_arg_) &&
+			(this->body_->equals(pFunVal->body_));
+	}
+}
+
+Expr *FunVal::to_expr() { return new FunExpr(this->formal_arg_, this->body_); }
+
+Val *FunVal::add_to(Val *otherVal) {
+	throw std::runtime_error("add of non-number");
+}
+
+Val *FunVal::mult_with(Val *otherVal) {
+	throw std::runtime_error("mult of non-number");
+}
+
+std::string FunVal::to_string() {
+	return ("_fun (" + this->formal_arg_ + ") " + this->body_->to_string());
+}
+
+Val *FunVal::call(Val *actualArg) {
+	return this->body_->subst(this->formal_arg_, actualArg->to_expr())->interp();
+//	return (new LetExpr(this->formal_arg_, actualArg->to_expr(), this->body_))->interp();
 }

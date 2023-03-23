@@ -3,54 +3,78 @@
 //
 
 #pragma include once
-
 #include <string>
-
 class Expr;
 
 class Val {
-public:
-    virtual bool equals(Val *rep) = 0;
+ public:
+	virtual bool equals(Val *rep) = 0;
 
-    virtual Expr *to_expr() = 0;
+	virtual Expr *to_expr() = 0;
 
-    virtual std::string to_string() = 0;
+	virtual std::string to_string() = 0;
 
-    virtual Val *add_to(Val *rep) = 0;
+	virtual Val *add_to(Val *rep) = 0;
 
-    virtual Val *mult_with(Val *rep) = 0;
+	virtual Val *mult_with(Val *rep) = 0;
+
+	virtual Val *call(Val *actualArg) = 0;
 };
 
 class NumVal : public Val {
-public:
-    int rep_;
+ public:
+	int rep_;
 
-    NumVal(int rep);
+	NumVal(int rep);
 
-    bool equals(Val *val) override;
+	bool equals(Val *val) override;
 
-    Expr *to_expr() override;
+	Expr *to_expr() override;
 
-    std::string to_string() override;
+	std::string to_string() override;
 
-    Val *add_to(Val *otherVal) override;
+	Val *add_to(Val *otherVal) override;
 
-    Val *mult_with(Val *otherVal) override;
+	Val *mult_with(Val *otherVal) override;
+
+	Val *call(Val *actualArg) override;
 };
 
 class BoolVal : public Val {
-public:
-    bool rep_;
+ public:
+	bool rep_;
 
-    BoolVal(bool rep);
+	BoolVal(bool rep);
 
-    bool equals(Val *val) override;
+	bool equals(Val *val) override;
 
-    Expr *to_expr() override;
+	Expr *to_expr() override;
 
-    std::string to_string() override;
+	std::string to_string() override;
 
-    Val *add_to(Val *otherVal) override;
+	Val *add_to(Val *otherVal) override;
 
-    Val *mult_with(Val *otherVal) override;
+	Val *mult_with(Val *otherVal) override;
+
+	Val *call(Val *actualArg) override;
+};
+
+class FunVal : public Val {
+ public:
+	std::string formal_arg_;
+	Expr *body_;
+
+	FunVal(std::string formalArg, Expr *body);
+
+	bool equals(Val *val) override;
+
+	Expr *to_expr() override;
+
+	std::string to_string() override;
+
+	Val *add_to(Val *otherVal) override;
+
+	Val *mult_with(Val *otherVal) override;
+
+	Val *call(Val *actualArg) override;
 };

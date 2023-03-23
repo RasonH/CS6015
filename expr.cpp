@@ -11,9 +11,18 @@
 #include "val.h"
 #include <utility>
 
-/*---------------------------------------
- Expression class
- ---------------------------------------*/
+/*--------------------------------------------------------------------------------------------
+	oooooooooooo
+	`888'     `8
+	 888         oooo    ooo oo.ooooo.  oooo d8b
+	 888oooo8     `88b..8P'   888' `88b `888""8P
+	 888    "       Y888'     888   888  888
+	 888       o  .o8"'88b    888   888  888
+	o888ooooood8 o88'   888o  888bod8P' d888b
+							  888
+							 o888o
+--------------------------------------------------------------------------------------------*/
+
 std::string Expr::to_string() {
 	std::stringstream st("");
 	this->print(st);
@@ -31,9 +40,17 @@ std::string Expr::to_pretty_string() {
 	return st.str();
 }
 
-/*---------------------------------------
- Number class
- ---------------------------------------*/
+/*--------------------------------------------------------------------------------------------
+	ooooo      ooo                               oooooooooooo
+	`888b.     `8'                               `888'     `8
+	 8 `88b.    8  oooo  oooo  ooo. .oo.  .oo.    888         oooo    ooo oo.ooooo.  oooo d8b
+	 8   `88b.  8  `888  `888  `888P"Y88bP"Y88b   888oooo8     `88b..8P'   888' `88b `888""8P
+	 8     `88b.8   888   888   888   888   888   888    "       Y888'     888   888  888
+	 8       `888   888   888   888   888   888   888       o  .o8"'88b    888   888  888
+	o8o        `8   `V88V"V8P' o888o o888o o888o o888ooooood8 o88'   888o  888bod8P' d888b
+																		   888
+																		  o888o
+--------------------------------------------------------------------------------------------*/
 
 NumExpr::NumExpr(int val) { this->val_ = val; }
 
@@ -47,8 +64,6 @@ bool NumExpr::equals(Expr *e) {
 }
 
 Val *NumExpr::interp() { return new NumVal(this->val_); }
-
-bool NumExpr::has_variable() { return false; }
 
 Expr *NumExpr::subst(std::string string, Expr *e) { return this; }
 
@@ -64,9 +79,17 @@ void NumExpr::pretty_print_at(std::ostream &ostream,
 
 precedence_t NumExpr::get_prec() { return prec_none; }
 
-/*---------------------------------------
- Variable class
- ---------------------------------------*/
+/*--------------------------------------------------------------------------------------------
+	oooooo     oooo                    oooooooooooo
+	 `888.     .8'                     `888'     `8
+	  `888.   .8'    .oooo.   oooo d8b  888         oooo    ooo oo.ooooo.  oooo d8b
+	   `888. .8'    `P  )88b  `888""8P  888oooo8     `88b..8P'   888' `88b `888""8P
+		`888.8'      .oP"888   888      888    "       Y888'     888   888  888
+		 `888'      d8(  888   888      888       o  .o8"'88b    888   888  888
+		  `8'       `Y888""8o d888b    o888ooooood8 o88'   888o  888bod8P' d888b
+																 888
+																o888o
+--------------------------------------------------------------------------------------------*/
 
 VarExpr::VarExpr(std::string varName) { this->string_ = std::move(varName); }
 
@@ -85,8 +108,6 @@ Val *VarExpr::interp() {
 	//    throw std::runtime_error("");
 }
 
-bool VarExpr::has_variable() { return true; }
-
 Expr *VarExpr::subst(std::string string, Expr *e) {
 	if (this->string_ == string) { // TODO: what if the string is ""
 		return e;
@@ -104,9 +125,17 @@ void VarExpr::pretty_print_at(std::ostream &ostream,
 
 precedence_t VarExpr::get_prec() { return prec_none; }
 
-/*---------------------------------------
- Add class
- ---------------------------------------*/
+/*--------------------------------------------------------------------------------------------
+		  .o.             .o8        .o8  oooooooooooo
+		 .888.           "888       "888  `888'     `8
+		.8"888.      .oooo888   .oooo888   888         oooo    ooo oo.ooooo.  oooo d8b
+	   .8' `888.    d88' `888  d88' `888   888oooo8     `88b..8P'   888' `88b `888""8P
+	  .88ooo8888.   888   888  888   888   888    "       Y888'     888   888  888
+	 .8'     `888.  888   888  888   888   888       o  .o8"'88b    888   888  888
+	o88o     o8888o `Y8bod88P" `Y8bod88P" o888ooooood8 o88'   888o  888bod8P' d888b
+																	888
+																   o888o
+--------------------------------------------------------------------------------------------*/
 
 AddExpr::AddExpr(Expr *lhs, Expr *rhs) {
 	this->lhs_ = lhs;
@@ -124,10 +153,6 @@ bool AddExpr::equals(Expr *e) {
 
 Val *AddExpr::interp() {
 	return (this->lhs_->interp())->add_to(this->rhs_->interp());
-}
-
-bool AddExpr::has_variable() {
-	return this->lhs_->has_variable() || this->rhs_->has_variable();
 }
 
 Expr *AddExpr::subst(std::string string, Expr *e) {
@@ -161,9 +186,17 @@ void AddExpr::pretty_print_at(std::ostream &ostream,
 
 precedence_t AddExpr::get_prec() { return prec_add; }
 
-/*---------------------------------------
- Multiplication class
- ---------------------------------------*/
+/*--------------------------------------------------------------------------------------------
+	ooo        ooooo             oooo      .   oooooooooooo
+	`88.       .888'             `888    .o8   `888'     `8
+	 888b     d'888  oooo  oooo   888  .o888oo  888         oooo    ooo oo.ooooo.  oooo d8b
+	 8 Y88. .P  888  `888  `888   888    888    888oooo8     `88b..8P'   888' `88b `888""8P
+	 8  `888'   888   888   888   888    888    888    "       Y888'     888   888  888
+	 8    Y     888   888   888   888    888 .  888       o  .o8"'88b    888   888  888
+	o8o        o888o  `V88V"V8P' o888o   "888" o888ooooood8 o88'   888o  888bod8P' d888b
+																		 888
+																		o888o
+--------------------------------------------------------------------------------------------*/
 
 MultExpr::MultExpr(Expr *lhs, Expr *rhs) {
 	this->lhs_ = lhs;
@@ -182,10 +215,6 @@ bool MultExpr::equals(Expr *e) {
 
 Val *MultExpr::interp() {
 	return this->lhs_->interp()->mult_with(this->rhs_->interp());
-}
-
-bool MultExpr::has_variable() {
-	return this->lhs_->has_variable() || this->rhs_->has_variable();
 }
 
 Expr *MultExpr::subst(std::string string, Expr *e) {
@@ -227,9 +256,17 @@ void MultExpr::pretty_print_at(std::ostream &ostream,
 
 precedence_t MultExpr::get_prec() { return prec_mult; }
 
-/*---------------------------------------
- Let class
- ---------------------------------------*/
+/*--------------------------------------------------------------------------------------------
+	ooooo                      .   oooooooooooo
+	`888'                    .o8   `888'     `8
+	 888          .ooooo.  .o888oo  888         oooo    ooo oo.ooooo.  oooo d8b
+	 888         d88' `88b   888    888oooo8     `88b..8P'   888' `88b `888""8P
+	 888         888ooo888   888    888    "       Y888'     888   888  888
+	 888       o 888    .o   888 .  888       o  .o8"'88b    888   888  888
+	o888ooooood8 `Y8bod8P'   "888" o888ooooood8 o88'   888o  888bod8P' d888b
+															 888
+															o888o
+--------------------------------------------------------------------------------------------*/
 
 LetExpr::LetExpr(std::string lhs, Expr *rhs, Expr *body) {
 	this->lhs_ = std::move(lhs);
@@ -250,11 +287,6 @@ bool LetExpr::equals(Expr *e) {
 
 Val *LetExpr::interp() {
 	return this->body_->subst(lhs_, rhs_->interp()->to_expr())->interp();
-}
-
-bool LetExpr::has_variable() {
-	return this->body_->subst(lhs_, rhs_)
-		->has_variable(); // after substitution still have variable, then true
 }
 
 Expr *LetExpr::subst(std::string string, Expr *e) {
@@ -293,9 +325,17 @@ void LetExpr::pretty_print_at(std::ostream &ostream,
 
 precedence_t LetExpr::get_prec() { return prec_keywords; }
 
-/*---------------------------------------
- BoolExpr class
- ---------------------------------------*/
+/*--------------------------------------------------------------------------------------------
+oooooooooo.                      oooo  oooooooooooo
+`888'   `Y8b                     `888  `888'     `8
+ 888     888  .ooooo.   .ooooo.   888   888         oooo    ooo oo.ooooo.  oooo d8b
+ 888oooo888' d88' `88b d88' `88b  888   888oooo8     `88b..8P'   888' `88b `888""8P
+ 888    `88b 888   888 888   888  888   888    "       Y888'     888   888  888
+ 888    .88P 888   888 888   888  888   888       o  .o8"'88b    888   888  888
+o888bood8P'  `Y8bod8P' `Y8bod8P' o888o o888ooooood8 o88'   888o  888bod8P' d888b
+                                                                 888
+                                                                o888o
+--------------------------------------------------------------------------------------------*/
 
 BoolExpr::BoolExpr(bool val) { this->val_ = val; }
 
@@ -310,10 +350,8 @@ bool BoolExpr::equals(Expr *e) {
 
 Val *BoolExpr::interp() { return new BoolVal(this->val_); }
 
-bool BoolExpr::has_variable() { return false; }
-
 Expr *BoolExpr::subst(std::string string, Expr *e) {
-	return new BoolExpr(this->val_);
+	return this;
 }
 
 void BoolExpr::print(std::ostream &ostream) {
@@ -332,9 +370,18 @@ void BoolExpr::pretty_print_at(std::ostream &ostream,
 
 precedence_t BoolExpr::get_prec() { return prec_none; }
 
-/*---------------------------------------
- EqExpr class
- ---------------------------------------*/
+/*--------------------------------------------------------------------------------------------
+	oooooooooooo            oooooooooooo
+	`888'     `8            `888'     `8
+	 888          .ooooo oo  888         oooo    ooo oo.ooooo.  oooo d8b
+	 888oooo8    d88' `888   888oooo8     `88b..8P'   888' `88b `888""8P
+	 888    "    888   888   888    "       Y888'     888   888  888
+	 888       o 888   888   888       o  .o8"'88b    888   888  888
+	o888ooooood8 `V8bod888  o888ooooood8 o88'   888o  888bod8P' d888b
+					   888.                           888
+					   8P'                           o888o
+					   "
+--------------------------------------------------------------------------------------------*/
 
 EqExpr::EqExpr(Expr *lhs, Expr *rhs) {
 	this->lhs_ = lhs;
@@ -355,13 +402,8 @@ Val *EqExpr::interp() {
 	return new BoolVal(this->lhs_->interp()->equals(this->rhs_->interp()));
 }
 
-bool EqExpr::has_variable() {
-	return this->lhs_->has_variable() ||
-		this->rhs_->has_variable();
-}
-
 Expr *EqExpr::subst(std::string string, Expr *e) {
-	return new EqExpr(lhs_->subst(string, e), rhs_->subst(string, e));
+	return new EqExpr(this->lhs_->subst(string, e), this->rhs_->subst(string, e));
 }
 
 void EqExpr::print(std::ostream &ostream) {
@@ -396,9 +438,17 @@ precedence_t EqExpr::get_prec() {
 	return prec_eq;
 }
 
-/*---------------------------------------
- IfExpr class
- ---------------------------------------*/
+/*--------------------------------------------------------------------------------------------
+	ooooo  .o88o. oooooooooooo
+	`888'  888 `" `888'     `8
+	 888  o888oo   888         oooo    ooo oo.ooooo.  oooo d8b
+	 888   888     888oooo8     `88b..8P'   888' `88b `888""8P
+	 888   888     888    "       Y888'     888   888  888
+	 888   888     888       o  .o8"'88b    888   888  888
+	o888o o888o   o888ooooood8 o88'   888o  888bod8P' d888b
+											888
+										   o888o
+--------------------------------------------------------------------------------------------*/
 
 IfExpr::IfExpr(Expr *testPart, Expr *thenPart, Expr *elsePart) {
 	this->test_part_ = testPart;
@@ -426,20 +476,6 @@ Val *IfExpr::interp() {
 		return this->then_part_->interp();
 	} else {    // condition false
 		return this->else_part_->interp();
-	}
-}
-
-bool IfExpr::has_variable() {
-	if (this->test_part_->has_variable()) { return true; }
-	Val *test = this->test_part_->interp();
-	BoolVal *pTestVal = dynamic_cast<BoolVal *>(test);
-	if (pTestVal == nullptr) { // doesn't have a variable but still can't interp to BoolVal
-//		return false; // TODO: should it throw error or return false??? only have class example for interp
-		throw std::runtime_error("IfExpr's condition isn't BoolVal");
-	} else if (pTestVal->rep_ == true) { // condition true
-		return this->then_part_->has_variable();
-	} else {    // condition false
-		return this->else_part_->has_variable();
 	}
 }
 
@@ -480,4 +516,121 @@ void IfExpr::pretty_print_at(std::ostream &ostream,
 
 precedence_t IfExpr::get_prec() {
 	return prec_keywords;
+}
+
+/*--------------------------------------------------------------------------------------------
+	oooooooooooo                         oooooooooooo
+	`888'     `8                         `888'     `8
+	 888         oooo  oooo  ooo. .oo.    888         oooo    ooo oo.ooooo.  oooo d8b
+	 888oooo8    `888  `888  `888P"Y88b   888oooo8     `88b..8P'   888' `88b `888""8P
+	 888    "     888   888   888   888   888    "       Y888'     888   888  888
+	 888          888   888   888   888   888       o  .o8"'88b    888   888  888
+	o888o         `V88V"V8P' o888o o888o o888ooooood8 o88'   888o  888bod8P' d888b
+																   888
+																  o888o
+--------------------------------------------------------------------------------------------*/
+
+FunExpr::FunExpr(std::string formalArg, Expr *body) {
+	this->formal_arg_ = formalArg;
+	this->body_ = body;
+}
+
+bool FunExpr::equals(Expr *e) {
+	FunExpr *pFunExpr = dynamic_cast<FunExpr *>(e);
+	if (pFunExpr == nullptr) {
+		return false;
+	} else {
+		return (this->formal_arg_ == pFunExpr->formal_arg_) &&
+			(this->body_->equals(pFunExpr->body_));
+	}
+}
+
+Val *FunExpr::interp() {
+	return new FunVal(this->formal_arg_, this->body_);
+}
+
+Expr *FunExpr::subst(std::string string, Expr *e) {
+	if (string == this->formal_arg_) {
+		return this;
+	} else {
+		return new FunExpr(this->formal_arg_, this->body_->subst(string, e));
+	}
+}
+
+void FunExpr::print(std::ostream &ostream) {
+	ostream << "(_fun (" << this->formal_arg_ << ") ";
+	this->body_->print(ostream);
+	ostream << ")";
+}
+
+void FunExpr::pretty_print_at(std::ostream &ostream,
+							  std::streampos &lastReturnSeen,
+							  bool lastLeftAndAdd) { // TODO: still need to check
+	std::streampos oldLastReturn = lastReturnSeen;
+	std::streampos currentStart = ostream.tellp();
+	ostream << "_fun (" << formal_arg_ << ")\n";
+	lastReturnSeen = ostream.tellp(); //update to this position
+	ostream << std::string(currentStart - oldLastReturn + 2, ' '); //indent the body 2 more space
+	this->body_->pretty_print_at(ostream, lastReturnSeen, false);
+}
+
+precedence_t FunExpr::get_prec() {
+	return prec_keywords;
+}
+
+/*--------------------------------------------------------------------------------------------
+	  .oooooo.             oooo  oooo  oooooooooooo
+	 d8P'  `Y8b            `888  `888  `888'     `8
+	888           .oooo.    888   888   888         oooo    ooo oo.ooooo.  oooo d8b
+	888          `P  )88b   888   888   888oooo8     `88b..8P'   888' `88b `888""8P
+	888           .oP"888   888   888   888    "       Y888'     888   888  888
+	`88b    ooo  d8(  888   888   888   888       o  .o8"'88b    888   888  888
+	 `Y8bood8P'  `Y888""8o o888o o888o o888ooooood8 o88'   888o  888bod8P' d888b
+																 888
+																o888o
+--------------------------------------------------------------------------------------------*/
+
+CallExpr::CallExpr(Expr *toBeCalled, Expr *actualArg) {
+	this->to_be_called_ = toBeCalled;
+	this->actual_arg_ = actualArg;
+}
+
+bool CallExpr::equals(Expr *e) {
+	CallExpr *pCallExpr = dynamic_cast<CallExpr *>(e);
+	if (pCallExpr == nullptr) {
+		return false;
+	} else {
+		return (this->to_be_called_->equals(pCallExpr->to_be_called_)) &&
+			(this->actual_arg_->equals(pCallExpr->actual_arg_));
+	}
+}
+
+Val *CallExpr::interp() {
+	return this->to_be_called_->interp()->call(actual_arg_->interp());
+}
+
+Expr *CallExpr::subst(std::string string, Expr *e) {
+	return new CallExpr(this->to_be_called_->subst(string, e), this->actual_arg_->subst(string, e));
+}
+
+void CallExpr::print(std::ostream &ostream) {
+	this->to_be_called_->print(ostream);
+	ostream << "(";
+	this->actual_arg_->print(ostream);
+	ostream << ")";
+}
+
+void CallExpr::pretty_print_at(std::ostream &ostream,
+							   std::streampos &lastReturnSeen,
+							   bool lastLeftAndAdd) { // TODO: still need to check
+	std::streampos oldLastReturn = lastReturnSeen;
+	std::streampos currentStart = ostream.tellp();
+	this->to_be_called_->pretty_print_at(ostream, lastReturnSeen, false);
+	ostream << "(";
+	this->actual_arg_->pretty_print_at(ostream, lastReturnSeen, false);
+	ostream << ")";
+}
+
+precedence_t CallExpr::get_prec() {
+	return prec_none;
 }
