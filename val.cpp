@@ -31,7 +31,7 @@ Val *NumVal::add_to(Val *otherVal) {
 	if (otherNum == nullptr) {
 		throw std::runtime_error("add of non-number");
 	} else {
-		return new NumVal(this->rep_ + otherNum->rep_);
+		return new NumVal((unsigned)this->rep_ + (unsigned)otherNum->rep_);
 	}
 }
 
