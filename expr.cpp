@@ -54,8 +54,8 @@ std::string Expr::to_pretty_string() {
 
 NumExpr::NumExpr(int val) { this->val_ = val; }
 
-bool NumExpr::equals(Expr *e) {
-	NumExpr *pNum = dynamic_cast<NumExpr *>(e);
+bool NumExpr::equals(PTR(Expr)e) {
+	PTR(NumExpr)pNum = CAST(NumExpr)(e);
 	if (pNum == nullptr) {
 		return false;
 	} else {
@@ -63,9 +63,9 @@ bool NumExpr::equals(Expr *e) {
 	}
 }
 
-Val *NumExpr::interp() { return new NumVal(this->val_); }
+PTR(Val)NumExpr::interp() { return new NumVal(this->val_); }
 
-Expr *NumExpr::subst(std::string string, Expr *e) { return this; }
+PTR(Expr)NumExpr::subst(std::string string, PTR(Expr)e) { return THIS; }
 
 void NumExpr::print(std::ostream &ostream) {
 	ostream << std::to_string(this->val_);
@@ -93,8 +93,8 @@ precedence_t NumExpr::get_prec() { return prec_none; }
 
 VarExpr::VarExpr(std::string varName) { this->string_ = std::move(varName); }
 
-bool VarExpr::equals(Expr *e) {
-	VarExpr *pVar = dynamic_cast<VarExpr *>(e);
+bool VarExpr::equals(PTR(Expr)e) {
+	PTR(VarExpr)pVar = CAST(VarExpr)(e);
 	if (pVar == nullptr) {
 		return false;
 	} else {
@@ -102,17 +102,17 @@ bool VarExpr::equals(Expr *e) {
 	}
 }
 
-Val *VarExpr::interp() {
+PTR(Val)VarExpr::interp() {
 	throw std::runtime_error("no value for variable");
 	//    throw std::runtime_error("invalid input");
 	//    throw std::runtime_error("");
 }
 
-Expr *VarExpr::subst(std::string string, Expr *e) {
+PTR(Expr)VarExpr::subst(std::string string, PTR(Expr)e) {
 	if (this->string_ == string) { // TODO: what if the string is ""
 		return e;
 	}
-	return this;
+	return THIS;
 }
 
 void VarExpr::print(std::ostream &ostream) { ostream << this->string_; }
@@ -137,13 +137,13 @@ precedence_t VarExpr::get_prec() { return prec_none; }
 																   o888o
 --------------------------------------------------------------------------------------------*/
 
-AddExpr::AddExpr(Expr *lhs, Expr *rhs) {
+AddExpr::AddExpr(PTR(Expr)lhs, PTR(Expr)rhs) {
 	this->lhs_ = lhs;
 	this->rhs_ = rhs;
 }
 
-bool AddExpr::equals(Expr *e) {
-	AddExpr *pAdd = dynamic_cast<AddExpr *>(e);
+bool AddExpr::equals(PTR(Expr)e) {
+	PTR(AddExpr)pAdd = CAST(AddExpr)(e);
 	if (pAdd == nullptr) {
 		return false;
 	} else {
@@ -151,13 +151,13 @@ bool AddExpr::equals(Expr *e) {
 	}
 }
 
-Val *AddExpr::interp() {
+PTR(Val)AddExpr::interp() {
 	return (this->lhs_->interp())->add_to(this->rhs_->interp());
 }
 
-Expr *AddExpr::subst(std::string string, Expr *e) {
-	return new AddExpr(this->lhs_->subst(string, e),
-					   this->rhs_->subst(string, e));
+PTR(Expr)AddExpr::subst(std::string string, PTR(Expr)e) {
+	return NEW(AddExpr)(this->lhs_->subst(string, e),
+						this->rhs_->subst(string, e));
 }
 
 void AddExpr::print(std::ostream &ostream) {
@@ -198,13 +198,13 @@ precedence_t AddExpr::get_prec() { return prec_add; }
 																		o888o
 --------------------------------------------------------------------------------------------*/
 
-MultExpr::MultExpr(Expr *lhs, Expr *rhs) {
+MultExpr::MultExpr(PTR(Expr)lhs, PTR(Expr)rhs) {
 	this->lhs_ = lhs;
 	this->rhs_ = rhs;
 }
 
-bool MultExpr::equals(Expr *e) {
-	MultExpr *pMult = dynamic_cast<MultExpr *>(e);
+bool MultExpr::equals(PTR(Expr)e) {
+	PTR(MultExpr)pMult = CAST(MultExpr)(e);
 	if (pMult == nullptr) {
 		return false;
 	} else {
@@ -213,13 +213,13 @@ bool MultExpr::equals(Expr *e) {
 	}
 }
 
-Val *MultExpr::interp() {
+PTR(Val)MultExpr::interp() {
 	return this->lhs_->interp()->mult_with(this->rhs_->interp());
 }
 
-Expr *MultExpr::subst(std::string string, Expr *e) {
-	return new MultExpr(this->lhs_->subst(string, e),
-						this->rhs_->subst(string, e));
+PTR(Expr)MultExpr::subst(std::string string, PTR(Expr)e) {
+	return NEW(MultExpr)(this->lhs_->subst(string, e),
+						 this->rhs_->subst(string, e));
 }
 
 void MultExpr::print(std::ostream &ostream) {
@@ -268,14 +268,14 @@ precedence_t MultExpr::get_prec() { return prec_mult; }
 															o888o
 --------------------------------------------------------------------------------------------*/
 
-LetExpr::LetExpr(std::string lhs, Expr *rhs, Expr *body) {
+LetExpr::LetExpr(std::string lhs, PTR(Expr)rhs, PTR(Expr)body) {
 	this->lhs_ = std::move(lhs);
 	this->rhs_ = rhs;
 	this->body_ = body;
 }
 
-bool LetExpr::equals(Expr *e) {
-	LetExpr *pLet = dynamic_cast<LetExpr *>(e);
+bool LetExpr::equals(PTR(Expr)e) {
+	PTR(LetExpr)pLet = CAST(LetExpr)(e);
 	if (pLet == nullptr) {
 		return false;
 	} else {
@@ -285,19 +285,19 @@ bool LetExpr::equals(Expr *e) {
 	}
 }
 
-Val *LetExpr::interp() {
+PTR(Val)LetExpr::interp() {
 	return this->body_->subst(lhs_, rhs_->interp()->to_expr())->interp();
 }
 
-Expr *LetExpr::subst(std::string string, Expr *e) {
+PTR(Expr)LetExpr::subst(std::string string, PTR(Expr)e) {
 	if (string == this->lhs_) {
-		return new LetExpr(this->lhs_,
-						   this->rhs_->subst(string, e),
-						   this->body_);
+		return NEW(LetExpr)(this->lhs_,
+							this->rhs_->subst(string, e),
+							this->body_);
 	} else {
-		return new LetExpr(this->lhs_,
-						   this->rhs_->subst(string, e),
-						   this->body_->subst(string, e));
+		return NEW(LetExpr)(this->lhs_,
+							this->rhs_->subst(string, e),
+							this->body_->subst(string, e));
 	}
 }
 
@@ -339,8 +339,8 @@ o888bood8P'  `Y8bod8P' `Y8bod8P' o888o o888ooooood8 o88'   888o  888bod8P' d888b
 
 BoolExpr::BoolExpr(bool val) { this->val_ = val; }
 
-bool BoolExpr::equals(Expr *e) {
-	BoolExpr *pBoolExpr = dynamic_cast<BoolExpr *>(e);
+bool BoolExpr::equals(PTR(Expr)e) {
+	PTR(BoolExpr)pBoolExpr = CAST(BoolExpr)(e);
 	if (pBoolExpr == nullptr) {
 		return false;
 	} else {
@@ -348,10 +348,10 @@ bool BoolExpr::equals(Expr *e) {
 	}
 }
 
-Val *BoolExpr::interp() { return new BoolVal(this->val_); }
+PTR(Val)BoolExpr::interp() { return new BoolVal(this->val_); }
 
-Expr *BoolExpr::subst(std::string string, Expr *e) {
-	return this;
+PTR(Expr)BoolExpr::subst(std::string string, PTR(Expr)e) {
+	return THIS;
 }
 
 void BoolExpr::print(std::ostream &ostream) {
@@ -383,13 +383,13 @@ precedence_t BoolExpr::get_prec() { return prec_none; }
 					   "
 --------------------------------------------------------------------------------------------*/
 
-EqExpr::EqExpr(Expr *lhs, Expr *rhs) {
+EqExpr::EqExpr(PTR(Expr)lhs, PTR(Expr)rhs) {
 	this->lhs_ = lhs;
 	this->rhs_ = rhs;
 }
 
-bool EqExpr::equals(Expr *e) {
-	EqExpr *pEqExpr = dynamic_cast<EqExpr *>(e);
+bool EqExpr::equals(PTR(Expr)e) {
+	PTR(EqExpr)pEqExpr = CAST(EqExpr)(e);
 	if (pEqExpr == nullptr) {
 		return false;
 	} else {
@@ -398,12 +398,12 @@ bool EqExpr::equals(Expr *e) {
 	}
 }
 
-Val *EqExpr::interp() {
+PTR(Val)EqExpr::interp() {
 	return new BoolVal(this->lhs_->interp()->equals(this->rhs_->interp()));
 }
 
-Expr *EqExpr::subst(std::string string, Expr *e) {
-	return new EqExpr(this->lhs_->subst(string, e), this->rhs_->subst(string, e));
+PTR(Expr)EqExpr::subst(std::string string, PTR(Expr)e) {
+	return NEW(EqExpr)(this->lhs_->subst(string, e), this->rhs_->subst(string, e));
 }
 
 void EqExpr::print(std::ostream &ostream) {
@@ -450,14 +450,14 @@ precedence_t EqExpr::get_prec() {
 										   o888o
 --------------------------------------------------------------------------------------------*/
 
-IfExpr::IfExpr(Expr *testPart, Expr *thenPart, Expr *elsePart) {
+IfExpr::IfExpr(PTR(Expr)testPart, PTR(Expr)thenPart, PTR(Expr)elsePart) {
 	this->test_part_ = testPart;
 	this->then_part_ = thenPart;
 	this->else_part_ = elsePart;
 }
 
-bool IfExpr::equals(Expr *e) {
-	IfExpr *pIfExpr = dynamic_cast<IfExpr *>(e);
+bool IfExpr::equals(PTR(Expr)e) {
+	PTR(IfExpr)pIfExpr = CAST(IfExpr)(e);
 	if (pIfExpr == nullptr) {
 		return false;
 	} else {
@@ -467,9 +467,9 @@ bool IfExpr::equals(Expr *e) {
 	}
 }
 
-Val *IfExpr::interp() {
-	Val *test = this->test_part_->interp();
-	BoolVal *pTestVal = dynamic_cast<BoolVal *>(test);
+PTR(Val)IfExpr::interp() {
+	PTR(Val)test = this->test_part_->interp();
+	PTR(BoolVal)pTestVal = CAST(BoolVal)(test);
 	if (pTestVal == nullptr) { // can't interp to BoolVal
 		throw std::runtime_error("IfExpr's condition isn't BoolVal");
 	} else if (pTestVal->rep_ == true) { // condition true
@@ -479,10 +479,10 @@ Val *IfExpr::interp() {
 	}
 }
 
-Expr *IfExpr::subst(std::string string, Expr *e) {
-	return new IfExpr(this->test_part_->subst(string, e),
-					  this->then_part_->subst(string, e),
-					  this->else_part_->subst(string, e));
+PTR(Expr)IfExpr::subst(std::string string, PTR(Expr)e) {
+	return NEW(IfExpr)(this->test_part_->subst(string, e),
+					   this->then_part_->subst(string, e),
+					   this->else_part_->subst(string, e));
 }
 
 void IfExpr::print(std::ostream &ostream) {
@@ -530,13 +530,13 @@ precedence_t IfExpr::get_prec() {
 																  o888o
 --------------------------------------------------------------------------------------------*/
 
-FunExpr::FunExpr(std::string formalArg, Expr *body) {
+FunExpr::FunExpr(std::string formalArg, PTR(Expr)body) {
 	this->formal_arg_ = formalArg;
 	this->body_ = body;
 }
 
-bool FunExpr::equals(Expr *e) {
-	FunExpr *pFunExpr = dynamic_cast<FunExpr *>(e);
+bool FunExpr::equals(PTR(Expr)e) {
+	PTR(FunExpr)pFunExpr = CAST(FunExpr)(e);
 	if (pFunExpr == nullptr) {
 		return false;
 	} else {
@@ -545,15 +545,15 @@ bool FunExpr::equals(Expr *e) {
 	}
 }
 
-Val *FunExpr::interp() {
+PTR(Val)FunExpr::interp() {
 	return new FunVal(this->formal_arg_, this->body_);
 }
 
-Expr *FunExpr::subst(std::string string, Expr *e) {
+PTR(Expr)FunExpr::subst(std::string string, PTR(Expr)e) {
 	if (string == this->formal_arg_) {
-		return this;
+		return THIS;
 	} else {
-		return new FunExpr(this->formal_arg_, this->body_->subst(string, e));
+		return NEW(FunExpr)(this->formal_arg_, this->body_->subst(string, e));
 	}
 }
 
@@ -590,13 +590,13 @@ precedence_t FunExpr::get_prec() {
 																o888o
 --------------------------------------------------------------------------------------------*/
 
-CallExpr::CallExpr(Expr *toBeCalled, Expr *actualArg) {
+CallExpr::CallExpr(PTR(Expr)toBeCalled, PTR(Expr)actualArg) {
 	this->to_be_called_ = toBeCalled;
 	this->actual_arg_ = actualArg;
 }
 
-bool CallExpr::equals(Expr *e) {
-	CallExpr *pCallExpr = dynamic_cast<CallExpr *>(e);
+bool CallExpr::equals(PTR(Expr)e) {
+	PTR(CallExpr)pCallExpr = CAST(CallExpr)(e);
 	if (pCallExpr == nullptr) {
 		return false;
 	} else {
@@ -605,12 +605,12 @@ bool CallExpr::equals(Expr *e) {
 	}
 }
 
-Val *CallExpr::interp() {
+PTR(Val)CallExpr::interp() {
 	return this->to_be_called_->interp()->call(actual_arg_->interp());
 }
 
-Expr *CallExpr::subst(std::string string, Expr *e) {
-	return new CallExpr(this->to_be_called_->subst(string, e), this->actual_arg_->subst(string, e));
+PTR(Expr)CallExpr::subst(std::string string, PTR(Expr)e) {
+	return NEW(CallExpr)(this->to_be_called_->subst(string, e), this->actual_arg_->subst(string, e));
 }
 
 void CallExpr::print(std::ostream &ostream) {

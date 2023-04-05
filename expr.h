@@ -19,6 +19,7 @@
 #include <stdexcept>
 #include <string>
 #include <utility>
+#include "pointer.h"
 
 class Val;
 
@@ -34,21 +35,22 @@ typedef enum {
 /*! \brief Abstract expression class\n
  * (pure abstract class)
  */
-class Expr {
+CLASS (Expr) {
  public:
+	virtual ~Expr() {};
 	/**
 	 * \brief Judge if this Expr class object equals to another object
 	 * \param e an Expr pointer to object waited to be compared
 	 * \return returns a boolean, true if two object equals, otherwise false
 	 */
-	virtual bool equals(Expr *e) = 0;
+	virtual bool equals(PTR(Expr)e) = 0;
 
 	/**
 	 * \brief Interpret Expr object to an integer value
 	 * \return returns the actual integer value of the Expr, if it contains
 	 * Variable, throw an exception
 	 */
-	virtual Val *interp() = 0;
+	virtual PTR(Val)interp() = 0;
 
 	/**
 	 * \brief Substitute the Variable inside Expr object with another Expr
@@ -58,7 +60,7 @@ class Expr {
 	 * Expr pointer to object after substitution, return the original object if
 	 * string Variable not found
 	 */
-	virtual Expr *subst(std::string string, Expr *e) = 0;
+	virtual PTR(Expr)subst(std::string string, PTR(Expr)e) = 0;
 
 	// TODO: do we need to handle with negative expression?
 	/**
@@ -123,13 +125,13 @@ class NumExpr : public Expr {
 	 * \param e an Expr pointer to Expr object waited to be compared
 	 * \return returns a boolean, true if two object equals, otherwise false
 	 */
-	bool equals(Expr *e) override;
+	bool equals(PTR(Expr)e) override;
 
 	/**
 	 * \brief Interpret Num object to an integer value
 	 * \return returns the actual integer value of the Num
 	 */
-	Val *interp() override;
+	PTR(Val)interp() override;
 
 	/**
 	 * \brief Substitute the Variable inside Num object with another Expr
@@ -138,7 +140,7 @@ class NumExpr : public Expr {
 	 * going to substitute the Variable inside expression \return returns this
 	 * object, since there is no Variable in Num object
 	 */
-	Expr *subst(std::string string, Expr *e) override;
+	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
 
 	void print(std::ostream &ostream) override;
 
@@ -166,13 +168,13 @@ class VarExpr : public Expr {
 	 * be compared \return returns a boolean, true if two object equals, otherwise
 	 * false
 	 */
-	bool equals(Expr *e) override;
+	bool equals(PTR(Expr)e) override;
 
 	/**
 	 * \brief Interpret Var object to an integer value
 	 * \return A Var doesn't have specific integer value, throw an exception
 	 */
-	Val *interp() override;
+	PTR(Val)interp() override;
 
 	/**
 	 * \brief Substitute the Var object with another Expr
@@ -182,7 +184,7 @@ class VarExpr : public Expr {
 	 * pointer to object after substitution, return the original object if string
 	 * variable not found
 	 */
-	Expr *subst(std::string string, Expr *e) override;
+	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
 
 	void print(std::ostream &ostream) override;
 
@@ -197,9 +199,9 @@ class VarExpr : public Expr {
  */
 class AddExpr : public Expr {
  public:
-	Expr *lhs_; //!< the Expr object that makes up the left hand side of the Add
+	PTR(Expr)lhs_; //!< the Expr object that makes up the left hand side of the Add
 	//!< object
-	Expr *rhs_; //!< the Expr object that makes up the right hand side of the Add
+	PTR(Expr)rhs_; //!< the Expr object that makes up the right hand side of the Add
 	//!< object
 
 	/**
@@ -207,21 +209,21 @@ class AddExpr : public Expr {
 	 * \param lhs an Expr object on the left hand side
 	 * \param rhs an Expr object on the right hand side
 	 */
-	AddExpr(Expr *lhs, Expr *rhs);
+	AddExpr(PTR(Expr)lhs, PTR(Expr)rhs);
 
 	/**
 	 * \brief Judge if this Add class object equals to another object
 	 * \param e an Expr pointer to Expr object waited to be compared
 	 * \return returns a boolean, true if two object equals, otherwise false
 	 */
-	bool equals(Expr *e) override;
+	bool equals(PTR(Expr)e) override;
 
 	/**
 	 * \brief Interpret Add object to an integer value
 	 * \return returns the actual integer value (lhs + rhs) of the Add, if it
 	 * contains Var, throw an exception
 	 */
-	Val *interp() override;
+	PTR(Val)interp() override;
 
 	/**
 	 * \brief Substitute the Var inside Add object with another Expr
@@ -231,7 +233,7 @@ class AddExpr : public Expr {
 	 * pointer to object after substitution, return the original object if string
 	 * variable not found
 	 */
-	Expr *subst(std::string string, Expr *e) override;
+	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
 
 	void print(std::ostream &ostream) override;
 
@@ -246,9 +248,9 @@ class AddExpr : public Expr {
  */
 class MultExpr : public Expr {
  public:
-	Expr *lhs_; //!< the Expr object that makes up the left hand side of the Mult
+	PTR(Expr)lhs_; //!< the Expr object that makes up the left hand side of the Mult
 	//!< object
-	Expr *rhs_; //!< the Expr object that makes up the right hand side of the Mult
+	PTR(Expr)rhs_; //!< the Expr object that makes up the right hand side of the Mult
 	//!< object
 
 	/**
@@ -256,21 +258,21 @@ class MultExpr : public Expr {
 	 * \param lhs an Expr object on the left hand side
 	 * \param rhs an Expr object on the right hand side
 	 */
-	MultExpr(Expr *lhs, Expr *rhs);
+	MultExpr(PTR(Expr)lhs, PTR(Expr)rhs);
 
 	/**
 	 * \brief Judge if this Mult class object equals to another object
 	 * \param e an Expr pointer to Expr object waited to be compared
 	 * \return returns a boolean, true if two object equals, otherwise false
 	 */
-	bool equals(Expr *e) override;
+	bool equals(PTR(Expr)e) override;
 
 	/**
 	 * \brief Interpret Mult object to an integer value
 	 * \return returns the actual integer value (lhs * rhs) of the Mult, if it
 	 * contains Var, throw an exception
 	 */
-	Val *interp() override;
+	PTR(Val)interp() override;
 
 	/**
 	 * \brief Substitute the Var inside Mult object with another Expr
@@ -280,7 +282,7 @@ class MultExpr : public Expr {
 	 * pointer to object after substitution, return the original object if string
 	 * variable not found
 	 */
-	Expr *subst(std::string string, Expr *e) override;
+	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
 
 	void print(std::ostream &ostream) override;
 
@@ -296,8 +298,8 @@ class MultExpr : public Expr {
 class LetExpr : public Expr {
  public:
 	std::string lhs_; //!< the expression that is waiting to be set with value
-	Expr *rhs_;       //!< the setting value
-	Expr *body_;      //!< in which expression the variable is set with the value
+	PTR(Expr)rhs_;       //!< the setting value
+	PTR(Expr)body_;      //!< in which expression the variable is set with the value
 
 	/**
 	 * \brief Constructor for Let object
@@ -305,20 +307,20 @@ class LetExpr : public Expr {
 	 * \param rhs an Expr with some value passing to the lhs expression
 	 * \param body in which expression the variable is set with the value
 	 */
-	LetExpr(std::string lhs, Expr *rhs, Expr *body);
+	LetExpr(std::string lhs, PTR(Expr)rhs, PTR(Expr)body);
 
 	/**
 	 * \brief Judge if this Let class object equals to another object
 	 * \param e an Expr pointer to Expr object waited to be compared
 	 * \return returns a boolean, true if two object equals, otherwise false
 	 */
-	bool equals(Expr *e) override;
+	bool equals(PTR(Expr)e) override;
 
 	/**
 	 * \brief Interpret Let object to an integer value
 	 * \return returns the actual integer value of the Num
 	 */
-	Val *interp() override;
+	PTR(Val)interp() override;
 
 	/**
 	 * \brief Substitute the Var inside Let object with another Expr
@@ -327,7 +329,7 @@ class LetExpr : public Expr {
 	 * going to substitute the Var inside expression \return returns this object,
 	 * since there is no Var in Let object
 	 */
-	Expr *subst(std::string string, Expr *e) override;
+	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
 
 	void print(std::ostream &ostream) override;
 
@@ -343,11 +345,11 @@ class BoolExpr : public Expr {
 
 	explicit BoolExpr(bool val);
 
-	bool equals(Expr *e) override;
+	bool equals(PTR(Expr)e) override;
 
-	Val *interp() override;
+	PTR(Val)interp() override;
 
-	Expr *subst(std::string string, Expr *e) override;
+	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
 
 	void print(std::ostream &ostream) override;
 
@@ -359,16 +361,16 @@ class BoolExpr : public Expr {
 
 class EqExpr : public Expr { // equal class
  public:
-	Expr *lhs_;
-	Expr *rhs_;
+	PTR(Expr)lhs_;
+	PTR(Expr)rhs_;
 
-	EqExpr(Expr *lhs, Expr *rhs);
+	EqExpr(PTR(Expr)lhs, PTR(Expr)rhs);
 
-	bool equals(Expr *e) override;
+	bool equals(PTR(Expr)e) override;
 
-	Val *interp() override;
+	PTR(Val)interp() override;
 
-	Expr *subst(std::string string, Expr *e) override;
+	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
 
 	void print(std::ostream &ostream) override;
 
@@ -380,17 +382,17 @@ class EqExpr : public Expr { // equal class
 
 class IfExpr : public Expr {
  public:
-	Expr *test_part_; // if condition
-	Expr *then_part_;
-	Expr *else_part_;
+	PTR(Expr)test_part_; // if condition
+	PTR(Expr)then_part_;
+	PTR(Expr)else_part_;
 
-	IfExpr(Expr *testPart, Expr *thenPart, Expr *elsePart);
+	IfExpr(PTR(Expr)testPart, PTR(Expr)thenPart, PTR(Expr)elsePart);
 
-	bool equals(Expr *e) override;
+	bool equals(PTR(Expr)e) override;
 
 	Val *interp() override;
 
-	Expr *subst(std::string string, Expr *e) override;
+	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
 
 	void print(std::ostream &ostream) override;
 
@@ -403,15 +405,15 @@ class IfExpr : public Expr {
 class FunExpr : public Expr {
  public:
 	std::string formal_arg_; // _fun (x)
-	Expr *body_; // return expression
+	PTR(Expr)body_; // return expression
 
-	FunExpr(std::string formalArg, Expr *body);
+	FunExpr(std::string formalArg, PTR(Expr)body);
 
-	bool equals(Expr *e) override;
+	bool equals(PTR(Expr)e) override;
 
 	Val *interp() override;
 
-	Expr *subst(std::string string, Expr *e) override;
+	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
 
 	void print(std::ostream &ostream) override;
 
@@ -423,16 +425,16 @@ class FunExpr : public Expr {
 
 class CallExpr : public Expr {
  public:
-	Expr *to_be_called_;
-	Expr *actual_arg_;
+	PTR(Expr)to_be_called_;
+	PTR(Expr)actual_arg_;
 
-	CallExpr(Expr *toBeCalled, Expr *actualArg);
+	CallExpr(PTR(Expr)toBeCalled, PTR(Expr)actualArg);
 
-	bool equals(Expr *e) override;
+	bool equals(PTR(Expr)e) override;
 
 	Val *interp() override;
 
-	Expr *subst(std::string string, Expr *e) override;
+	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
 
 	void print(std::ostream &ostream) override;
 

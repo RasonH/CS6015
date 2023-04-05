@@ -17,8 +17,8 @@
 
 NumVal::NumVal(int rep) { this->rep_ = rep; }
 
-bool NumVal::equals(Val *val) {
-	NumVal *pNumVal = dynamic_cast<NumVal *>(val);
+bool NumVal::equals(PTR(Val)val) {
+	PTR(NumVal)pNumVal = CAST(NumVal)(val);
 	if (pNumVal == nullptr) {
 		return false;
 	} else {
@@ -26,17 +26,17 @@ bool NumVal::equals(Val *val) {
 	}
 }
 
-Val *NumVal::add_to(Val *otherVal) {
-	NumVal *otherNum = dynamic_cast<NumVal *>(otherVal);
+PTR(Val)NumVal::add_to(PTR(Val)otherVal) {
+	PTR(NumVal)otherNum = CAST(NumVal)(otherVal);
 	if (otherNum == nullptr) {
 		throw std::runtime_error("add of non-number");
 	} else {
-		return new NumVal(this->rep_ + otherNum->rep_);
+		return new NumVal((unsigned)this->rep_ + (unsigned)otherNum->rep_);
 	}
 }
 
-Val *NumVal::mult_with(Val *otherVal) {
-	NumVal *otherNum = dynamic_cast<NumVal *>(otherVal);
+PTR(Val)NumVal::mult_with(PTR(Val)otherVal) {
+	PTR(NumVal)otherNum = CAST(NumVal)(otherVal);
 	if (otherNum == nullptr) {
 		throw std::runtime_error("mult of non-number");
 	} else {
@@ -44,11 +44,11 @@ Val *NumVal::mult_with(Val *otherVal) {
 	}
 }
 
-Expr *NumVal::to_expr() { return new NumExpr(this->rep_); }
+PTR(Expr)NumVal::to_expr() { return NEW(NumExpr)(this->rep_); }
 
 std::string NumVal::to_string() { return std::to_string(this->rep_); }
 
-Val *NumVal::call(Val *actualArg) {
+PTR(Val)NumVal::call(PTR(Val)actualArg) {
 	throw std::runtime_error("Can not call on NumVal");
 }
 
@@ -64,8 +64,8 @@ Val *NumVal::call(Val *actualArg) {
 
 BoolVal::BoolVal(bool rep) { this->rep_ = rep; }
 
-bool BoolVal::equals(Val *val) {
-	BoolVal *pBoolVal = dynamic_cast<BoolVal *>(val);
+bool BoolVal::equals(PTR(Val)val) {
+	PTR(BoolVal)pBoolVal = CAST(BoolVal)(val);
 	if (pBoolVal == nullptr) {
 		return false;
 	} else {
@@ -73,13 +73,13 @@ bool BoolVal::equals(Val *val) {
 	}
 }
 
-Expr *BoolVal::to_expr() { return new BoolExpr(this->rep_); }
+PTR(Expr)BoolVal::to_expr() { return NEW(BoolExpr)(this->rep_); }
 
-Val *BoolVal::add_to(Val *otherVal) {
+PTR(Val)BoolVal::add_to(PTR(Val)otherVal) {
 	throw std::runtime_error("add of non-number");
 }
 
-Val *BoolVal::mult_with(Val *otherVal) {
+PTR(Val)BoolVal::mult_with(PTR(Val)otherVal) {
 	throw std::runtime_error("mult of non-number");
 }
 
@@ -91,7 +91,7 @@ std::string BoolVal::to_string() {
 	}
 }
 
-Val *BoolVal::call(Val *actualArg) {
+PTR(Val)BoolVal::call(PTR(Val)actualArg) {
 	throw std::runtime_error("Can not call on BoolVal");
 }
 
@@ -105,13 +105,13 @@ Val *BoolVal::call(Val *actualArg) {
 	o888o         `V88V"V8P' o888o o888o       `8'       `Y888""8o o888o
 --------------------------------------------------------------------------------------------*/
 
-FunVal::FunVal(std::string formalArg, Expr *body) {
+FunVal::FunVal(std::string formalArg, PTR(Expr)body) {
 	formal_arg_ = formalArg;
 	body_ = body;
 }
 
-bool FunVal::equals(Val *val) {
-	FunVal *pFunVal = dynamic_cast<FunVal *>(val);
+bool FunVal::equals(PTR(Val)val) {
+	PTR(FunVal)pFunVal = CAST(FunVal)(val);
 	if (pFunVal == nullptr) {
 		return false;
 	} else {
@@ -120,13 +120,13 @@ bool FunVal::equals(Val *val) {
 	}
 }
 
-Expr *FunVal::to_expr() { return new FunExpr(this->formal_arg_, this->body_); }
+PTR(Expr)FunVal::to_expr() { return NEW(FunExpr)(this->formal_arg_, this->body_); }
 
-Val *FunVal::add_to(Val *otherVal) {
+PTR(Val)FunVal::add_to(PTR(Val)otherVal) {
 	throw std::runtime_error("add of non-number");
 }
 
-Val *FunVal::mult_with(Val *otherVal) {
+PTR(Val)FunVal::mult_with(PTR(Val)otherVal) {
 	throw std::runtime_error("mult of non-number");
 }
 
@@ -134,7 +134,7 @@ std::string FunVal::to_string() {
 	return ("_fun (" + this->formal_arg_ + ") " + this->body_->to_string());
 }
 
-Val *FunVal::call(Val *actualArg) {
+PTR(Val)FunVal::call(PTR(Val)actualArg) {
 	return this->body_->subst(this->formal_arg_, actualArg->to_expr())->interp();
-//	return (new LetExpr(this->formal_arg_, actualArg->to_expr(), this->body_))->interp();
+//	return (NEW(LetExpr)(this->formal_arg_, actualArg->to_expr(), this->body_))->interp();
 }
