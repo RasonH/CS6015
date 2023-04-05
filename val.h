@@ -9,6 +9,8 @@ class Expr;
 
 CLASS (Val) {
  public:
+	virtual ~Val() {};
+
 	virtual bool equals(PTR(Val)rep) = 0;
 
 	virtual PTR(Expr)to_expr() = 0;

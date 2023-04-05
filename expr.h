@@ -37,6 +37,7 @@ typedef enum {
  */
 CLASS (Expr) {
  public:
+	virtual ~Expr() {};
 	/**
 	 * \brief Judge if this Expr class object equals to another object
 	 * \param e an Expr pointer to object waited to be compared

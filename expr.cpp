@@ -156,8 +156,8 @@ PTR(Val)AddExpr::interp() {
 }
 
 PTR(Expr)AddExpr::subst(std::string string, PTR(Expr)e) {
-	return new AddExpr(this->lhs_->subst(string, e),
-					   this->rhs_->subst(string, e));
+	return NEW(AddExpr)(this->lhs_->subst(string, e),
+						this->rhs_->subst(string, e));
 }
 
 void AddExpr::print(std::ostream &ostream) {
@@ -218,8 +218,8 @@ PTR(Val)MultExpr::interp() {
 }
 
 PTR(Expr)MultExpr::subst(std::string string, PTR(Expr)e) {
-	return new MultExpr(this->lhs_->subst(string, e),
-						this->rhs_->subst(string, e));
+	return NEW(MultExpr)(this->lhs_->subst(string, e),
+						 this->rhs_->subst(string, e));
 }
 
 void MultExpr::print(std::ostream &ostream) {
@@ -291,13 +291,13 @@ PTR(Val)LetExpr::interp() {
 
 PTR(Expr)LetExpr::subst(std::string string, PTR(Expr)e) {
 	if (string == this->lhs_) {
-		return new LetExpr(this->lhs_,
-						   this->rhs_->subst(string, e),
-						   this->body_);
+		return NEW(LetExpr)(this->lhs_,
+							this->rhs_->subst(string, e),
+							this->body_);
 	} else {
-		return new LetExpr(this->lhs_,
-						   this->rhs_->subst(string, e),
-						   this->body_->subst(string, e));
+		return NEW(LetExpr)(this->lhs_,
+							this->rhs_->subst(string, e),
+							this->body_->subst(string, e));
 	}
 }
 
@@ -403,7 +403,7 @@ PTR(Val)EqExpr::interp() {
 }
 
 PTR(Expr)EqExpr::subst(std::string string, PTR(Expr)e) {
-	return new EqExpr(this->lhs_->subst(string, e), this->rhs_->subst(string, e));
+	return NEW(EqExpr)(this->lhs_->subst(string, e), this->rhs_->subst(string, e));
 }
 
 void EqExpr::print(std::ostream &ostream) {
@@ -480,9 +480,9 @@ PTR(Val)IfExpr::interp() {
 }
 
 PTR(Expr)IfExpr::subst(std::string string, PTR(Expr)e) {
-	return new IfExpr(this->test_part_->subst(string, e),
-					  this->then_part_->subst(string, e),
-					  this->else_part_->subst(string, e));
+	return NEW(IfExpr)(this->test_part_->subst(string, e),
+					   this->then_part_->subst(string, e),
+					   this->else_part_->subst(string, e));
 }
 
 void IfExpr::print(std::ostream &ostream) {
@@ -553,7 +553,7 @@ PTR(Expr)FunExpr::subst(std::string string, PTR(Expr)e) {
 	if (string == this->formal_arg_) {
 		return THIS;
 	} else {
-		return new FunExpr(this->formal_arg_, this->body_->subst(string, e));
+		return NEW(FunExpr)(this->formal_arg_, this->body_->subst(string, e));
 	}
 }
 
@@ -610,7 +610,7 @@ PTR(Val)CallExpr::interp() {
 }
 
 PTR(Expr)CallExpr::subst(std::string string, PTR(Expr)e) {
-	return new CallExpr(this->to_be_called_->subst(string, e), this->actual_arg_->subst(string, e));
+	return NEW(CallExpr)(this->to_be_called_->subst(string, e), this->actual_arg_->subst(string, e));
 }
 
 void CallExpr::print(std::ostream &ostream) {
