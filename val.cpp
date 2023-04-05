@@ -31,7 +31,7 @@ PTR(Val)NumVal::add_to(PTR(Val)otherVal) {
 	if (otherNum == nullptr) {
 		throw std::runtime_error("add of non-number");
 	} else {
-		return new NumVal((unsigned)this->rep_ + (unsigned)otherNum->rep_);
+		return NEW(NumVal)((unsigned)this->rep_ + (unsigned)otherNum->rep_);
 	}
 }
 
@@ -40,7 +40,7 @@ PTR(Val)NumVal::mult_with(PTR(Val)otherVal) {
 	if (otherNum == nullptr) {
 		throw std::runtime_error("mult of non-number");
 	} else {
-		return new NumVal(this->rep_ * otherNum->rep_);
+		return NEW(NumVal)(this->rep_ * otherNum->rep_);
 	}
 }
 

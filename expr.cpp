@@ -63,7 +63,7 @@ bool NumExpr::equals(PTR(Expr)e) {
 	}
 }
 
-PTR(Val)NumExpr::interp() { return new NumVal(this->val_); }
+PTR(Val)NumExpr::interp() { return NEW(NumVal)(this->val_); }
 
 PTR(Expr)NumExpr::subst(std::string string, PTR(Expr)e) { return THIS; }
 
@@ -348,7 +348,7 @@ bool BoolExpr::equals(PTR(Expr)e) {
 	}
 }
 
-PTR(Val)BoolExpr::interp() { return new BoolVal(this->val_); }
+PTR(Val)BoolExpr::interp() { return NEW(BoolVal)(this->val_); }
 
 PTR(Expr)BoolExpr::subst(std::string string, PTR(Expr)e) {
 	return THIS;
@@ -399,7 +399,7 @@ bool EqExpr::equals(PTR(Expr)e) {
 }
 
 PTR(Val)EqExpr::interp() {
-	return new BoolVal(this->lhs_->interp()->equals(this->rhs_->interp()));
+	return NEW(BoolVal)(this->lhs_->interp()->equals(this->rhs_->interp()));
 }
 
 PTR(Expr)EqExpr::subst(std::string string, PTR(Expr)e) {
@@ -546,7 +546,7 @@ bool FunExpr::equals(PTR(Expr)e) {
 }
 
 PTR(Val)FunExpr::interp() {
-	return new FunVal(this->formal_arg_, this->body_);
+	return NEW(FunVal)(this->formal_arg_, this->body_);
 }
 
 PTR(Expr)FunExpr::subst(std::string string, PTR(Expr)e) {
