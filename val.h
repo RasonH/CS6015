@@ -4,21 +4,22 @@
 
 #pragma include once
 #include <string>
+#include "pointer.h"
 class Expr;
 
 class Val {
  public:
-	virtual bool equals(Val *rep) = 0;
+	virtual bool equals(PTR(Val)rep) = 0;
 
-	virtual Expr *to_expr() = 0;
+	virtual PTR(Expr)to_expr() = 0;
 
 	virtual std::string to_string() = 0;
 
-	virtual Val *add_to(Val *rep) = 0;
+	virtual PTR(Val)add_to(PTR(Val)rep) = 0;
 
-	virtual Val *mult_with(Val *rep) = 0;
+	virtual PTR(Val)mult_with(PTR(Val)rep) = 0;
 
-	virtual Val *call(Val *actualArg) = 0;
+	virtual PTR(Val)call(PTR(Val)actualArg) = 0;
 };
 
 class NumVal : public Val {
@@ -27,17 +28,17 @@ class NumVal : public Val {
 
 	NumVal(int rep);
 
-	bool equals(Val *val) override;
+	bool equals(PTR(Val)val) override;
 
-	Expr *to_expr() override;
+	PTR(Expr)to_expr() override;
 
 	std::string to_string() override;
 
-	Val *add_to(Val *otherVal) override;
+	PTR(Val)add_to(PTR(Val)otherVal) override;
 
-	Val *mult_with(Val *otherVal) override;
+	PTR(Val)mult_with(PTR(Val)otherVal) override;
 
-	Val *call(Val *actualArg) override;
+	PTR(Val)call(PTR(Val)actualArg) override;
 };
 
 class BoolVal : public Val {
@@ -46,17 +47,17 @@ class BoolVal : public Val {
 
 	BoolVal(bool rep);
 
-	bool equals(Val *val) override;
+	bool equals(PTR(Val)val) override;
 
 	Expr *to_expr() override;
 
 	std::string to_string() override;
 
-	Val *add_to(Val *otherVal) override;
+	PTR(Val)add_to(PTR(Val)otherVal) override;
 
-	Val *mult_with(Val *otherVal) override;
+	PTR(Val)mult_with(PTR(Val)otherVal) override;
 
-	Val *call(Val *actualArg) override;
+	PTR(Val)call(PTR(Val)actualArg) override;
 };
 
 class FunVal : public Val {
@@ -66,15 +67,15 @@ class FunVal : public Val {
 
 	FunVal(std::string formalArg, Expr *body);
 
-	bool equals(Val *val) override;
+	bool equals(PTR(Val)val) override;
 
 	Expr *to_expr() override;
 
 	std::string to_string() override;
 
-	Val *add_to(Val *otherVal) override;
+	PTR(Val)add_to(PTR(Val)otherVal) override;
 
-	Val *mult_with(Val *otherVal) override;
+	PTR(Val)mult_with(PTR(Val)otherVal) override;
 
-	Val *call(Val *actualArg) override;
+	PTR(Val)call(PTR(Val)actualArg) override;
 };

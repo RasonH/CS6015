@@ -659,13 +659,13 @@ TEST_CASE("TESTS from Kevin and William") {
 						   "         _in  y * 2\n"
 						   "_in  x + 1");
 	}SECTION("pretty_print_let_mine_some_reuse_of_kevin_triple_nested_let") {
-		LetExpr *tripleNestedLet =
-			new LetExpr("x", new NumExpr(1),
-						new LetExpr("y", new NumExpr(1),
-									new MultExpr(new AddExpr(new VarExpr("x"),
-															 new VarExpr("y")),
-												 new VarExpr("z"))));
-		LetExpr *tripleNestedLet2 = new LetExpr(
+		PTR(LetExpr)tripleNestedLet =
+		new LetExpr("x", new NumExpr(1),
+					new LetExpr("y", new NumExpr(1),
+								new MultExpr(new AddExpr(new VarExpr("x"),
+														 new VarExpr("y")),
+											 new VarExpr("z"))));
+		PTR(LetExpr)tripleNestedLet2 = new LetExpr(
 			"x", new NumExpr(1),
 			new LetExpr(
 				"y", new NumExpr(1),
@@ -673,7 +673,7 @@ TEST_CASE("TESTS from Kevin and William") {
 					"z", new AddExpr(new VarExpr("x"), new NumExpr(1)),
 					new AddExpr(new AddExpr(new VarExpr("x"), new VarExpr("y")),
 								new VarExpr("z")))));
-		LetExpr *tripleNestedLet3 = new LetExpr(
+		PTR(LetExpr)tripleNestedLet3 = new LetExpr(
 			"x", new NumExpr(1),
 			new LetExpr(
 				"y", new NumExpr(1),
@@ -693,11 +693,11 @@ TEST_CASE("TESTS from Kevin and William") {
 													  "_in  _let y = 1\n"
 													  "     _in  _let z = x + 1\n"
 													  "          _in  (x + y) * z");
-		LetExpr *tripleNestedLet4 =
-			new LetExpr("x", new NumExpr(5),
-						new LetExpr("y", new NumExpr(3),
-									new AddExpr(new VarExpr("y"), new NumExpr(2))));
-		LetExpr *tripleNestedLet5 = new LetExpr(
+		PTR(LetExpr)tripleNestedLet4 =
+		new LetExpr("x", new NumExpr(5),
+					new LetExpr("y", new NumExpr(3),
+								new AddExpr(new VarExpr("y"), new NumExpr(2))));
+		PTR(LetExpr)tripleNestedLet5 = new LetExpr(
 			"x", new NumExpr(5),
 			new AddExpr(new LetExpr("y", new NumExpr(3),
 									new AddExpr(new VarExpr("y"), new NumExpr(2))),
@@ -1358,7 +1358,7 @@ TEST_CASE("Function") {
 						"             _else x + f(f)(x + -1)\n"
 						"_in f(f)(3)")->interp()->equals(new NumVal(6)));
 	} SECTION("factorial function recusion test") {
-		Expr *factrl_expr = new LetExpr(
+		PTR(Expr)factrl_expr = new LetExpr(
 			"factrl",
 			new FunExpr(
 				"factrl",
