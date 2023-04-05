@@ -35,7 +35,7 @@ typedef enum {
 /*! \brief Abstract expression class\n
  * (pure abstract class)
  */
-class Expr {
+CLASS (Expr) {
  public:
 	/**
 	 * \brief Judge if this Expr class object equals to another object

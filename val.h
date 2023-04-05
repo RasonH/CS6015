@@ -7,7 +7,7 @@
 #include "pointer.h"
 class Expr;
 
-class Val {
+CLASS (Val) {
  public:
 	virtual bool equals(PTR(Val)rep) = 0;
 
@@ -49,7 +49,7 @@ class BoolVal : public Val {
 
 	bool equals(PTR(Val)val) override;
 
-	Expr *to_expr() override;
+	PTR(Expr)to_expr() override;
 
 	std::string to_string() override;
 
@@ -63,13 +63,13 @@ class BoolVal : public Val {
 class FunVal : public Val {
  public:
 	std::string formal_arg_;
-	Expr *body_;
+	PTR(Expr)body_;
 
-	FunVal(std::string formalArg, Expr *body);
+	FunVal(std::string formalArg, PTR(Expr)body);
 
 	bool equals(PTR(Val)val) override;
 
-	Expr *to_expr() override;
+	PTR(Expr)to_expr() override;
 
 	std::string to_string() override;
 

@@ -73,7 +73,7 @@ bool BoolVal::equals(PTR(Val)val) {
 	}
 }
 
-Expr *BoolVal::to_expr() { return new BoolExpr(this->rep_); }
+PTR(Expr)BoolVal::to_expr() { return new BoolExpr(this->rep_); }
 
 PTR(Val)BoolVal::add_to(PTR(Val)otherVal) {
 	throw std::runtime_error("add of non-number");
@@ -105,7 +105,7 @@ PTR(Val)BoolVal::call(PTR(Val)actualArg) {
 	o888o         `V88V"V8P' o888o o888o       `8'       `Y888""8o o888o
 --------------------------------------------------------------------------------------------*/
 
-FunVal::FunVal(std::string formalArg, Expr *body) {
+FunVal::FunVal(std::string formalArg, PTR(Expr)body) {
 	formal_arg_ = formalArg;
 	body_ = body;
 }
@@ -120,7 +120,7 @@ bool FunVal::equals(PTR(Val)val) {
 	}
 }
 
-Expr *FunVal::to_expr() { return new FunExpr(this->formal_arg_, this->body_); }
+PTR(Expr)FunVal::to_expr() { return new FunExpr(this->formal_arg_, this->body_); }
 
 PTR(Val)FunVal::add_to(PTR(Val)otherVal) {
 	throw std::runtime_error("add of non-number");

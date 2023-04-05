@@ -65,7 +65,7 @@ bool NumExpr::equals(PTR(Expr)e) {
 
 PTR(Val)NumExpr::interp() { return new NumVal(this->val_); }
 
-PTR(Expr)NumExpr::subst(std::string string, PTR(Expr)e) { return this; }
+PTR(Expr)NumExpr::subst(std::string string, PTR(Expr)e) { return THIS; }
 
 void NumExpr::print(std::ostream &ostream) {
 	ostream << std::to_string(this->val_);
@@ -112,7 +112,7 @@ PTR(Expr)VarExpr::subst(std::string string, PTR(Expr)e) {
 	if (this->string_ == string) { // TODO: what if the string is ""
 		return e;
 	}
-	return this;
+	return THIS;
 }
 
 void VarExpr::print(std::ostream &ostream) { ostream << this->string_; }
@@ -351,7 +351,7 @@ bool BoolExpr::equals(PTR(Expr)e) {
 PTR(Val)BoolExpr::interp() { return new BoolVal(this->val_); }
 
 PTR(Expr)BoolExpr::subst(std::string string, PTR(Expr)e) {
-	return this;
+	return THIS;
 }
 
 void BoolExpr::print(std::ostream &ostream) {
@@ -469,7 +469,7 @@ bool IfExpr::equals(PTR(Expr)e) {
 
 PTR(Val)IfExpr::interp() {
 	PTR(Val)test = this->test_part_->interp();
-	PTR(NumVal)pTestVal = CAST(NumVal)(test);
+	PTR(BoolVal)pTestVal = CAST(BoolVal)(test);
 	if (pTestVal == nullptr) { // can't interp to BoolVal
 		throw std::runtime_error("IfExpr's condition isn't BoolVal");
 	} else if (pTestVal->rep_ == true) { // condition true
@@ -551,7 +551,7 @@ PTR(Val)FunExpr::interp() {
 
 PTR(Expr)FunExpr::subst(std::string string, PTR(Expr)e) {
 	if (string == this->formal_arg_) {
-		return this;
+		return THIS;
 	} else {
 		return new FunExpr(this->formal_arg_, this->body_->subst(string, e));
 	}
@@ -609,7 +609,7 @@ PTR(Val)CallExpr::interp() {
 	return this->to_be_called_->interp()->call(actual_arg_->interp());
 }
 
-Expr *CallExpr::subst(std::string string, Expr *e) {
+PTR(Expr)CallExpr::subst(std::string string, PTR(Expr)e) {
 	return new CallExpr(this->to_be_called_->subst(string, e), this->actual_arg_->subst(string, e));
 }
 
