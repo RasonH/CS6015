@@ -13,6 +13,7 @@
 #include "expr.h"
 #include "parse.h"
 #include "val.h"
+#include "env.h"
 
 void use_arguments(int argc, const char *argv[]) {
 	if (argc == 1) {
@@ -58,7 +59,7 @@ void use_arguments(int argc, const char *argv[]) {
 					// parse the std::cin
 					// interp the std::cin
 					// print out result
-					std::cout << parse_str(std::cin)->interp()->to_string() << std::endl;
+					std::cout << parse_str(std::cin)->interp(Env::empty)->to_string() << std::endl;
 				} catch (std::runtime_error &e) {
 					std::cout << e.what();
 					exit(1);

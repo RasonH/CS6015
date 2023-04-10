@@ -63,9 +63,9 @@ bool NumExpr::equals(PTR(Expr)e) {
 	}
 }
 
-PTR(Val)NumExpr::interp() { return NEW(NumVal)(this->val_); }
+PTR(Val)NumExpr::interp(PTR(Env)env) { return NEW(NumVal)(this->val_); }
 
-PTR(Expr)NumExpr::subst(std::string string, PTR(Expr)e) { return THIS; }
+//PTR(Expr)NumExpr::subst(std::string string, PTR(Expr)e) { return THIS; }
 
 void NumExpr::print(std::ostream &ostream) {
 	ostream << std::to_string(this->val_);
@@ -102,18 +102,17 @@ bool VarExpr::equals(PTR(Expr)e) {
 	}
 }
 
-PTR(Val)VarExpr::interp() {
-	throw std::runtime_error("no value for variable");
-	//    throw std::runtime_error("invalid input");
-	//    throw std::runtime_error("");
+PTR(Val)VarExpr::interp(PTR(Env)env) {
+//	throw std::runtime_error("no value for variable");
+	return env->lookup(this->string_);
 }
 
-PTR(Expr)VarExpr::subst(std::string string, PTR(Expr)e) {
-	if (this->string_ == string) { // TODO: what if the string is ""
-		return e;
-	}
-	return THIS;
-}
+//PTR(Expr)VarExpr::subst(std::string string, PTR(Expr)e) {
+//	if (this->string_ == string) { // TODO: what if the string is ""
+//		return e;
+//	}
+//	return THIS;
+//}
 
 void VarExpr::print(std::ostream &ostream) { ostream << this->string_; }
 
@@ -151,14 +150,14 @@ bool AddExpr::equals(PTR(Expr)e) {
 	}
 }
 
-PTR(Val)AddExpr::interp() {
-	return (this->lhs_->interp())->add_to(this->rhs_->interp());
+PTR(Val)AddExpr::interp(PTR(Env)env) {
+	return (this->lhs_->interp(env))->add_to(this->rhs_->interp(env));
 }
 
-PTR(Expr)AddExpr::subst(std::string string, PTR(Expr)e) {
-	return NEW(AddExpr)(this->lhs_->subst(string, e),
-						this->rhs_->subst(string, e));
-}
+//PTR(Expr)AddExpr::subst(std::string string, PTR(Expr)e) {
+//	return NEW(AddExpr)(this->lhs_->subst(string, e),
+//						this->rhs_->subst(string, e));
+//}
 
 void AddExpr::print(std::ostream &ostream) {
 	ostream << "(";
@@ -213,14 +212,14 @@ bool MultExpr::equals(PTR(Expr)e) {
 	}
 }
 
-PTR(Val)MultExpr::interp() {
-	return this->lhs_->interp()->mult_with(this->rhs_->interp());
+PTR(Val)MultExpr::interp(PTR(Env)env) {
+	return this->lhs_->interp(env)->mult_with(this->rhs_->interp(env));
 }
 
-PTR(Expr)MultExpr::subst(std::string string, PTR(Expr)e) {
-	return NEW(MultExpr)(this->lhs_->subst(string, e),
-						 this->rhs_->subst(string, e));
-}
+//PTR(Expr)MultExpr::subst(std::string string, PTR(Expr)e) {
+//	return NEW(MultExpr)(this->lhs_->subst(string, e),
+//						 this->rhs_->subst(string, e));
+//}
 
 void MultExpr::print(std::ostream &ostream) {
 	ostream << "(";
@@ -285,21 +284,21 @@ bool LetExpr::equals(PTR(Expr)e) {
 	}
 }
 
-PTR(Val)LetExpr::interp() {
-	return this->body_->subst(lhs_, rhs_->interp()->to_expr())->interp();
+PTR(Val)LetExpr::interp(PTR(Env)env) {
+	return this->body_->interp(NEW(ExtendedEnv)(lhs_, rhs_->interp(env), env));
 }
 
-PTR(Expr)LetExpr::subst(std::string string, PTR(Expr)e) {
-	if (string == this->lhs_) {
-		return NEW(LetExpr)(this->lhs_,
-							this->rhs_->subst(string, e),
-							this->body_);
-	} else {
-		return NEW(LetExpr)(this->lhs_,
-							this->rhs_->subst(string, e),
-							this->body_->subst(string, e));
-	}
-}
+//PTR(Expr)LetExpr::subst(std::string string, PTR(Expr)e) {
+//	if (string == this->lhs_) {
+//		return NEW(LetExpr)(this->lhs_,
+//							this->rhs_->subst(string, e),
+//							this->body_);
+//	} else {
+//		return NEW(LetExpr)(this->lhs_,
+//							this->rhs_->subst(string, e),
+//							this->body_->subst(string, e));
+//	}
+//}
 
 void LetExpr::print(std::ostream &ostream) {
 	ostream << "(_let " << this->lhs_ << "=";
@@ -348,11 +347,11 @@ bool BoolExpr::equals(PTR(Expr)e) {
 	}
 }
 
-PTR(Val)BoolExpr::interp() { return NEW(BoolVal)(this->val_); }
+PTR(Val)BoolExpr::interp(PTR(Env)env) { return NEW(BoolVal)(this->val_); }
 
-PTR(Expr)BoolExpr::subst(std::string string, PTR(Expr)e) {
-	return THIS;
-}
+//PTR(Expr)BoolExpr::subst(std::string string, PTR(Expr)e) {
+//	return THIS;
+//}
 
 void BoolExpr::print(std::ostream &ostream) {
 	if (this->val_ == true) {
@@ -398,13 +397,13 @@ bool EqExpr::equals(PTR(Expr)e) {
 	}
 }
 
-PTR(Val)EqExpr::interp() {
-	return NEW(BoolVal)(this->lhs_->interp()->equals(this->rhs_->interp()));
+PTR(Val)EqExpr::interp(PTR(Env)env) {
+	return NEW(BoolVal)(this->lhs_->interp(env)->equals(this->rhs_->interp(env)));
 }
 
-PTR(Expr)EqExpr::subst(std::string string, PTR(Expr)e) {
-	return NEW(EqExpr)(this->lhs_->subst(string, e), this->rhs_->subst(string, e));
-}
+//PTR(Expr)EqExpr::subst(std::string string, PTR(Expr)e) {
+//	return NEW(EqExpr)(this->lhs_->subst(string, e), this->rhs_->subst(string, e));
+//}
 
 void EqExpr::print(std::ostream &ostream) {
 	ostream << "(";
@@ -467,23 +466,23 @@ bool IfExpr::equals(PTR(Expr)e) {
 	}
 }
 
-PTR(Val)IfExpr::interp() {
-	PTR(Val)test = this->test_part_->interp();
+PTR(Val)IfExpr::interp(PTR(Env)env) {
+	PTR(Val)test = this->test_part_->interp(env);
 	PTR(BoolVal)pTestVal = CAST(BoolVal)(test);
 	if (pTestVal == nullptr) { // can't interp to BoolVal
 		throw std::runtime_error("IfExpr's condition isn't BoolVal");
 	} else if (pTestVal->rep_ == true) { // condition true
-		return this->then_part_->interp();
+		return this->then_part_->interp(env);
 	} else {    // condition false
-		return this->else_part_->interp();
+		return this->else_part_->interp(env);
 	}
 }
 
-PTR(Expr)IfExpr::subst(std::string string, PTR(Expr)e) {
-	return NEW(IfExpr)(this->test_part_->subst(string, e),
-					   this->then_part_->subst(string, e),
-					   this->else_part_->subst(string, e));
-}
+//PTR(Expr)IfExpr::subst(std::string string, PTR(Expr)e) {
+//	return NEW(IfExpr)(this->test_part_->subst(string, e),
+//					   this->then_part_->subst(string, e),
+//					   this->else_part_->subst(string, e));
+//}
 
 void IfExpr::print(std::ostream &ostream) {
 	ostream << "(_if ";
@@ -545,17 +544,17 @@ bool FunExpr::equals(PTR(Expr)e) {
 	}
 }
 
-PTR(Val)FunExpr::interp() {
-	return NEW(FunVal)(this->formal_arg_, this->body_);
+PTR(Val)FunExpr::interp(PTR(Env)env) {
+	return NEW(FunVal)(this->formal_arg_, this->body_, env);
 }
 
-PTR(Expr)FunExpr::subst(std::string string, PTR(Expr)e) {
-	if (string == this->formal_arg_) {
-		return THIS;
-	} else {
-		return NEW(FunExpr)(this->formal_arg_, this->body_->subst(string, e));
-	}
-}
+//PTR(Expr)FunExpr::subst(std::string string, PTR(Expr)e) {
+//	if (string == this->formal_arg_) {
+//		return THIS;
+//	} else {
+//		return NEW(FunExpr)(this->formal_arg_, this->body_->subst(string, e));
+//	}
+//}
 
 void FunExpr::print(std::ostream &ostream) {
 	ostream << "(_fun (" << this->formal_arg_ << ") ";
@@ -605,13 +604,13 @@ bool CallExpr::equals(PTR(Expr)e) {
 	}
 }
 
-PTR(Val)CallExpr::interp() {
-	return this->to_be_called_->interp()->call(actual_arg_->interp());
+PTR(Val)CallExpr::interp(PTR(Env)env) {
+	return this->to_be_called_->interp(env)->call(actual_arg_->interp(env));
 }
 
-PTR(Expr)CallExpr::subst(std::string string, PTR(Expr)e) {
-	return NEW(CallExpr)(this->to_be_called_->subst(string, e), this->actual_arg_->subst(string, e));
-}
+//PTR(Expr)CallExpr::subst(std::string string, PTR(Expr)e) {
+//	return NEW(CallExpr)(this->to_be_called_->subst(string, e), this->actual_arg_->subst(string, e));
+//}
 
 void CallExpr::print(std::ostream &ostream) {
 	this->to_be_called_->print(ostream);

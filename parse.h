@@ -8,7 +8,7 @@
 #include <istream>
 #include "pointer.h"
 
-class Expr;
+CLASS(Expr);
 
 void consume(std::istream &in, int nextChar);
 

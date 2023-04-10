@@ -20,8 +20,9 @@
 #include <string>
 #include <utility>
 #include "pointer.h"
+#include "env.h"
 
-class Val;
+CLASS(Val);
 
 typedef enum {
 	prec_none,       // = 0, NumExpr, VarExpr, BoolExpr, CallExpr
@@ -50,17 +51,17 @@ CLASS (Expr) {
 	 * \return returns the actual integer value of the Expr, if it contains
 	 * Variable, throw an exception
 	 */
-	virtual PTR(Val)interp() = 0;
+	virtual PTR(Val)interp(PTR(Env)env) = 0;
 
-	/**
-	 * \brief Substitute the Variable inside Expr object with another Expr
-	 * \param string first argument, a target string that is waited to be
-	 * substituted \param e second argument, an Expr pointer to object that is
-	 * going to substitute the Variable inside expression \return returns the new
-	 * Expr pointer to object after substitution, return the original object if
-	 * string Variable not found
-	 */
-	virtual PTR(Expr)subst(std::string string, PTR(Expr)e) = 0;
+//	/**
+//	 * \brief Substitute the Variable inside Expr object with another Expr
+//	 * \param string first argument, a target string that is waited to be
+//	 * substituted \param e second argument, an Expr pointer to object that is
+//	 * going to substitute the Variable inside expression \return returns the new
+//	 * Expr pointer to object after substitution, return the original object if
+//	 * string Variable not found
+//	 */
+//	virtual PTR(Expr)subst(std::string string, PTR(Expr)e) = 0;
 
 	// TODO: do we need to handle with negative expression?
 	/**
@@ -131,16 +132,16 @@ class NumExpr : public Expr {
 	 * \brief Interpret Num object to an integer value
 	 * \return returns the actual integer value of the Num
 	 */
-	PTR(Val)interp() override;
+	PTR(Val)interp(PTR(Env)env) override;
 
-	/**
-	 * \brief Substitute the Variable inside Num object with another Expr
-	 * \param string first argument, a target string that is waited to be
-	 * substituted \param e second argument, an Expr pointer to object that is
-	 * going to substitute the Variable inside expression \return returns this
-	 * object, since there is no Variable in Num object
-	 */
-	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
+//	/**
+//	 * \brief Substitute the Variable inside Num object with another Expr
+//	 * \param string first argument, a target string that is waited to be
+//	 * substituted \param e second argument, an Expr pointer to object that is
+//	 * going to substitute the Variable inside expression \return returns this
+//	 * object, since there is no Variable in Num object
+//	 */
+//	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
 
 	void print(std::ostream &ostream) override;
 
@@ -174,17 +175,17 @@ class VarExpr : public Expr {
 	 * \brief Interpret Var object to an integer value
 	 * \return A Var doesn't have specific integer value, throw an exception
 	 */
-	PTR(Val)interp() override;
+	PTR(Val)interp(PTR(Env)env) override;
 
-	/**
-	 * \brief Substitute the Var object with another Expr
-	 * \param string first argument, a target string that is waited to be
-	 * substituted \param e second argument, an Expr pointer to object that is
-	 * going to substitute the Var inside expression \return returns the new Expr
-	 * pointer to object after substitution, return the original object if string
-	 * variable not found
-	 */
-	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
+//	/**
+//	 * \brief Substitute the Var object with another Expr
+//	 * \param string first argument, a target string that is waited to be
+//	 * substituted \param e second argument, an Expr pointer to object that is
+//	 * going to substitute the Var inside expression \return returns the new Expr
+//	 * pointer to object after substitution, return the original object if string
+//	 * variable not found
+//	 */
+//	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
 
 	void print(std::ostream &ostream) override;
 
@@ -223,17 +224,17 @@ class AddExpr : public Expr {
 	 * \return returns the actual integer value (lhs + rhs) of the Add, if it
 	 * contains Var, throw an exception
 	 */
-	PTR(Val)interp() override;
+	PTR(Val)interp(PTR(Env)env) override;
 
-	/**
-	 * \brief Substitute the Var inside Add object with another Expr
-	 * \param string first argument, a target string that is waited to be
-	 * substituted \param e second argument, an Expr pointer to object that is
-	 * going to substitute the Var inside expression \return returns the new Expr
-	 * pointer to object after substitution, return the original object if string
-	 * variable not found
-	 */
-	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
+//	/**
+//	 * \brief Substitute the Var inside Add object with another Expr
+//	 * \param string first argument, a target string that is waited to be
+//	 * substituted \param e second argument, an Expr pointer to object that is
+//	 * going to substitute the Var inside expression \return returns the new Expr
+//	 * pointer to object after substitution, return the original object if string
+//	 * variable not found
+//	 */
+//	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
 
 	void print(std::ostream &ostream) override;
 
@@ -272,17 +273,17 @@ class MultExpr : public Expr {
 	 * \return returns the actual integer value (lhs * rhs) of the Mult, if it
 	 * contains Var, throw an exception
 	 */
-	PTR(Val)interp() override;
+	PTR(Val)interp(PTR(Env)env) override;
 
-	/**
-	 * \brief Substitute the Var inside Mult object with another Expr
-	 * \param string first argument, a target string that is waited to be
-	 * substituted \param e second argument, an Expr pointer to object that is
-	 * going to substitute the Var inside expression \return returns the new Expr
-	 * pointer to object after substitution, return the original object if string
-	 * variable not found
-	 */
-	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
+//	/**
+//	 * \brief Substitute the Var inside Mult object with another Expr
+//	 * \param string first argument, a target string that is waited to be
+//	 * substituted \param e second argument, an Expr pointer to object that is
+//	 * going to substitute the Var inside expression \return returns the new Expr
+//	 * pointer to object after substitution, return the original object if string
+//	 * variable not found
+//	 */
+//	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
 
 	void print(std::ostream &ostream) override;
 
@@ -320,16 +321,16 @@ class LetExpr : public Expr {
 	 * \brief Interpret Let object to an integer value
 	 * \return returns the actual integer value of the Num
 	 */
-	PTR(Val)interp() override;
+	PTR(Val)interp(PTR(Env)env) override;
 
-	/**
-	 * \brief Substitute the Var inside Let object with another Expr
-	 * \param string first argument, a target string that is waited to be
-	 * substituted \param e second argument, an Expr pointer to object that is
-	 * going to substitute the Var inside expression \return returns this object,
-	 * since there is no Var in Let object
-	 */
-	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
+//	/**
+//	 * \brief Substitute the Var inside Let object with another Expr
+//	 * \param string first argument, a target string that is waited to be
+//	 * substituted \param e second argument, an Expr pointer to object that is
+//	 * going to substitute the Var inside expression \return returns this object,
+//	 * since there is no Var in Let object
+//	 */
+//	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
 
 	void print(std::ostream &ostream) override;
 
@@ -347,9 +348,9 @@ class BoolExpr : public Expr {
 
 	bool equals(PTR(Expr)e) override;
 
-	PTR(Val)interp() override;
+	PTR(Val)interp(PTR(Env)env) override;
 
-	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
+//	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
 
 	void print(std::ostream &ostream) override;
 
@@ -368,9 +369,9 @@ class EqExpr : public Expr { // equal class
 
 	bool equals(PTR(Expr)e) override;
 
-	PTR(Val)interp() override;
+	PTR(Val)interp(PTR(Env)env) override;
 
-	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
+//	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
 
 	void print(std::ostream &ostream) override;
 
@@ -390,9 +391,9 @@ class IfExpr : public Expr {
 
 	bool equals(PTR(Expr)e) override;
 
-	Val *interp() override;
+	PTR(Val)interp(PTR(Env)env) override;
 
-	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
+//	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
 
 	void print(std::ostream &ostream) override;
 
@@ -411,9 +412,9 @@ class FunExpr : public Expr {
 
 	bool equals(PTR(Expr)e) override;
 
-	Val *interp() override;
+	PTR(Val)interp(PTR(Env)env) override;
 
-	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
+//	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
 
 	void print(std::ostream &ostream) override;
 
@@ -432,9 +433,9 @@ class CallExpr : public Expr {
 
 	bool equals(PTR(Expr)e) override;
 
-	Val *interp() override;
+	PTR(Val)interp(PTR(Env)env) override;
 
-	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
+//	PTR(Expr)subst(std::string string, PTR(Expr)e) override;
 
 	void print(std::ostream &ostream) override;
 
