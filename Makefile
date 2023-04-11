@@ -11,7 +11,8 @@ HEADERS = cmdline.h catch.h expr.h test.h parse.h val.h
 
 
 all:
-	make msdscript test_msdscript
+	make msdscript
+	#make test_msdscript
 
 msdscript: $(OBJS)
 	$(CXX) $(OBJS) -o msdscript

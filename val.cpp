@@ -40,7 +40,7 @@ PTR(Val)NumVal::mult_with(PTR(Val)otherVal) {
 	if (otherNum == nullptr) {
 		throw std::runtime_error("mult of non-number");
 	} else {
-		return NEW(NumVal)(this->rep_ * otherNum->rep_);
+		return NEW(NumVal)((unsigned)this->rep_ * (unsigned)otherNum->rep_);
 	}
 }
 

@@ -2,9 +2,7 @@
 // Created by Rason Hung on 4/9/23.
 //
 
-#ifndef MSDSCRIPT__ENV_H_
-#define MSDSCRIPT__ENV_H_
-
+#pragma include once
 #include <string>
 #include "pointer.h"
 
@@ -12,15 +10,16 @@ CLASS(Val);
 
 CLASS (Env) {
  public:
+	virtual ~Env() {};
 	static PTR(Env)empty;
 	virtual PTR(Val)lookup(std::string find_name) = 0;
-	~Env() = default;
+
 };
 
 class EmptyEnv : public Env {
  public:
 	EmptyEnv();
-	PTR(Val)lookup(std::string find_name);
+	PTR(Val)lookup(std::string find_name) override;
 };
 
 class ExtendedEnv : public Env {
@@ -30,8 +29,6 @@ class ExtendedEnv : public Env {
 	PTR(Env)rest;
 
 	ExtendedEnv(std::string name, PTR(Val)val, PTR(Env)rest);
-	PTR(Val)lookup(std::string find_name);
+	PTR(Val)lookup(std::string find_name) override;
 };
-
-#endif //MSDSCRIPT__ENV_H_
 

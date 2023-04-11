@@ -13,7 +13,7 @@
 #include "expr.h"
 #include "parse.h"
 #include "val.h"
-#include "env.h"
+//CLASS(Env);
 
 void use_arguments(int argc, const char *argv[]) {
 	if (argc == 1) {
@@ -59,7 +59,12 @@ void use_arguments(int argc, const char *argv[]) {
 					// parse the std::cin
 					// interp the std::cin
 					// print out result
-					std::cout << parse_str(std::cin)->interp(Env::empty)->to_string() << std::endl;
+					PTR(Expr)input = parse_str(std::cin);
+					PTR(Val)value = input->interp(Env::empty);
+					std::string result = value->to_string();
+					std::cout << result << std::endl;
+//					delete input;
+//					delete value;
 				} catch (std::runtime_error &e) {
 					std::cout << e.what();
 					exit(1);
@@ -69,7 +74,9 @@ void use_arguments(int argc, const char *argv[]) {
 				try {
 					// parse the std::cin
 					// print the std::cin
-					std::cout << parse_str(std::cin)->to_string() << std::endl;
+					PTR(Expr)input = parse_str(std::cin);
+					std::cout << input->to_string() << std::endl;
+//					delete input;
 				} catch (std::runtime_error &e) {
 					std::cout << e.what();
 					exit(1);
@@ -79,7 +86,9 @@ void use_arguments(int argc, const char *argv[]) {
 				try {
 					// parse the std::cin
 					// print the std::cin
-					std::cout << parse_str(std::cin)->to_pretty_string() << std::endl;
+					PTR(Expr)input = parse_str(std::cin);
+					std::cout << input->to_pretty_string() << std::endl;
+//					delete input;
 				} catch (std::runtime_error &e) {
 					std::cout << e.what();
 					exit(1);

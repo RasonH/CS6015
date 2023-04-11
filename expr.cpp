@@ -91,7 +91,7 @@ precedence_t NumExpr::get_prec() { return prec_none; }
 																o888o
 --------------------------------------------------------------------------------------------*/
 
-VarExpr::VarExpr(std::string varName) { this->string_ = std::move(varName); }
+VarExpr::VarExpr(std::string varName) { this->string_ = varName; }
 
 bool VarExpr::equals(PTR(Expr)e) {
 	PTR(VarExpr)pVar = CAST(VarExpr)(e);
@@ -268,7 +268,7 @@ precedence_t MultExpr::get_prec() { return prec_mult; }
 --------------------------------------------------------------------------------------------*/
 
 LetExpr::LetExpr(std::string lhs, PTR(Expr)rhs, PTR(Expr)body) {
-	this->lhs_ = std::move(lhs);
+	this->lhs_ = lhs;
 	this->rhs_ = rhs;
 	this->body_ = body;
 }
