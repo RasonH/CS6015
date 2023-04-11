@@ -5,13 +5,14 @@
 
 CXX = c++
 CFLAGS = -std=c++17
-OBJS = main.o cmdline.o expr.o test.o parse.o val.o
+OBJS = main.o cmdline.o expr.o test.o parse.o val.o env.o
 CXXSOURCE = main.cpp cmdline.cpp expr.cpp test.cpp val.cpp
 HEADERS = cmdline.h catch.h expr.h test.h parse.h val.h
 
 
 all:
-	make msdscript test_msdscript
+	make msdscript
+	#make test_msdscript
 
 msdscript: $(OBJS)
 	$(CXX) $(OBJS) -o msdscript
@@ -33,6 +34,10 @@ test.o: test.cpp
 
 parse.o: parse.cpp parse.h
 	$(CXX) $(CFLAGS) -c parse.cpp
+
+env.o: env.cpp env.h
+	$(CXX) $(CFLAGS) -c env.cpp
+
 
 test_msdscript: test_msdscript.cpp exec.h
 	$(CXX) $(CFLAGS) test_msdscript.cpp exec.cpp -o test_msdscript

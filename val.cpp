@@ -40,11 +40,11 @@ PTR(Val)NumVal::mult_with(PTR(Val)otherVal) {
 	if (otherNum == nullptr) {
 		throw std::runtime_error("mult of non-number");
 	} else {
-		return NEW(NumVal)(this->rep_ * otherNum->rep_);
+		return NEW(NumVal)((unsigned)this->rep_ * (unsigned)otherNum->rep_);
 	}
 }
 
-PTR(Expr)NumVal::to_expr() { return NEW(NumExpr)(this->rep_); }
+//PTR(Expr)NumVal::to_expr() { return NEW(NumExpr)(this->rep_); }
 
 std::string NumVal::to_string() { return std::to_string(this->rep_); }
 
@@ -73,7 +73,7 @@ bool BoolVal::equals(PTR(Val)val) {
 	}
 }
 
-PTR(Expr)BoolVal::to_expr() { return NEW(BoolExpr)(this->rep_); }
+//PTR(Expr)BoolVal::to_expr() { return NEW(BoolExpr)(this->rep_); }
 
 PTR(Val)BoolVal::add_to(PTR(Val)otherVal) {
 	throw std::runtime_error("add of non-number");
@@ -105,9 +105,10 @@ PTR(Val)BoolVal::call(PTR(Val)actualArg) {
 	o888o         `V88V"V8P' o888o o888o       `8'       `Y888""8o o888o
 --------------------------------------------------------------------------------------------*/
 
-FunVal::FunVal(std::string formalArg, PTR(Expr)body) {
+FunVal::FunVal(std::string formalArg, PTR(Expr)body, PTR(Env)env) {
 	formal_arg_ = formalArg;
 	body_ = body;
+	env_ = env;
 }
 
 bool FunVal::equals(PTR(Val)val) {
@@ -120,7 +121,7 @@ bool FunVal::equals(PTR(Val)val) {
 	}
 }
 
-PTR(Expr)FunVal::to_expr() { return NEW(FunExpr)(this->formal_arg_, this->body_); }
+//PTR(Expr)FunVal::to_expr() { return NEW(FunExpr)(this->formal_arg_, this->body_); }
 
 PTR(Val)FunVal::add_to(PTR(Val)otherVal) {
 	throw std::runtime_error("add of non-number");
@@ -135,6 +136,6 @@ std::string FunVal::to_string() {
 }
 
 PTR(Val)FunVal::call(PTR(Val)actualArg) {
-	return this->body_->subst(this->formal_arg_, actualArg->to_expr())->interp();
+	return this->body_->interp(NEW(ExtendedEnv)(this->formal_arg_, actualArg, this->env_));
 //	return (NEW(LetExpr)(this->formal_arg_, actualArg->to_expr(), this->body_))->interp();
 }

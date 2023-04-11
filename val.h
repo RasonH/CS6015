@@ -5,7 +5,9 @@
 #pragma include once
 #include <string>
 #include "pointer.h"
-class Expr;
+
+CLASS(Env);
+CLASS(Expr);
 
 CLASS (Val) {
  public:
@@ -13,7 +15,7 @@ CLASS (Val) {
 
 	virtual bool equals(PTR(Val)rep) = 0;
 
-	virtual PTR(Expr)to_expr() = 0;
+//	virtual PTR(Expr)to_expr() = 0;
 
 	virtual std::string to_string() = 0;
 
@@ -32,7 +34,7 @@ class NumVal : public Val {
 
 	bool equals(PTR(Val)val) override;
 
-	PTR(Expr)to_expr() override;
+//	PTR(Expr)to_expr() override;
 
 	std::string to_string() override;
 
@@ -51,7 +53,7 @@ class BoolVal : public Val {
 
 	bool equals(PTR(Val)val) override;
 
-	PTR(Expr)to_expr() override;
+//	PTR(Expr)to_expr() override;
 
 	std::string to_string() override;
 
@@ -66,12 +68,13 @@ class FunVal : public Val {
  public:
 	std::string formal_arg_;
 	PTR(Expr)body_;
+	PTR(Env)env_;
 
-	FunVal(std::string formalArg, PTR(Expr)body);
+	FunVal(std::string formalArg, PTR(Expr)body, PTR(Env)env);
 
 	bool equals(PTR(Val)val) override;
 
-	PTR(Expr)to_expr() override;
+//	PTR(Expr)to_expr() override;
 
 	std::string to_string() override;
 
