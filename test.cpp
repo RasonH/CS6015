@@ -660,13 +660,13 @@ TEST_CASE("TESTS from Kevin and William") {
 						   "         _in  y * 2\n"
 						   "_in  x + 1");
 	}SECTION("pretty_print_let_mine_some_reuse_of_kevin_triple_nested_let") {
-		PTR(LetExpr)tripleNestedLet =
-		NEW(LetExpr)("x", NEW(NumExpr)(1),
-					 NEW(LetExpr)("y", NEW(NumExpr)(1),
-								  NEW(MultExpr)(NEW(AddExpr)(NEW(VarExpr)("x"),
-															 NEW(VarExpr)("y")),
-												NEW(VarExpr)("z"))));
-		PTR(LetExpr)tripleNestedLet2 = NEW(LetExpr)(
+		PTR(LetExpr) tripleNestedLet =
+			NEW(LetExpr)("x", NEW(NumExpr)(1),
+						 NEW(LetExpr)("y", NEW(NumExpr)(1),
+									  NEW(MultExpr)(NEW(AddExpr)(NEW(VarExpr)("x"),
+																 NEW(VarExpr)("y")),
+													NEW(VarExpr)("z"))));
+		PTR(LetExpr) tripleNestedLet2 = NEW(LetExpr)(
 			"x", NEW(NumExpr)(1),
 			NEW(LetExpr)(
 				"y", NEW(NumExpr)(1),
@@ -674,7 +674,7 @@ TEST_CASE("TESTS from Kevin and William") {
 					"z", NEW(AddExpr)(NEW(VarExpr)("x"), NEW(NumExpr)(1)),
 					NEW(AddExpr)(NEW(AddExpr)(NEW(VarExpr)("x"), NEW(VarExpr)("y")),
 								 NEW(VarExpr)("z")))));
-		PTR(LetExpr)tripleNestedLet3 = NEW(LetExpr)(
+		PTR(LetExpr) tripleNestedLet3 = NEW(LetExpr)(
 			"x", NEW(NumExpr)(1),
 			NEW(LetExpr)(
 				"y", NEW(NumExpr)(1),
@@ -694,11 +694,11 @@ TEST_CASE("TESTS from Kevin and William") {
 													  "_in  _let y = 1\n"
 													  "     _in  _let z = x + 1\n"
 													  "          _in  (x + y) * z");
-		PTR(LetExpr)tripleNestedLet4 =
-		NEW(LetExpr)("x", NEW(NumExpr)(5),
-					 NEW(LetExpr)("y", NEW(NumExpr)(3),
-								  NEW(AddExpr)(NEW(VarExpr)("y"), NEW(NumExpr)(2))));
-		PTR(LetExpr)tripleNestedLet5 = NEW(LetExpr)(
+		PTR(LetExpr) tripleNestedLet4 =
+			NEW(LetExpr)("x", NEW(NumExpr)(5),
+						 NEW(LetExpr)("y", NEW(NumExpr)(3),
+									  NEW(AddExpr)(NEW(VarExpr)("y"), NEW(NumExpr)(2))));
+		PTR(LetExpr) tripleNestedLet5 = NEW(LetExpr)(
 			"x", NEW(NumExpr)(5),
 			NEW(AddExpr)(NEW(LetExpr)("y", NEW(NumExpr)(3),
 									  NEW(AddExpr)(NEW(VarExpr)("y"), NEW(NumExpr)(2))),
@@ -1282,8 +1282,8 @@ TEST_CASE("Function") {
 						"_in (f)(5) ")->interp(Env::empty)->equals(NEW(NumVal)(6)));
 
 		// 15
-		auto *add_x_1 = NEW(AddExpr)(NEW(VarExpr)("x"), NEW(NumExpr)(1));
-		auto *fun_val_x_add_x_1 = NEW(FunVal)("x", add_x_1, Env::empty);
+		PTR(AddExpr) add_x_1 = NEW(AddExpr)(NEW(VarExpr)("x"), NEW(NumExpr)(1));
+		PTR(FunVal) fun_val_x_add_x_1 = NEW(FunVal)("x", add_x_1, Env::empty);
 		CHECK(parse_str("_fun (x) x+ 1 ")->interp(Env::empty)->equals(fun_val_x_add_x_1));
 
 		//16
@@ -1367,7 +1367,7 @@ TEST_CASE("Function") {
 						"             _else x + f(f)(x + -1)\n"
 						"_in f(f)(3)")->interp(Env::empty)->equals(NEW(NumVal)(6)));
 	} SECTION("factorial function recusion test") {
-		PTR(Expr)factrl_expr = NEW(LetExpr)(
+		PTR(Expr) factrl_expr = NEW(LetExpr)(
 			"factrl",
 			NEW(FunExpr)(
 				"factrl",
@@ -1419,9 +1419,9 @@ TEST_CASE("Function") {
 							   "                  _else x * factrl(factrl)(x + -1)\n"
 							   "_in  factrl(factrl)(10)";
 
-		auto *parsed_expr = parse_str(test_str);
-		auto parsed_expr_pretty_str = parsed_expr->to_pretty_string();
-		auto parsed_expr_str = parsed_expr->to_string();
+		PTR(Expr) parsed_expr = parse_str(test_str);
+		std::string parsed_expr_pretty_str = parsed_expr->to_pretty_string();
+		std::string parsed_expr_str = parsed_expr->to_string();
 		CHECK(parsed_expr_pretty_str == test_str);
 		CHECK(parsed_expr->equals(parse_str(parsed_expr_pretty_str)));
 		CHECK(parsed_expr->equals(parse_str(parsed_expr_str)));

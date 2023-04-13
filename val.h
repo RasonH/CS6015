@@ -6,24 +6,24 @@
 #include <string>
 #include "pointer.h"
 
-CLASS(Env);
-CLASS(Expr);
+class Env;
+class Expr;
 
 CLASS (Val) {
  public:
 	virtual ~Val() {};
 
-	virtual bool equals(PTR(Val)rep) = 0;
+	virtual bool equals(PTR(Val) rep) = 0;
 
 //	virtual PTR(Expr)to_expr() = 0;
 
 	virtual std::string to_string() = 0;
 
-	virtual PTR(Val)add_to(PTR(Val)rep) = 0;
+	virtual PTR(Val) add_to(PTR(Val) rep) = 0;
 
-	virtual PTR(Val)mult_with(PTR(Val)rep) = 0;
+	virtual PTR(Val) mult_with(PTR(Val) rep) = 0;
 
-	virtual PTR(Val)call(PTR(Val)actualArg) = 0;
+	virtual PTR(Val) call(PTR(Val) actualArg) = 0;
 };
 
 class NumVal : public Val {
@@ -32,17 +32,17 @@ class NumVal : public Val {
 
 	NumVal(int rep);
 
-	bool equals(PTR(Val)val) override;
+	bool equals(PTR(Val) val) override;
 
 //	PTR(Expr)to_expr() override;
 
 	std::string to_string() override;
 
-	PTR(Val)add_to(PTR(Val)otherVal) override;
+	PTR(Val) add_to(PTR(Val) otherVal) override;
 
-	PTR(Val)mult_with(PTR(Val)otherVal) override;
+	PTR(Val) mult_with(PTR(Val) otherVal) override;
 
-	PTR(Val)call(PTR(Val)actualArg) override;
+	PTR(Val) call(PTR(Val) actualArg) override;
 };
 
 class BoolVal : public Val {
@@ -51,36 +51,36 @@ class BoolVal : public Val {
 
 	BoolVal(bool rep);
 
-	bool equals(PTR(Val)val) override;
+	bool equals(PTR(Val) val) override;
 
 //	PTR(Expr)to_expr() override;
 
 	std::string to_string() override;
 
-	PTR(Val)add_to(PTR(Val)otherVal) override;
+	PTR(Val) add_to(PTR(Val) otherVal) override;
 
-	PTR(Val)mult_with(PTR(Val)otherVal) override;
+	PTR(Val) mult_with(PTR(Val) otherVal) override;
 
-	PTR(Val)call(PTR(Val)actualArg) override;
+	PTR(Val) call(PTR(Val) actualArg) override;
 };
 
 class FunVal : public Val {
  public:
 	std::string formal_arg_;
-	PTR(Expr)body_;
-	PTR(Env)env_;
+	PTR(Expr) body_;
+	PTR(Env) env_;
 
-	FunVal(std::string formalArg, PTR(Expr)body, PTR(Env)env);
+	FunVal(std::string formalArg, PTR(Expr) body, PTR(Env) env);
 
-	bool equals(PTR(Val)val) override;
+	bool equals(PTR(Val) val) override;
 
 //	PTR(Expr)to_expr() override;
 
 	std::string to_string() override;
 
-	PTR(Val)add_to(PTR(Val)otherVal) override;
+	PTR(Val) add_to(PTR(Val) otherVal) override;
 
-	PTR(Val)mult_with(PTR(Val)otherVal) override;
+	PTR(Val) mult_with(PTR(Val) otherVal) override;
 
-	PTR(Val)call(PTR(Val)actualArg) override;
+	PTR(Val) call(PTR(Val) actualArg) override;
 };
