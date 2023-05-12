@@ -38,7 +38,7 @@
 .DS_Store
 *.idea
 .idea
-CMakeLists.txt
+
 cmake-build-debug-coverage/
 cmake-build-debug/
 msdscript*

@@ -1,16 +1,12 @@
-/**
- * \mainpage MSDScript
- * \author Juisheng Hung (Rason)
- * \date 01-16-2023
- * \brief passing arguments through command line, execute with --help, --test ...
- */
+#include <QApplication>
+#include "mainwidget.h"
 
-#include "cmdline.h"
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
 
-/*! \brief passing arguments through command line
- *  --help --test ...
-*/
-int main(int argc, const char *argv[]) {
-	use_arguments(argc, argv);
-	return 0;
+    mainWidget mw;
+    mw.show();
+
+    return a.exec();
 }
